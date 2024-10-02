@@ -1,22 +1,54 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-file
-*.flf
-#Test results file
-TestResults.xml
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+logs/*.log
+
+# dotenv environment variables
+.env
+
+# nodemon
+.pids
+
+# MacOS
+.DS_Store
+
+# Miscellaneous
+.idea/  # Si usas JetBrains IDEs (como WebStorm)
+.vscode/ # Configuraciones de Visual Studio Code
+*.swp  # Archivos swap (editores como Vim)
+*~     # Archivos de backup temporales
+!.gitkeep
+
+# Test coverage
+coverage/
+
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+
+# Prisma (si lo usas)
+prisma/.env
+
+# Ignore package-lock.json if using Yarn
+package-lock.json
+
+# Yarn berry
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+ yarn.lock
+
+# Frontend build files
+build/

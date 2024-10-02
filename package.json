@@ -1,0 +1,22 @@
+{
+  "name": "c21-12-m-react",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "repository": "https://github.com/No-Country-simulation/C21-12-m-React.git",
+  "author": "damianfe <damianrocio12@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "design"
+  ],
+  "scripts": {
+    "dev:frontend": "yarn workspace frontend run dev",
+    "dev:backend": "yarn workspace backend run dev",
+    "dev:all": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
