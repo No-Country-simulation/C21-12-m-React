@@ -1,28 +1,14 @@
-import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import express from 'express';
+import clientRoutes from './interfaces/routes/client.routes'; // Importa las rutas de clientes
 
 const app = express();
-const prisma = new PrismaClient();
-
 app.use(express.json());
-app.get('/', (req: Request, res: Response) => {
+
+// Rutas
+app.use('/api/v1', clientRoutes); // Define el endpoint para los clientes
+
+app.get('/', (req, res) => {
   res.send('Hello, backend is running!');
-});
-
-app.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
-
-app.post('/users', async (req, res) => {
-  const { email, name } = req.body;
-  const newUser = await prisma.user.create({
-    data: {
-      email,
-      name,
-    },
-  });
-  res.json(newUser);
 });
 
 app.listen(3000, () => {
