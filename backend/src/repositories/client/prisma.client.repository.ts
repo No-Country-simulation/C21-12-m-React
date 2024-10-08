@@ -1,6 +1,4 @@
-// src/repositories/client/PrismaClientRepository.ts
-
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Client as PrismaClientModel } from '@prisma/client'; // Importa el tipo generado por Prisma
 import { ClientRepository } from './client.repository';
 import { Client } from '../../domain/entities/Client';
 
@@ -40,7 +38,7 @@ export class PrismaClientRepository implements ClientRepository {
 
   async findAll(): Promise<Client[]> {
     const clients = await prisma.client.findMany();
-    return clients.map(client => new Client(
+    return clients.map((client: PrismaClientModel) => new Client(  // Aquí especificamos el tipo PrismaClientModel
       client.id,
       client.nombre,
       client.estado,
