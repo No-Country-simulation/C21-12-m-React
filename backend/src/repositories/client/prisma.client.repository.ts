@@ -22,12 +22,12 @@ export class PrismaClientRepository implements ClientRepository {
       },
     });
 
-    return new ClientDTO(createdClient); // Retornamos un DTO
+    return new ClientDTO(createdClient);
   }
 
   async findAll(): Promise<Client[]> {
     const clients = await prisma.client.findMany();
-    return clients.map(client => new ClientDTO(client)); // Usamos DTOs en lugar del tipo de Prisma directamente
+    return clients.map(client => new ClientDTO(client));
   }
 
   async findById(id: number): Promise<Client | null> {
