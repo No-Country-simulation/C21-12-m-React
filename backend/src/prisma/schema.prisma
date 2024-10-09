@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,9 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+model Client {
+  id               Int        @id @default(autoincrement())
+  nombre           String
+  estado           String
+  prioridad        String
+  valor_estimado   Float?
+  encargado        String      // El campo encargado ahora es un string
+  origen           String
+ 
+  email            String
+  telefono         String
+  ultimo_contacto  DateTime?
+  expected_close   DateTime?
+  proyectos        Project[]   @relation("ClientProjects")
+  actividades      Activity[]
+
+  @@map("clients")
+}
+
+model Project {
+  id                  Int       @id @default(autoincrement())
+  cliente             Client    @relation("ClientProjects", fields: [clienteId], references: [id])
+  clienteId           Int
+  nombre_proyecto     String
+  descripcion         String
+  valor               Float
+  estado_proyecto     String
+  fecha_inicio        DateTime
+  fecha_estimada_cierre DateTime
+  responsable         String    // Responsable sigue siendo un string
+  responsableId       Int       // Si ya no necesitas este campo, lo puedes eliminar
+  actividades         Activity[]
+
+  @@map("projects")
+}
+
+model Activity {
+  id             Int      @id @default(autoincrement())
+  cliente        Client   @relation(fields: [clienteId], references: [id])
+  clienteId      Int
+  proyecto       Project? @relation(fields: [proyectoId], references: [id])
+  proyectoId     Int?
+  fecha          DateTime
+  tipo_actividad String
+  descripcion    String
+  responsable    String  // Cambia el responsable a un string si ya no existe el modelo Employee
+  responsableId  Int?
+
+  @@map("activities")
+}
+
+model Stage {
+  id          Int    @id @default(autoincrement())
+  nombre      String
+  orden       Int
+  descripcion String
+
+  @@map("stages")
 }
