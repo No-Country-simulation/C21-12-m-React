@@ -174,6 +174,7 @@ const Sidebar = () => {
 								>
 									<ListItemIcon>
 										{item.icon}{" "}
+										{/* Renderiza el ícono específico */}
 									</ListItemIcon>
 									<ListItemText
 										primary={

@@ -7,7 +7,8 @@ function App() {
 		<>
 			<MainLayout>
 				<main>
-				<ClientPage></ClientPage>				</main>
+				<ClientPage></ClientPage>				
+				</main>
 			</MainLayout>
 		</>
 	);
