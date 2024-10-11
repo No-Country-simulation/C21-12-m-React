@@ -21,7 +21,7 @@ export const validateClientData = (data: any) => {
       'number.positive': 'El valor estimado debe ser un número positivo.',
       'any.required': 'El valor estimado es obligatorio.'
     }),
-    encargado: Joi.string().min(3).max(100).required().messages({
+    managerId: Joi.string().min(3).max(100).required().messages({
       'string.base': 'El encargado debe ser un texto.',
       'string.min': 'El encargado debe tener al menos 3 caracteres.',
       'string.max': 'El encargado no puede tener más de 100 caracteres.',

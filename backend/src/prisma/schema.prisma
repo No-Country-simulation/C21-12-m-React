@@ -8,23 +8,24 @@ datasource db {
 }
 
 model Client {
-  id               Int        @id @default(autoincrement())
-  nombre           String
-  estado           String
-  prioridad        String
-  valor_estimado   Float?
-  encargado        String      // El campo encargado ahora es un string
-  origen           String
- 
-  email            String
-  telefono         String
-  ultimo_contacto  DateTime?
-  expected_close   DateTime?
-  proyectos        Project[]   @relation("ClientProjects")
-  actividades      Activity[]
+  id                Int        @id @default(autoincrement())
+  nombre            String
+  estado            String
+  prioridad         String
+  valor_estimado    Float?
+  managerId         String?    
+  manager           Manager?   @relation(fields: [managerId], references: [id])
+  origen            String
+  email             String
+  telefono          String
+  ultimo_contacto   DateTime?
+  expected_close    DateTime?
+  proyectos         Project[]  @relation("ClientProjects")
+  actividades       Activity[]
 
   @@map("clients")
 }
+
 
 model Project {
   id                  Int       @id @default(autoincrement())
@@ -57,6 +58,16 @@ model Activity {
 
   @@map("activities")
 }
+
+model Manager {
+  id       String   @id @default(uuid()) 
+  nombre   String
+  avatar   String   
+  clients  Client[] 
+
+  @@map("managers")
+}
+
 
 model Stage {
   id          Int    @id @default(autoincrement())

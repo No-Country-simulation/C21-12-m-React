@@ -7,17 +7,16 @@ import { validateClientData } from '../validator/client.validator';
 const clientRepository = new PrismaClientRepository();
 const prisma = new PrismaClient();
 
-
 class ClientService {
   static async createClient(data: any): Promise<Client> {
-    const { nombre, estado, prioridad, valor_estimado, encargado, origen, email, telefono, ultimo_contacto, expected_close } = data;
+    const { nombre, estado, prioridad, valor_estimado, managerId, origen, email, telefono, ultimo_contacto, expected_close } = data;
     return new Client(
       0, 
       nombre,
       estado,
       prioridad,
       valor_estimado,
-      encargado,
+      managerId,
       origen,
       email,
       telefono,
@@ -26,7 +25,6 @@ class ClientService {
     );
   }
 }
-
 
 export const createClient = async (req: Request, res: Response) => {
   try {
