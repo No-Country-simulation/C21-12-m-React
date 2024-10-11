@@ -1,4 +1,5 @@
 import "./App.css";
+import ClientPage from "./components/ClientPage";
 import MainLayout from "./layout/mainLayout";
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
 		<>
 			<MainLayout>
 				<main>
-					<h2>Hola</h2>
+				<ClientPage></ClientPage>				
 				</main>
 			</MainLayout>
 		</>
