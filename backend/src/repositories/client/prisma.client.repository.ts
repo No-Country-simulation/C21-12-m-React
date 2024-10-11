@@ -6,41 +6,71 @@ import { Client } from '../../domain/entities/Client';
 const prisma = new PrismaClient();
 
 export class PrismaClientRepository implements ClientRepository {
+  // Método para crear un cliente
   async create(client: Client): Promise<Client> {
-    const createdClient = await prisma.client.create({
+    const createdClient = await prisma.cliente.create({
       data: {
         nombre: client.nombre,
         estado: client.estado,
         prioridad: client.prioridad,
-        valor_estimado: client.valor_estimado,
-        managerId: client.managerId, // Asignación del encargado mediante managerId
+        valorEstimado: client.valor_estimado, // Asegúrate de que coincide con el esquema Prisma
+        managerId: client.managerId, // Asignación del manager mediante managerId
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
-        ultimo_contacto: client.ultimo_contacto,
-        expected_close: client.expected_close,
+        ultimoContacto: client.ultimo_contacto,
+        fechaCierreEstimada: client.expected_close, // Ajustado al nombre del campo en Prisma
       },
       include: {
         manager: true, // Incluir el manager relacionado
       },
     });
 
-    return new ClientDTO(createdClient); // Retorno del DTO con los datos completos, incluido el manager
+    // Retornar como Client entity
+    return new Client(
+      createdClient.id,
+      createdClient.nombre,
+      createdClient.estado,
+      createdClient.prioridad,
+      createdClient.valorEstimado,
+      createdClient.managerId,
+      createdClient.origen,
+      createdClient.email,
+      createdClient.telefono,
+      createdClient.ultimoContacto,
+      createdClient.fechaCierreEstimada,
+      createdClient.manager?.nombre, 
+      createdClient.manager?.avatar
+    );
   }
 
+  // Método para obtener todos los clientes
   async findAll(): Promise<Client[]> {
-    const clients = await prisma.client.findMany({
+    const clients = await prisma.cliente.findMany({
       include: {
         manager: true, // Incluir el manager relacionado en cada cliente
       },
     });
-    
-    // Mapear todos los clientes obtenidos a ClientDTO
-    return clients.map(client => new ClientDTO(client));
+
+    // Mapear todos los clientes obtenidos a Client entity
+    return clients.map(client => new Client(
+      client.id,
+      client.nombre,
+      client.estado,
+      client.prioridad,
+      client.valorEstimado,
+      client.managerId,
+      client.origen,
+      client.email,
+      client.telefono,
+      client.ultimoContacto,
+      client.fechaCierreEstimada
+    ));
   }
 
+  // Método para obtener un cliente por su ID
   async findById(id: number): Promise<Client | null> {
-    const client = await prisma.client.findUnique({
+    const client = await prisma.cliente.findUnique({
       where: { id },
       include: {
         manager: true, // Incluir el manager relacionado
@@ -55,30 +85,31 @@ export class PrismaClientRepository implements ClientRepository {
       client.nombre,
       client.estado,
       client.prioridad,
-      client.valor_estimado,
-      client.managerId, // managerId en lugar de encargado
+      client.valorEstimado,
+      client.managerId,
       client.origen,
       client.email,
       client.telefono,
-      client.ultimo_contacto,
-      client.expected_close
+      client.ultimoContacto,
+      client.fechaCierreEstimada
     );
   }
 
+  // Método para actualizar un cliente
   async update(client: Client): Promise<Client> {
-    const updatedClient = await prisma.client.update({
+    const updatedClient = await prisma.cliente.update({
       where: { id: client.id },
       data: {
         nombre: client.nombre,
         estado: client.estado,
         prioridad: client.prioridad,
-        valor_estimado: client.valor_estimado,
+        valorEstimado: client.valor_estimado, // Asegúrate de que coincide con el esquema Prisma
         managerId: client.managerId, // Actualización del managerId
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
-        ultimo_contacto: client.ultimo_contacto,
-        expected_close: client.expected_close,
+        ultimoContacto: client.ultimo_contacto,
+        fechaCierreEstimada: client.expected_close, // Ajustado al nombre del campo en Prisma
       },
       include: {
         manager: true, // Incluir el manager relacionado
@@ -91,19 +122,20 @@ export class PrismaClientRepository implements ClientRepository {
       updatedClient.nombre,
       updatedClient.estado,
       updatedClient.prioridad,
-      updatedClient.valor_estimado,
+      updatedClient.valorEstimado,
       updatedClient.managerId,
       updatedClient.origen,
       updatedClient.email,
       updatedClient.telefono,
-      updatedClient.ultimo_contacto,
-      updatedClient.expected_close
+      updatedClient.ultimoContacto,
+      updatedClient.fechaCierreEstimada
     );
   }
 
+  // Método para eliminar un cliente
   async delete(id: number): Promise<void> {
     // Borrar el cliente por su ID
-    await prisma.client.delete({
+    await prisma.cliente.delete({
       where: { id },
     });
   }
