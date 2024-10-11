@@ -7,73 +7,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Client {
+// Enums para valores constantes
+enum EstadoProyecto {
+  PAUSADO
+  ACTIVO
+  COMPLETO
+  CERRADO
+}
+
+enum Prioridad {
+  BAJA
+  MEDIA
+  ALTA
+}
+
+enum TipoActividad {
+  LLAMADA
+  REUNION
+  EMAIL
+  OTRO
+}
+enum EstadoCliente {
+  CONTACTO_INICIAL
+  EN_PROGRESO
+  CERRADO
+}
+
+model Cliente {
   id                Int        @id @default(autoincrement())
   nombre            String
-  estado            String
-  prioridad         String
-  valor_estimado    Float?
+  estado            EstadoCliente
+  prioridad         Prioridad
+  valorEstimado     Float?
   managerId         String?    
   manager           Manager?   @relation(fields: [managerId], references: [id])
   origen            String
-  email             String
-  telefono          String
-  ultimo_contacto   DateTime?
-  expected_close    DateTime?
-  proyectos         Project[]  @relation("ClientProjects")
-  actividades       Activity[]
+  email             String     @unique
+  telefono          String     
+  ultimoContacto    DateTime?
+  fechaCierreEstimada DateTime?
+  proyectos         Proyecto[] @relation("ClienteProyectos")
+  actividades       Actividad[]
+  createdAt         DateTime   @default(now())   // Fecha de creación
+  updatedAt         DateTime   @updatedAt        // Fecha de última actualización
 
-  @@map("clients")
+  @@map("clientes")
 }
 
 
-model Project {
-  id                  Int       @id @default(autoincrement())
-  cliente             Client    @relation("ClientProjects", fields: [clienteId], references: [id])
-  clienteId           Int
-  nombre_proyecto     String
-  descripcion         String
-  valor               Float
-  estado_proyecto     String
-  fecha_inicio        DateTime
-  fecha_estimada_cierre DateTime
-  responsable         String    // Responsable sigue siendo un string
-  responsableId       Int       // Si ya no necesitas este campo, lo puedes eliminar
-  actividades         Activity[]
+model Proyecto {
+  id              Int        @id @default(autoincrement())
+  cliente         Cliente    @relation("ClienteProyectos", fields: [clienteId], references: [id])
+  clienteId       Int
+  nombre          String
+  descripcion     String
+  valor           Float
+  estado          EstadoProyecto
+  fechaInicio     DateTime
+  fechaCierreEstimada DateTime
+  responsableId   String
+  responsable     Manager    @relation(fields: [responsableId], references: [id])
+  actividades     Actividad[]
+  etapas          Etapa[]    // Relación con Etapa
 
-  @@map("projects")
+  @@map("proyectos")
 }
 
-model Activity {
+
+model Actividad {
   id             Int      @id @default(autoincrement())
-  cliente        Client   @relation(fields: [clienteId], references: [id])
+  cliente        Cliente   @relation(fields: [clienteId], references: [id])
   clienteId      Int
-  proyecto       Project? @relation(fields: [proyectoId], references: [id])
+  proyecto       Proyecto? @relation(fields: [proyectoId], references: [id])
   proyectoId     Int?
   fecha          DateTime
-  tipo_actividad String
+  tipo           TipoActividad
   descripcion    String
-  responsable    String  // Cambia el responsable a un string si ya no existe el modelo Employee
-  responsableId  Int?
+  responsableId  String
+  responsable    Manager   @relation(fields: [responsableId], references: [id])
 
-  @@map("activities")
+  @@map("actividades")
 }
 
 model Manager {
   id       String   @id @default(uuid()) 
   nombre   String
   avatar   String   
-  clients  Client[] 
+  clientes Cliente[] 
 
   @@map("managers")
+  Proyecto Proyecto[]
+  Actividad Actividad[]
 }
 
-
-model Stage {
-  id          Int    @id @default(autoincrement())
+model Etapa {
+  id          Int        @id @default(autoincrement())
   nombre      String
   orden       Int
   descripcion String
+  proyectos   Proyecto[] 
 
-  @@map("stages")
+  @@map("etapas")
 }
+
