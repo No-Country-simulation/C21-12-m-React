@@ -1,13 +1,18 @@
 import "./App.css";
-import MainLayout from "./layout/mainLayout";
+import { MainLayout } from "./layout/mainLayout";
+import { MainContent } from "./components/mainContent";
+import { CustomerTable } from "./components/customerTable";
+
+
+
 
 function App() {
 	return (
 		<>
 			<MainLayout>
-				<main>
-					<h2>Hola</h2>
-				</main>
+				<MainContent>
+					<CustomerTable/>
+				</MainContent>
 			</MainLayout>
 		</>
 	);
