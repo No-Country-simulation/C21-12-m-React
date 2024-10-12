@@ -13,16 +13,16 @@ export class PrismaClientRepository implements ClientRepository {
         nombre: client.nombre,
         estado: client.estado,
         prioridad: client.prioridad,
-        valorEstimado: client.valor_estimado, // Asegúrate de que coincide con el esquema Prisma
-        managerId: client.managerId, // Asignación del manager mediante managerId
+        valorEstimado: client.valor_estimado, 
+        managerId: client.managerId,
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
         ultimoContacto: client.ultimo_contacto,
-        fechaCierreEstimada: client.expected_close, // Ajustado al nombre del campo en Prisma
+        fechaCierreEstimada: client.expected_close, 
       },
       include: {
-        manager: true, // Incluir el manager relacionado
+        manager: true, 
       },
     });
 
@@ -48,7 +48,7 @@ export class PrismaClientRepository implements ClientRepository {
   async findAll(): Promise<Client[]> {
     const clients = await prisma.cliente.findMany({
       include: {
-        manager: true, // Incluir el manager relacionado en cada cliente
+        manager: true, 
       },
     });
 
@@ -73,7 +73,7 @@ export class PrismaClientRepository implements ClientRepository {
     const client = await prisma.cliente.findUnique({
       where: { id },
       include: {
-        manager: true, // Incluir el manager relacionado
+        manager: true, 
       },
     });
 
@@ -103,16 +103,16 @@ export class PrismaClientRepository implements ClientRepository {
         nombre: client.nombre,
         estado: client.estado,
         prioridad: client.prioridad,
-        valorEstimado: client.valor_estimado, // Asegúrate de que coincide con el esquema Prisma
-        managerId: client.managerId, // Actualización del managerId
+        valorEstimado: client.valor_estimado, 
+        managerId: client.managerId, 
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
         ultimoContacto: client.ultimo_contacto,
-        fechaCierreEstimada: client.expected_close, // Ajustado al nombre del campo en Prisma
+        fechaCierreEstimada: client.expected_close,
       },
       include: {
-        manager: true, // Incluir el manager relacionado
+        manager: true, 
       },
     });
 

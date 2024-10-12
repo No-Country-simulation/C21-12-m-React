@@ -11,14 +11,14 @@ class ClientService {
   static async createClient(data: any): Promise<Client> {
     const { nombre, estado, prioridad, valor_estimado, managerId, origen, email, telefono, ultimo_contacto, expected_close } = data;
 
-    // Convertir el estado al formato esperado por el enum
+    
     const estadoFormatted = estado.toUpperCase().replace(' ', '_');
     const prioridadFormatted = prioridad.toUpperCase().replace(' ', '_');
 
     return new Client(
       0, 
       nombre,
-      estadoFormatted, // Pasar el estado en el formato correcto
+      estadoFormatted,
       prioridadFormatted,
       valor_estimado,
       managerId,
@@ -39,11 +39,11 @@ export const createClient = async (req: Request, res: Response) => {
     const client = await ClientService.createClient(req.body);
     const createdClient = await clientRepository.create(client);
 
-    // Formatear el estado y prioridad antes de devolver la respuesta
+  
     const response = {
       ...createdClient,
-      estado: createdClient.estado.replace('_', ' ').toLowerCase(), // Cambia CONTACTO_INICIAL a 'contacto inicial'
-      prioridad: createdClient.prioridad.toLowerCase(), // Cambia MEDIA a 'media'
+      estado: createdClient.estado.replace('_', ' ').toLowerCase(), 
+      prioridad: createdClient.prioridad.toLowerCase(),
     };
 
     res.status(201).json(response);

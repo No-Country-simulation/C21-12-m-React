@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `activities` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `clients` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `projects` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `stages` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "EstadoProyecto" AS ENUM ('PAUSADO', 'ACTIVO', 'COMPLETO', 'CERRADO');
 
@@ -16,35 +7,14 @@ CREATE TYPE "Prioridad" AS ENUM ('BAJA', 'MEDIA', 'ALTA');
 -- CreateEnum
 CREATE TYPE "TipoActividad" AS ENUM ('LLAMADA', 'REUNION', 'EMAIL', 'OTRO');
 
--- DropForeignKey
-ALTER TABLE "activities" DROP CONSTRAINT "activities_clienteId_fkey";
-
--- DropForeignKey
-ALTER TABLE "activities" DROP CONSTRAINT "activities_proyectoId_fkey";
-
--- DropForeignKey
-ALTER TABLE "clients" DROP CONSTRAINT "clients_managerId_fkey";
-
--- DropForeignKey
-ALTER TABLE "projects" DROP CONSTRAINT "projects_clienteId_fkey";
-
--- DropTable
-DROP TABLE "activities";
-
--- DropTable
-DROP TABLE "clients";
-
--- DropTable
-DROP TABLE "projects";
-
--- DropTable
-DROP TABLE "stages";
+-- CreateEnum
+CREATE TYPE "EstadoCliente" AS ENUM ('CONTACTO', 'REUNION', 'PROPUESTA', 'NEGOCIACION');
 
 -- CreateTable
 CREATE TABLE "clientes" (
     "id" SERIAL NOT NULL,
     "nombre" TEXT NOT NULL,
-    "estado" "EstadoProyecto" NOT NULL,
+    "estado" "EstadoCliente" NOT NULL,
     "prioridad" "Prioridad" NOT NULL,
     "valorEstimado" DOUBLE PRECISION,
     "managerId" TEXT,
@@ -85,6 +55,15 @@ CREATE TABLE "actividades" (
     "responsableId" TEXT NOT NULL,
 
     CONSTRAINT "actividades_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "managers" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "avatar" TEXT NOT NULL,
+
+    CONSTRAINT "managers_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

@@ -1,7 +1,7 @@
 export class ClientDTO {
   id: number;
   nombre: string;
-  estado: 'CONTACTO_INICIAL' | 'EN_PROGRESO' | 'CERRADO'; // Updated to enum type
+  estado: 'CONTACTO' | 'REUNION' | 'PROPUESTA' | 'NEGOCIACION';
   prioridad: 'ALTA'|'MEDIA' |'BAJA';
   valor_estimado: number | null;
   managerId: string | null;
@@ -16,7 +16,7 @@ export class ClientDTO {
   constructor(data: any) {
     this.id = data.id;
     this.nombre = data.nombre;
-    this.estado = data.estado as 'CONTACTO_INICIAL' | 'EN_PROGRESO' | 'CERRADO'; // Ensure type casting
+    this.estado = data.estado as 'CONTACTO' | 'REUNION' | 'PROPUESTA'| 'NEGOCIACION'; // Ensure type casting
     this.prioridad = data.prioridad as 'ALTA' | 'MEDIA' | 'BAJA';
     this.valor_estimado = data.valor_estimado;
     this.managerId = data.managerId; // ID del Manager

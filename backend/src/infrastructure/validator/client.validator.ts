@@ -8,8 +8,8 @@ export const validateClientData = (data: any) => {
       'string.max': 'El nombre no puede tener más de 100 caracteres.',
       'any.required': 'El nombre es obligatorio.'
     }),
-    estado: Joi.string().valid('Contacto Inicial', 'En Progreso', 'Cerrado').required().messages({
-      'any.only': 'El estado debe ser uno de los siguientes: Contacto Inicial, En Progreso, Cerrado.',
+    estado: Joi.string().valid('Contacto', 'Reunion', 'Propuesta','Negociacion').required().messages({
+      'any.only': 'El estado debe ser uno de los siguientes: Contacto, Reunion, Propuesta, Negociacion.',
       'any.required': 'El estado es obligatorio.'
     }),
     prioridad: Joi.string().valid('Alta', 'Media', 'Baja').required().messages({

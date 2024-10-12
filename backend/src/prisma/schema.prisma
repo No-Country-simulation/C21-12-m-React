@@ -28,9 +28,10 @@ enum TipoActividad {
   OTRO
 }
 enum EstadoCliente {
-  CONTACTO_INICIAL
-  EN_PROGRESO
-  CERRADO
+  CONTACTO
+  REUNION
+  PROPUESTA
+  NEGOCIACION
 }
 
 model Cliente {
@@ -49,7 +50,7 @@ model Cliente {
   proyectos         Proyecto[] @relation("ClienteProyectos")
   actividades       Actividad[]
   createdAt         DateTime   @default(now())   // Fecha de creación
-  updatedAt         DateTime   @updatedAt        // Fecha de última actualización
+  updatedAt         DateTime   @updatedAt        //echa de última actualización F
 
   @@map("clientes")
 }
@@ -68,8 +69,7 @@ model Proyecto {
   responsableId   String
   responsable     Manager    @relation(fields: [responsableId], references: [id])
   actividades     Actividad[]
-  etapas          Etapa[]    // Relación con Etapa
-
+  etapas          Etapa[]  
   @@map("proyectos")
 }
 
