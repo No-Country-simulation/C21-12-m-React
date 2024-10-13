@@ -5,7 +5,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import 'express-async-errors';
 import clientRoutes from './interfaces/routes/client.routes';
-import managerRoutes from './interfaces/routes/manage.routes';  // Importar rutas de managers
+import managerRoutes from './interfaces/routes/manage.routes';
+import projectRoutes from './interfaces/routes/project.routes';
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/v1', clientRoutes);
+app.use('/api/v1', managerRoutes);
+app.use('/api/v1', projectRoutes);
 app.use('/api/v1/managers', managerRoutes);
 
 // Ruta principal
