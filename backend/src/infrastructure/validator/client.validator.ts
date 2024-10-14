@@ -8,12 +8,12 @@ export const validateClientData = (data: any) => {
       'string.max': 'El nombre no puede tener más de 100 caracteres.',
       'any.required': 'El nombre es obligatorio.'
     }),
-    estado: Joi.string().valid('Contacto Inicial', 'En Progreso', 'Cerrado').required().messages({
-      'any.only': 'El estado debe ser uno de los siguientes: Contacto Inicial, En Progreso, Cerrado.',
+    estado: Joi.string().valid('Contacto', 'Reunion', 'Propuesta','Negociacion').required().messages({
+      'any.only': 'El estado debe ser uno de los siguientes: Contacto, Reunion, Propuesta, Negociacion.',
       'any.required': 'El estado es obligatorio.'
     }),
-    prioridad: Joi.string().valid('alta', 'media', 'baja').required().messages({
-      'any.only': 'La prioridad debe ser alta, media o baja.',
+    prioridad: Joi.string().valid('Alta', 'Media', 'Baja').required().messages({
+      'any.only': 'La prioridad debe ser Alta, Media o Baja.',
       'any.required': 'La prioridad es obligatoria.'
     }),
     valor_estimado: Joi.number().positive().required().messages({
@@ -21,11 +21,10 @@ export const validateClientData = (data: any) => {
       'number.positive': 'El valor estimado debe ser un número positivo.',
       'any.required': 'El valor estimado es obligatorio.'
     }),
-    encargado: Joi.string().min(3).max(100).required().messages({
-      'string.base': 'El encargado debe ser un texto.',
-      'string.min': 'El encargado debe tener al menos 3 caracteres.',
-      'string.max': 'El encargado no puede tener más de 100 caracteres.',
-      'any.required': 'El encargado es obligatorio.'
+    managerId: Joi.string().min(3).max(100).allow(null).messages({
+      'string.base': 'El ID del manager debe ser un texto.',
+      'string.min': 'El ID del manager debe tener al menos 3 caracteres.',
+      'string.max': 'El ID del manager no puede tener más de 100 caracteres.'
     }),
     origen: Joi.string().valid('contacto directo', 'referencia', 'campaña marketing', 'otro').required().messages({
       'any.only': 'El origen debe ser uno de los siguientes: contacto directo, referencia, campaña marketing, otro.',
@@ -39,10 +38,9 @@ export const validateClientData = (data: any) => {
       'string.pattern.base': 'El teléfono debe estar en formato internacional, comenzando con un "+" y seguido de entre 9 y 15 dígitos.',
       'any.required': 'El teléfono es obligatorio.'
     }),
-    ultimo_contacto: Joi.date().iso().required().messages({
+    ultimo_contacto: Joi.date().iso().allow(null).messages({
       'date.base': 'La fecha de último contacto debe ser una fecha válida.',
-      'date.format': 'La fecha de último contacto debe estar en formato ISO.',
-      'any.required': 'La fecha de último contacto es obligatoria.'
+      'date.format': 'La fecha de último contacto debe estar en formato ISO.'
     }),
     expected_close: Joi.date().iso().greater('now').required().messages({
       'date.base': 'La fecha de cierre estimada debe ser una fecha válida.',

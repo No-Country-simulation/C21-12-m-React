@@ -5,7 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import 'express-async-errors';
 import clientRoutes from './interfaces/routes/client.routes';
-
+import managerRoutes from './interfaces/routes/manage.routes';  // Importar rutas de managers
 
 dotenv.config();
 
@@ -20,6 +20,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/v1', clientRoutes);
+app.use('/api/v1/managers', managerRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
@@ -33,6 +34,13 @@ app.use((req, res, next) => {
   });
 });
 
+// Middleware para manejo de errores generales
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: 'An error occurred!',
+  });
+});
 
 // Iniciar servidor
 app.listen(PORT, () => {
