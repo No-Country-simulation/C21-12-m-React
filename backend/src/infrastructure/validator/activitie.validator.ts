@@ -19,8 +19,8 @@ export const validateActivitieData = (data: any) => {
       'date.iso': 'La fecha debe estar en formato ISO.',
       'any.required': 'La fecha es obligatoria.'
     }),
-    tipo: Joi.string().valid('LLAMADA', 'REUNION', 'EMAIL', 'OTRO').required().messages({
-      'any.only': 'El tipo de actividad debe ser uno de los siguientes: LLAMADA, REUNION, EMAIL, OTRO.',
+    tipo: Joi.string().valid('Llamada', 'Reunion', 'Email', 'Otro').required().messages({
+      'any.only': 'El tipo de actividad debe ser uno de los siguientes: Llamada, Reunion, Email, Otro.',
       'any.required': 'El tipo de actividad es obligatorio.'
     }),
     descripcion: Joi.string().min(10).max(500).required().messages({
