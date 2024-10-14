@@ -9,16 +9,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
 	return (
 		<Router>
+		<MainLayout>
+		  <MainContent>
 			<Routes>
-			<Route path="/" element={<WelcomePage/>} />
-			<Route path="/clientes" element={<ClientPage />} /> 
+			  <Route path="/" element={<WelcomePage />} />
+			  <Route path="/clientes" element={<ClientPage />} />
 			</Routes>
-			<MainLayout>
-				<MainContent>
-					<ClientPage />
-				</MainContent>
-			</MainLayout>
-		</Router>
+		  </MainContent>
+		</MainLayout>
+	  </Router>
 		
 	);
 }
