@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
-
+import { Link } from "react-router-dom";
 import {
 	Box,
 	Drawer,
@@ -54,6 +54,7 @@ const Sidebar = () => {
 		{
 			text: "Clientes",
 			icon: <PeopleAltOutlinedIcon sx={{ color: "#664ddf" }} />,
+			link: '/clientes'
 		},
 		{
 			text: "Proyectos",
@@ -112,13 +113,20 @@ const Sidebar = () => {
 						px: 2,
 						my: 4,
 					}}
-				>
-					<Box
-						component="img"
-						src={logo}
-						alt="Logo"
-						sx={{ width: "60%", height: "auto" }}
-					/>
+				><Box
+				component={Link}
+				to="/" 
+				sx={{
+					display: "flex", 
+					width: "100%", 
+				}}
+			>
+				<Box
+					component="img"
+					src={logo}
+					alt="Logo"
+				/>
+		</Box>
 					<Box sx={{ my: 4 }}>
 						<TextField
 							label="Buscar"
@@ -160,21 +168,22 @@ const Sidebar = () => {
 						{menuItems.map((item, index) => (
 							<ListItem key={index} disablePadding>
 								<ListItemButton
+								component={Link}
+								to={item.link}
 									sx={{
 										justifyContent: "flex-start",
-										backgroundColor: "transparent", // Color de fondo inicial
-										color: "#664ddf", // Color del texto
+										backgroundColor: "transparent", 
+										color: "#664ddf", 
 										"&:hover": {
-											backgroundColor: "#e8eaf6", // Color de fondo al pasar el ratón
-											transform: "scale(1.02)", // Escala de aumento al hover
+											backgroundColor: "#e8eaf6", 
+											transform: "scale(1.02)", 
 										},
-										borderRadius: 2, // Bordes redondeados
-										padding: 1, // Espaciado interno
+										borderRadius: 2, 
+										padding: 1, 
 									}}
 								>
 									<ListItemIcon>
 										{item.icon}{" "}
-										{/* Renderiza el ícono específico */}
 									</ListItemIcon>
 									<ListItemText
 										primary={
@@ -194,19 +203,19 @@ const Sidebar = () => {
 								<ListItemButton
 									sx={{
 										justifyContent: "flex-start",
-										backgroundColor: "transparent", // Color de fondo inicial
-										color: "#664ddf", // Color del texto
+										backgroundColor: "transparent",
+										color: "#664ddf", 
 										"&:hover": {
-											backgroundColor: "#e8eaf6", // Color de fondo al pasar el ratón
-											transform: "scale(1.02)", // Escala de aumento al hover
+											backgroundColor: "#e8eaf6", 
+											transform: "scale(1.02)", 
 										},
-										borderRadius: 2, // Bordes redondeados
-										padding: 1, // Espaciado interno
+										borderRadius: 2, 
+										padding: 1,
 									}}
 								>
 									<ListItemIcon>
 										{item.icon}{" "}
-										{/* Renderiza el ícono específico */}
+									
 									</ListItemIcon>
 									<ListItemText
 										primary={
