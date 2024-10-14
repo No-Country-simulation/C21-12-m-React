@@ -1,6 +1,6 @@
 // src/domain/entities/Client.ts
 
-import { EstadoProyecto, Prioridad } from "@prisma/client";
+import { Prioridad } from "@prisma/client";
 
 export class Client {
   constructor(
