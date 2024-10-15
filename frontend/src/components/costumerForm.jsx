@@ -1,7 +1,8 @@
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
-const costumerForm = () => {
+import { useState } from "react";
+import CustomerModal from "./customerModal";
+const CostumerForm = () => {
 
     const currencies = [
         { label: "Contacto", value: "contacto" },
@@ -14,6 +15,15 @@ const costumerForm = () => {
         { label: "Media", value: "media" },
         { label: "Baja", value: "baja" },
       ];
+      const [open, setOpen] = useState(false);
+
+      const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
       return (
         <Box sx={{ m: 2 }}>
         
@@ -90,13 +100,14 @@ const costumerForm = () => {
                   backgroundColor: "#5a3fd1",
                 },
               }}
-            >
+              onClick={handleClickOpen}            >
               Nuevo Cliente
               <AddIcon></AddIcon>
             </Button>
           </Box>
+          <CustomerModal open={open} handleClose={handleClose} />
         </Box>
       );
 };
 
-export default costumerForm;
+export default CostumerForm;
