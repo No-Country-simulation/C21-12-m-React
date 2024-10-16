@@ -52,6 +52,29 @@ export const createClient = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+export const searchClients = async (req: Request, res: Response) => {
+  try {
+    const { nombre, estado, prioridad } = req.query;
+
+    const filters: any = {};
+
+    // Solo agregar al filtro si el parámetro está presente
+    if (nombre) filters.nombre = { contains: String(nombre), mode: 'insensitive' };
+    if (estado) filters.estado = { equals: String(estado).toUpperCase().replace(' ', '_') };
+    if (prioridad) filters.prioridad = { equals: String(prioridad).toUpperCase().replace(' ', '_') };
+
+    // Ejecutar la búsqueda con los filtros aplicados (si los hay)
+    const clients = await prisma.cliente.findMany({
+      where: filters
+    });
+
+    res.status(200).json(clients);
+  } catch (error) {
+    console.error('Error searching clients:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 export const getAllClients = async (req: Request, res: Response) => {
   try {
