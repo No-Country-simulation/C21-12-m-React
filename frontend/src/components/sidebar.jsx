@@ -17,17 +17,17 @@ import {
 } from "@mui/material";
 
 import {
-	Menu 					as MenuIcon,
-	Search 					as SearchIcon,
-	DashboardOutlined 		as DashboardOutlinedIcon,
-	CreateOutlined 			as CreateOutlinedIcon,
-	PeopleAltOutlined 		as PeopleAltOutlinedIcon,
-	HandymanOutlined 		as HandymanOutlinedIcon,
-	SavingsOutlined 		as SavingsOutlinedIcon,
-	DataSaverOffOutlined 	as DataSaverOffOutlinedIcon,
-	CardTravelOutlined 		as CardTravelOutlinedIcon,
-	SettingsOutlined 		as SettingsOutlinedIcon,
-	LogoutOutlined 			as LogoutOutlinedIcon,
+	Menu as MenuIcon,
+	Search as SearchIcon,
+	DashboardOutlined as DashboardOutlinedIcon,
+	CreateOutlined as CreateOutlinedIcon,
+	PeopleAltOutlined as PeopleAltOutlinedIcon,
+	HandymanOutlined as HandymanOutlinedIcon,
+	SavingsOutlined as SavingsOutlinedIcon,
+	DataSaverOffOutlined as DataSaverOffOutlinedIcon,
+	CardTravelOutlined as CardTravelOutlinedIcon,
+	SettingsOutlined as SettingsOutlinedIcon,
+	LogoutOutlined as LogoutOutlinedIcon,
 } from "@mui/icons-material";
 
 import logo from "../assets/logo.png";
@@ -54,7 +54,7 @@ const Sidebar = () => {
 		{
 			text: "Clientes",
 			icon: <PeopleAltOutlinedIcon sx={{ color: "#664ddf" }} />,
-			link: '/clientes'
+			link: "/clientes",
 		},
 		{
 			text: "Proyectos",
@@ -99,6 +99,7 @@ const Sidebar = () => {
 						width: drawerWidth,
 						boxSizing: "border-box",
 						backgroundColor: "#f1eefe",
+						border: 0
 					},
 				}}
 				variant={isMobile ? "temporary" : "permanent"}
@@ -113,20 +114,17 @@ const Sidebar = () => {
 						px: 2,
 						my: 4,
 					}}
-				><Box
-				component={Link}
-				to="/" 
-				sx={{
-					display: "flex", 
-					width: "100%", 
-				}}
-			>
-				<Box
-					component="img"
-					src={logo}
-					alt="Logo"
-				/>
-		</Box>
+				>
+					<Box
+						component={Link}
+						to="/"
+						sx={{
+							display: "flex",
+							width: "100%",
+						}}
+					>
+						<Box component="img" src={logo} alt="Logo" />
+					</Box>
 					<Box sx={{ my: 4 }}>
 						<TextField
 							label="Buscar"
@@ -164,27 +162,25 @@ const Sidebar = () => {
 							}}
 						/>
 					</Box>
-					<List sx={{ my: 2 }}>
+					<List>
 						{menuItems.map((item, index) => (
 							<ListItem key={index} disablePadding>
 								<ListItemButton
-								component={Link}
-								to={item.link}
+									component={Link}
+									to={item.link}
 									sx={{
 										justifyContent: "flex-start",
-										backgroundColor: "transparent", 
-										color: "#664ddf", 
+										backgroundColor: "transparent",
+										color: "#664ddf",
 										"&:hover": {
-											backgroundColor: "#e8eaf6", 
-											transform: "scale(1.02)", 
+											backgroundColor: "#e8eaf6",
+											transform: "scale(1.02)",
 										},
-										borderRadius: 2, 
-										padding: 1, 
+										borderRadius: 2,
+										padding: 1,
 									}}
 								>
-									<ListItemIcon>
-										{item.icon}{" "}
-									</ListItemIcon>
+									<ListItemIcon>{item.icon} </ListItemIcon>
 									<ListItemText
 										primary={
 											<Typography variant="subtitle2">
@@ -197,26 +193,23 @@ const Sidebar = () => {
 						))}
 					</List>
 					<Divider />
-					<List sx={{ my: 2 }}>
+					<List>
 						{optionsItems.map((item, index) => (
 							<ListItem key={index} disablePadding>
 								<ListItemButton
 									sx={{
 										justifyContent: "flex-start",
 										backgroundColor: "transparent",
-										color: "#664ddf", 
+										color: "#664ddf",
 										"&:hover": {
-											backgroundColor: "#e8eaf6", 
-											transform: "scale(1.02)", 
+											backgroundColor: "#e8eaf6",
+											transform: "scale(1.02)",
 										},
-										borderRadius: 2, 
+										borderRadius: 2,
 										padding: 1,
 									}}
 								>
-									<ListItemIcon>
-										{item.icon}{" "}
-									
-									</ListItemIcon>
+									<ListItemIcon>{item.icon} </ListItemIcon>
 									<ListItemText
 										primary={
 											<Typography variant="subtitle2">
@@ -266,7 +259,7 @@ const Sidebar = () => {
 							<LogoutOutlinedIcon />
 						</IconButton>
 					</Box>
-					<Box sx={{ mt: 5, color: "#2F2467", fontSize: "12px" }}>
+					<Box sx={{ color: "#2F2467", fontSize: "12px" }}>
 						© {new Date().getFullYear()} ProManage.
 					</Box>
 				</Box>
