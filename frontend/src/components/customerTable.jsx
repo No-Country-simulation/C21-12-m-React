@@ -18,33 +18,34 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
+import { getAllClients } from "../api/route";
 
-function createData(id, name, estado, prioridad, encargado, opciones) {
-	return {
-		id,
-		name,
-		estado,
-		prioridad,
-		encargado,
-		opciones,
-	};
-}
+// function createData(id, name, estado, prioridad, encargado, opciones) {
+// 	return {
+// 		id,
+// 		name,
+// 		estado,
+// 		prioridad,
+// 		encargado,
+// 		opciones,
+// 	};
+// }
 
-const rows = [
-	createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-	createData(2, "Donut", 452, 25.0, 51, 4.9),
-	createData(3, "Eclair", 262, 16.0, 24, 6.0),
-	createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-	createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-	createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-	createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-	createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-	createData(9, "KitKat", 518, 26.0, 65, 7.0),
-	createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-	createData(11, "Marshmallow", 318, 0, 81, 2.0),
-	createData(12, "Nougat", 360, 19.0, 9, 37.0),
-	createData(13, "Oreo", 437, 18.0, 63, 4.0),
-];
+// const rows = [
+// 	createData(1, "Cupcake", 305, 3.7, 67, 4.3),
+// 	createData(2, "Donut", 452, 25.0, 51, 4.9),
+// 	createData(3, "Eclair", 262, 16.0, 24, 6.0),
+// 	createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
+// 	createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
+// 	createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
+// 	createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
+// 	createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
+// 	createData(9, "KitKat", 518, 26.0, 65, 7.0),
+// 	createData(10, "Lollipop", 392, 0.2, 98, 0.0),
+// 	createData(11, "Marshmallow", 318, 0, 81, 2.0),
+// 	createData(12, "Nougat", 360, 19.0, 9, 37.0),
+// 	createData(13, "Oreo", 437, 18.0, 63, 4.0),
+// ];
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -210,12 +211,33 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export function CustomerTable() {
+
+	const [rows, setRows] = React.useState([]);
+	const [loadedData, setLoadedData] = React.useState(false);
+
 	const [order, setOrder] = React.useState("asc");
 	const [orderBy, setOrderBy] = React.useState("estado");
 	const [selected, setSelected] = React.useState([]);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	
+
+	React.useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const result = await getAllClients();
+				if (!result) {
+					throw new Error("Error fetching data");
+				}
+				setRows(result); // Guardar los datos en el estado
+				setLoadedData(true); // Indicar que los datos han sido cargados
+			} catch (error) {
+				console.log("Error:", error);
+			}
+		};
+
+		fetchData();
+	}, []);
+
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
 		setOrder(isAsc ? "desc" : "asc");
@@ -261,106 +283,109 @@ export function CustomerTable() {
 	};
 
 	// Evite un salto de diseño al llegar a la última página con filas vacías.
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	const visibleRows = React.useMemo(
 		() =>
 			[...rows]
 				.sort(getComparator(order, orderBy))
 				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[order, orderBy, page, rowsPerPage]
+		[order, orderBy, page, rowsPerPage, rows]
 	);
+
 
 	return (
 		<Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
 			<EnhancedTableToolbar selected={selected} />
+			{loadedData && (
+				<TableContainer sx={{ maxHeight: 440 }}>
+					<Table
+						stickyHeader
+						aria-label="sticky table"
+						sx={{ minWidth: 750 }}
+						aria-labelledby="tableTitle"
+						size="medium"
+					>
+						<EnhancedTableHead
+							numSelected={selected.length}
+							order={order}
+							orderBy={orderBy}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={rows.length}
+						/>
 
-			<TableContainer sx={{ maxHeight: 440 }}>
-				<Table
-					stickyHeader
-					aria-label="sticky table"
-					sx={{ minWidth: 750 }}
-					aria-labelledby="tableTitle"
-					size="medium"
-				>
-					<EnhancedTableHead
-						numSelected={selected.length}
-						order={order}
-						orderBy={orderBy}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={rows.length}
-					/>
+						<TableBody>
+							{visibleRows.map((row, index) => {
+								const isItemSelected = selected.includes(
+									row.id
+								);
+								const labelId = `enhanced-table-checkbox-${index}`;
 
-					<TableBody>
-						{visibleRows.map((row, index) => {
-							const isItemSelected = selected.includes(row.id);
-							const labelId = `enhanced-table-checkbox-${index}`;
-
-							return (
-								<TableRow
-									hover
-									onClick={(event) =>
-										handleClick(event, row.id)
-									}
-									role="checkbox"
-									aria-checked={isItemSelected}
-									tabIndex={-1}
-									key={row.id}
-									selected={isItemSelected}
-									sx={{ cursor: "pointer" }}
-								>
-									<TableCell padding="checkbox">
-										<Checkbox
-											color="primary"
-											checked={isItemSelected}
-											inputProps={{
-												"aria-labelledby": labelId,
-											}}
-										/>
-									</TableCell>
-
-									<TableCell
-										component="th"
-										id={labelId}
-										scope="row"
-										padding="none"
+								return (
+									<TableRow
+										hover
+										onClick={(event) =>
+											handleClick(event, row.id)
+										}
+										role="checkbox"
+										aria-checked={isItemSelected}
+										tabIndex={-1}
+										key={row.id}
+										selected={isItemSelected}
+										sx={{ cursor: "pointer" }}
 									>
-										{row.name}
-									</TableCell>
+										<TableCell padding="checkbox">
+											<Checkbox
+												color="primary"
+												checked={isItemSelected}
+												inputProps={{
+													"aria-labelledby": labelId,
+												}}
+											/>
+										</TableCell>
 
-									<TableCell align="left">
-										{row.estado}
-									</TableCell>
+										<TableCell
+											component="th"
+											id={labelId}
+											scope="row"
+											padding="none"
+										>
+											{row.nombre}
+										</TableCell>
 
-									<TableCell align="left">
-										{row.prioridad}
-									</TableCell>
+										<TableCell align="left">
+											{row.estado}
+										</TableCell>
 
-									<TableCell align="left">
-										{row.encargado}
-									</TableCell>
+										<TableCell align="left">
+											{row.prioridad}
+										</TableCell>
 
-									<TableCell align="center">
-										{row.opciones}
-									</TableCell>
+										<TableCell align="left">
+											{row.managerId}
+										</TableCell>
+
+										<TableCell align="center">
+											{row.opciones}
+										</TableCell>
+									</TableRow>
+								);
+							})}
+
+							{emptyRows > 0 && (
+								<TableRow
+									style={{
+										height: 53 * emptyRows,
+									}}
+								>
+									<TableCell colSpan={6} />
 								</TableRow>
-							);
-						})}
-
-						{emptyRows > 0 && (
-							<TableRow
-								style={{
-									height: 53 * emptyRows,
-								}}
-							>
-								<TableCell colSpan={6} />
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-			</TableContainer>
+							)}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			)}
 
 			<TablePagination
 				labelRowsPerPage="Rows:"
