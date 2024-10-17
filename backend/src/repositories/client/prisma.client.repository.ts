@@ -94,7 +94,9 @@ export class PrismaClientRepository implements ClientRepository {
       client.email,
       client.telefono,
       client.ultimoContacto,
-      client.fechaCierreEstimada
+      client.fechaCierreEstimada,
+      client.manager?.nombre, 
+      client.manager?.avatar
     );
   }
 
