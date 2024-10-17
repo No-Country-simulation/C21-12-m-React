@@ -4,15 +4,22 @@ import helmet from 'helmet';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import 'express-async-errors';
+import { createServer } from 'http';
+import { configureSocket } from './infrastructure/socket/socket';
 import clientRoutes from './interfaces/routes/client.routes';
 import managerRoutes from './interfaces/routes/manage.routes';
 import projectRoutes from './interfaces/routes/project.routes';
-import activitieRoutes from './interfaces/routes/activitie.routes'
+import activitieRoutes from './interfaces/routes/activitie.routes';
+import chatbotRoutes from './interfaces/routes/chatbot.routes';
+
 
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
 const PORT = process.env.PORT || 3000;
+
+configureSocket(server);
 
 // Middlewares
 app.use(helmet());
@@ -25,6 +32,7 @@ app.use('/api/v1', clientRoutes);
 app.use('/api/v1', managerRoutes);
 app.use('/api/v1', projectRoutes);
 app.use('/api/v1', activitieRoutes);
+app.use('/api/v1', chatbotRoutes);
 app.use('/api/v1/managers', managerRoutes);
 
 // Ruta principal
