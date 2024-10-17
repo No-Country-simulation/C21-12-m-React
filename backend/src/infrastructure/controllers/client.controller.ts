@@ -11,12 +11,19 @@ class ClientService {
   static async createClient(data: any): Promise<Client> {
     const { nombre, estado, prioridad, valor_estimado, managerId, origen, email, telefono, ultimo_contacto, expected_close } = data;
 
-    
+    const managerExists = await prisma.manager.findUnique({
+      where: { id: managerId },
+    });
+  
+    if (!managerExists) {
+      throw new Error('El ID del manager no es válido.');
+    }
+  
     const estadoFormatted = estado.toUpperCase().replace(' ', '_');
     const prioridadFormatted = prioridad.toUpperCase().replace(' ', '_');
 
     return new Client(
-      0, 
+      0,
       nombre,
       estadoFormatted,
       prioridadFormatted,
@@ -36,34 +43,40 @@ export const createClient = async (req: Request, res: Response) => {
     const { error } = validateClientData(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
+    
     const client = await ClientService.createClient(req.body);
+    
+    
     const createdClient = await clientRepository.create(client);
 
-  
+    
     const response = {
       ...createdClient,
-      estado: createdClient.estado.replace('_', ' ').toLowerCase(), 
+      estado: createdClient.estado.replace('_', ' ').toLowerCase(),
       prioridad: createdClient.prioridad.toLowerCase(),
     };
 
     res.status(201).json(response);
   } catch (error) {
+   
+    if (error.message === 'El ID del manager no es válido.') {
+      return res.status(400).json({ error: error.message });
+    }
+    
     console.error('Error creating client:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
 export const searchClients = async (req: Request, res: Response) => {
   try {
     const { nombre, estado, prioridad } = req.query;
 
     const filters: any = {};
-
-    // Solo agregar al filtro si el parámetro está presente
     if (nombre) filters.nombre = { contains: String(nombre), mode: 'insensitive' };
     if (estado) filters.estado = { equals: String(estado).toUpperCase().replace(' ', '_') };
     if (prioridad) filters.prioridad = { equals: String(prioridad).toUpperCase().replace(' ', '_') };
 
-    // Ejecutar la búsqueda con los filtros aplicados (si los hay)
     const clients = await prisma.cliente.findMany({
       where: filters
     });
