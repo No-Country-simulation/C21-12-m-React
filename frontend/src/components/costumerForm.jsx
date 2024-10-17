@@ -28,25 +28,19 @@ const CostumerForm = () => {
     setOpen(false);
   };
 
-  // Función que manejará el guardado del cliente
   const handleSave = (data) => {
-    console.log("Guardando nuevo cliente:", data); // Deberías ver los datos aquí
-    // Aquí puedes agregar la lógica para guardar el cliente en tu backend
+    console.log("Guardando nuevo cliente:", data); 
 
-    // Mostrar la alerta de éxito
     setAlertVisible(true);
 
-    // Cierra el modal después de guardar
     handleClose();
 
-    // Ocultar la alerta después de 3 segundos
     setTimeout(() => {
       setAlertVisible(false);
     }, 3000);
   };
   return (
     <Box sx={{ m: 2 }}>
-     
       <Box
         display="flex"
         justifyContent="space-between"
@@ -109,7 +103,6 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
-        </Box>
 
         <Button
           variant="contained"
@@ -131,6 +124,8 @@ const CostumerForm = () => {
           <AddIcon />
         </Button>
     
+   
+        </Box>
       </Box>
       {alertVisible && (
         <Alert severity="success" sx={{ mb: 2 }}>
