@@ -65,8 +65,8 @@ export class PrismaClientRepository implements ClientRepository {
       client.telefono,
       client.ultimoContacto,
       client.fechaCierreEstimada,
-      client.manager?.nombre, // Asegúrate de que `manager` esté definido y luego asigna su `nombre`
-      client.manager?.avatar  // Asegúrate de que `manager` esté definido y luego asigna su `avatar`
+      client.manager?.nombre, 
+      client.manager?.avatar
     ));
   }
   
