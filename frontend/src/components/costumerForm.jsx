@@ -1,7 +1,8 @@
-import { Box, Button, MenuItem, TextField } from "@mui/material";
+import { Alert, Box, Button, MenuItem, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import CustomerModal from "./customerModal";
+
 const CostumerForm = () => {
   const currencies = [
     { label: "Contacto", value: "contacto" },
@@ -9,12 +10,15 @@ const CostumerForm = () => {
     { label: "Propuesta", value: "propuesta" },
     { label: "Negociacion", value: "negociacion" },
   ];
+
   const currenciesStatus = [
     { label: "Alta", value: "alta" },
     { label: "Media", value: "media" },
     { label: "Baja", value: "baja" },
   ];
+
   const [open, setOpen] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false); // Estado para controlar la alerta
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,8 +27,26 @@ const CostumerForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // Función que manejará el guardado del cliente
+  const handleSave = (data) => {
+    console.log("Guardando nuevo cliente:", data); // Deberías ver los datos aquí
+    // Aquí puedes agregar la lógica para guardar el cliente en tu backend
+
+    // Mostrar la alerta de éxito
+    setAlertVisible(true);
+
+    // Cierra el modal después de guardar
+    handleClose();
+
+    // Ocultar la alerta después de 3 segundos
+    setTimeout(() => {
+      setAlertVisible(false);
+    }, 3000);
+  };
   return (
     <Box sx={{ m: 2 }}>
+     
       <Box
         display="flex"
         justifyContent="space-between"
@@ -106,10 +128,16 @@ const CostumerForm = () => {
           onClick={handleClickOpen}
         >
           Nuevo Cliente
-          <AddIcon></AddIcon>
+          <AddIcon />
         </Button>
+    
       </Box>
-      <CustomerModal open={open} handleClose={handleClose} />
+      {alertVisible && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          Cliente creado exitosamente.
+        </Alert>
+      )}
+      <CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
     </Box>
   );
 };
