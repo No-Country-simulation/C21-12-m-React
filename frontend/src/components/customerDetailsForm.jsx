@@ -37,24 +37,24 @@ const CustomerDetailsForm = ({ onSubmit }) => {
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={3}>
-                <Controller
-                  name="nombre"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "El nombre es requerido" }}
-                  render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      {...field}
-                      label="Nombre"
-                      error={!!error}
-                      helperText={
-                        error ? error.message : "Nombre del cliente o empresa"
-                      }
-                      required
-                      fullWidth
-                    />
-                  )}
-                />
+              <Controller
+  name="nombre"
+  control={control}
+  defaultValue=""
+  rules={{ required: "El nombre es requerido" }}
+  render={({ field, fieldState: { error } }) => (
+    <TextField
+      {...field}
+      label="Nombre"
+      error={!!error}
+      helperText={error ? error.message : "Nombre del cliente o empresa"}
+      required
+      fullWidth
+      InputLabelProps={{ shrink: true }}
+    />
+  )}
+/>
+
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
@@ -79,6 +79,8 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                       }
                       required
                       fullWidth
+                      InputLabelProps={{ shrink: true }} // Asegúrate de que esto esté aquí
+
                     />
                   )}
                 />
@@ -101,6 +103,8 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                       }
                       required
                       fullWidth
+                      InputLabelProps={{ shrink: true }} // Asegúrate de que esto esté aquí
+
                     />
                   )}
                 />
@@ -118,6 +122,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                       labelId="origen-label"
                       {...field}
                       label="Origen"
+
                     >
                       <MenuItem value="contacto_directo">Contacto directo</MenuItem>
                       <MenuItem value="campana_marketing">Campaña de marketing</MenuItem>
