@@ -1,51 +1,31 @@
 import * as React from "react";
 import PropTypes from "prop-types";
+
 import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import {
+	Box,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TablePagination,
+	TableRow,
+	TableSortLabel,
+	Toolbar,
+	Typography,
+	Paper,
+	Checkbox,
+	IconButton,
+	Tooltip,
+	Avatar,
+	Chip,
+} from "@mui/material";
+
+import { EyeIcon, EditIcon, TrashIcon } from "../icon/custonIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import { getAllClients } from "../api/route";
-
-// function createData(id, name, estado, prioridad, encargado, opciones) {
-// 	return {
-// 		id,
-// 		name,
-// 		estado,
-// 		prioridad,
-// 		encargado,
-// 		opciones,
-// 	};
-// }
-
-// const rows = [
-// 	createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-// 	createData(2, "Donut", 452, 25.0, 51, 4.9),
-// 	createData(3, "Eclair", 262, 16.0, 24, 6.0),
-// 	createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-// 	createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-// 	createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-// 	createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-// 	createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-// 	createData(9, "KitKat", 518, 26.0, 65, 7.0),
-// 	createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-// 	createData(11, "Marshmallow", 318, 0, 81, 2.0),
-// 	createData(12, "Nougat", 360, 19.0, 9, 37.0),
-// 	createData(13, "Oreo", 437, 18.0, 63, 4.0),
-// ];
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -65,7 +45,7 @@ function getComparator(order, orderBy) {
 
 const headCells = [
 	{
-		id: "name",
+		id: "nombre",
 		label: "Nombre",
 	},
 	{
@@ -119,7 +99,7 @@ function EnhancedTableHead(props) {
 					<TableCell
 						key={headCell.id}
 						align={headCell.id === "opciones" ? "center" : "left"}
-						padding="normal"
+						sx={{ padding: "1rem" }}
 						sortDirection={orderBy === headCell.id ? order : false}
 					>
 						<TableSortLabel
@@ -154,7 +134,7 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
 	const { selected } = props;
-	const numSelected = selected.length
+	const numSelected = selected.length;
 	return (
 		<Toolbar
 			sx={[
@@ -195,7 +175,7 @@ function EnhancedTableToolbar(props) {
 				<Tooltip title="Delete">
 					<IconButton
 						onClick={() => {
-							console.log("Eliminar Clientes",selected);
+							console.log("Eliminar Clientes", selected);
 						}}
 					>
 						<DeleteIcon />
@@ -210,8 +190,56 @@ EnhancedTableToolbar.propTypes = {
 	selected: PropTypes.array.isRequired,
 };
 
-export function CustomerTable() {
+function PriorityChips(props) {
+	const { priority } = props;
 
+	const formattedLabel =
+		priority.charAt(0).toUpperCase() + priority.slice(1).toLowerCase();
+
+	const colorPalette = {ALTA:"error" , MEDIA:"warning" , BAJA:"info" }
+
+	return (
+		<Box>
+			<Chip
+				label={formattedLabel}
+				color={colorPalette[priority]}
+				variant="outlined"
+				size="small"
+			/>
+		</Box>
+	);
+}
+
+PriorityChips.propTypes = {
+	priority: PropTypes.string,
+};
+
+function StateChips(props) {
+	const { state } = props;
+
+	const formattedLabel =
+		state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
+
+	const colorPalette = { CONTACTO: 1, REUNION: 2, PROPUESTA: 3, NEGOCIACION: 4 };
+
+	return (
+		<Box>
+			<Chip
+				label={formattedLabel}
+				color="default"
+				size="small"
+				variant="filled"
+				avatar={<Avatar>{colorPalette[state]}</Avatar>}
+			/>
+		</Box>
+	);
+}
+
+StateChips.propTypes = {
+	state: PropTypes.string,
+};
+
+export function CustomerTable() {
 	const [rows, setRows] = React.useState([]);
 	const [loadedData, setLoadedData] = React.useState(false);
 
@@ -246,7 +274,6 @@ export function CustomerTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			
 			const newSelected = rows.map((n) => n.id);
 			setSelected(newSelected);
 			return;
@@ -283,7 +310,8 @@ export function CustomerTable() {
 	};
 
 	// Evite un salto de diseño al llegar a la última página con filas vacías.
-	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	const emptyRows =
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	const visibleRows = React.useMemo(
 		() =>
@@ -292,7 +320,6 @@ export function CustomerTable() {
 				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[order, orderBy, page, rowsPerPage, rows]
 	);
-
 
 	return (
 		<Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
@@ -304,7 +331,7 @@ export function CustomerTable() {
 						aria-label="sticky table"
 						sx={{ minWidth: 750 }}
 						aria-labelledby="tableTitle"
-						size="medium"
+						size="small"
 					>
 						<EnhancedTableHead
 							numSelected={selected.length}
@@ -333,7 +360,9 @@ export function CustomerTable() {
 										tabIndex={-1}
 										key={row.id}
 										selected={isItemSelected}
-										sx={{ cursor: "pointer" }}
+										sx={{
+											cursor: "pointer",
+										}}
 									>
 										<TableCell padding="checkbox">
 											<Checkbox
@@ -355,19 +384,85 @@ export function CustomerTable() {
 										</TableCell>
 
 										<TableCell align="left">
-											{row.estado}
+											<StateChips state={row.estado} />
 										</TableCell>
 
 										<TableCell align="left">
-											{row.prioridad}
+											<PriorityChips
+												priority={row.prioridad}
+											/>
 										</TableCell>
 
 										<TableCell align="left">
-											{row.managerId}
+											<Box
+												sx={{
+													display: "flex",
+													gap: "16px",
+													alignItems: "center",
+												}}
+											>
+												<Avatar
+													sx={{
+														width: "24px",
+														height: "24px",
+														borderRadius: "50%",
+													}}
+													alt="Remy Sharp"
+													src={row.managerAvatar}
+												/>
+												<Typography
+													variant="body2"
+													gutterBottom
+													sx={{
+														marginBottom: 0,
+														lineHeight: "24px",
+													}}
+												>
+													{row.managerNombre}
+												</Typography>
+											</Box>
 										</TableCell>
 
 										<TableCell align="center">
-											{row.opciones}
+											{/* Trabajo */}
+											<Tooltip title="Ver" arrow>
+												<IconButton
+													onClick={() => {
+														console.log(
+															"Ver Cliente",
+															row.id
+														);
+													}}
+												>
+													<EyeIcon />
+												</IconButton>
+											</Tooltip>
+
+											<Tooltip title="Editar" arrow>
+												<IconButton
+													onClick={() => {
+														console.log(
+															"Editar Cliente",
+															row.id
+														);
+													}}
+												>
+													<EditIcon />
+												</IconButton>
+											</Tooltip>
+
+											<Tooltip title="Eliminar" arrow>
+												<IconButton
+													onClick={() => {
+														console.log(
+															"Eliminar Cliente",
+															row.id
+														);
+													}}
+												>
+													<TrashIcon />
+												</IconButton>
+											</Tooltip>
 										</TableCell>
 									</TableRow>
 								);
