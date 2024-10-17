@@ -48,11 +48,11 @@ export class PrismaClientRepository implements ClientRepository {
   async findAll(): Promise<Client[]> {
     const clients = await prisma.cliente.findMany({
       include: {
-        manager: true, 
+        manager: true, // Incluir la relación con el manager
       },
     });
-
-    // Mapear todos los clientes obtenidos a Client entity
+  
+    // Mapear todos los clientes obtenidos a Client entity e incluir los datos del manager
     return clients.map(client => new Client(
       client.id,
       client.nombre,
@@ -64,9 +64,12 @@ export class PrismaClientRepository implements ClientRepository {
       client.email,
       client.telefono,
       client.ultimoContacto,
-      client.fechaCierreEstimada
+      client.fechaCierreEstimada,
+      client.manager?.nombre, // Asegúrate de que `manager` esté definido y luego asigna su `nombre`
+      client.manager?.avatar  // Asegúrate de que `manager` esté definido y luego asigna su `avatar`
     ));
   }
+  
 
   // Método para obtener un cliente por su ID
   async findById(id: number): Promise<Client | null> {
