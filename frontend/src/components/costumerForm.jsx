@@ -1,7 +1,8 @@
-import { Alert, Box, Button, MenuItem, TextField } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, MenuItem, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import CustomerModal from "./customerModal";
+import { createClient } from "../api/route";
 
 const CostumerForm = () => {
   const currencies = [
@@ -18,7 +19,8 @@ const CostumerForm = () => {
   ];
 
   const [open, setOpen] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false); // Estado para controlar la alerta
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,17 +29,25 @@ const CostumerForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSave = async (data) => {
+    try {
+      console.log("Guardando nuevo cliente:", data);
+      await createClient(data);
+      setAlertVisible(true);
+      handleClose();
 
-  const handleSave = (data) => {
-    console.log("Guardando nuevo cliente:", data); 
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Error al crear cliente:", error);
+      setErrorAlert(true);
+      handleClose();
 
-    setAlertVisible(true);
-
-    handleClose();
-
-    setTimeout(() => {
-      setAlertVisible(false);
-    }, 3000);
+      setTimeout(() => {
+        setErrorAlert(false);
+      }, 3000);
+    }
   };
   return (
     <Box sx={{ m: 2 }}>
@@ -104,35 +114,45 @@ const CostumerForm = () => {
             ))}
           </TextField>
 
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#6f52ed",
-            borderRadius: "8px",
-            fontSize: "14px",
-            ml: "auto",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            "&:hover": {
-              backgroundColor: "#5a3fd1",
-            },
-          }}
-          onClick={handleClickOpen}
-        >
-          Nuevo Cliente
-          <AddIcon />
-        </Button>
-    
-   
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#6f52ed",
+              borderRadius: "8px",
+              fontSize: "14px",
+              ml: "auto",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              "&:hover": {
+                backgroundColor: "#5a3fd1",
+              },
+            }}
+            onClick={handleClickOpen}
+          >
+            Nuevo Cliente
+            <AddIcon />
+          </Button>
         </Box>
       </Box>
       {alertVisible && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          Cliente creado exitosamente.
+        <Alert severity="success">
+        <AlertTitle sx={{fontWeight:'600'}}>Cliente guardado exitosamente.</AlertTitle>          
+        El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
         </Alert>
       )}
-      <CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
+      {errorAlert && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <AlertTitle sx={{fontWeight:'600'}}>          Error al guardar cliente.
+          </AlertTitle>          
+          Hubo un problema al guardar el nuevo cliente. Por favor, revisa los datos ingresados y vuelve a intentarlo. Si el problema persiste, contacta al soporte técnico.
+        </Alert>
+      )}
+      <CustomerModal
+        open={open}
+        handleClose={handleClose}
+        onSave={handleSave}
+      />
     </Box>
   );
 };
