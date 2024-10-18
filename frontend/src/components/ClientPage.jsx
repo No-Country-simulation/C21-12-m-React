@@ -4,14 +4,14 @@ import CustomerForm from "../components/costumerForm";
 import { CustomerTable } from "./customerTable";
 import { useState } from "react";
 const ClientPage = () => {
-  const [alertVisible, setAlertVisible] = useState(false); // Estado para manejar la visibilidad del Alert
+  const [alertVisible, setAlertVisible] = useState(false); 
 
   const handleSave = () => {
-    setAlertVisible(true); // Muestra el Alert cuando se guarda el cliente
+    setAlertVisible(true); 
   };
 
   const handleCloseAlert = () => {
-    setAlertVisible(false); // Cierra el Alert
+    setAlertVisible(false);
   };
  return(
    <Box sx={{ m: 2 }}>
@@ -22,13 +22,11 @@ const ClientPage = () => {
         </Typography>
       </Box>
       <CustomerForm onSave={handleSave} />
-      
-      {/* Mostrar el Alert justo después del formulario */}
-      {alertVisible && (
+            {alertVisible && (
         <Alert 
           severity="success" 
           onClose={handleCloseAlert} 
-          sx={{ mb: 2 }} // Margen en la parte inferior
+          sx={{ mb: 2 }}
         >
           ¡Cliente creado con éxito!
           <br />
