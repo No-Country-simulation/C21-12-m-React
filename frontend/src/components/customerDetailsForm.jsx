@@ -9,13 +9,19 @@ import {
   Typography,
   MenuItem,
   InputLabel,
-  Select
+  Select,
+  InputAdornment
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useForm, Controller } from "react-hook-form";
+import { DatePicker } from '@mui/x-date-pickers';
+import { useState } from "react";
 
 const CustomerDetailsForm = ({ onSubmit }) => {
+const [lastContact, setLastContact]= useState();
+const [expectedClose, setExpectedClose]= useState();
+
   const { control, handleSubmit } = useForm();
 
   return (
@@ -138,7 +144,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
             </Grid>
           </Box>
 
-         {/*  <Box
+           <Box
             sx={{
               border: "1px solid #E0E0E0",
               p: 2,
@@ -258,7 +264,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                 }}
               />
             </Grid>
-          </Box> */}
+          </Box> 
         </Box>
       </form>
     </LocalizationProvider>
