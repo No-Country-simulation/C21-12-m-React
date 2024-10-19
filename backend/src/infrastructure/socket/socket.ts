@@ -1,10 +1,15 @@
 import { Server } from 'socket.io';
 import { Server as HttpServer } from 'http';
+import { ChatbotService } from '../../application/chatbot.service';  // Asegúrate de importar tu servicio
+import { AIService } from '../../application/ai.service';
+
+const aiService = new AIService();
+const chatbotService = new ChatbotService(aiService);
 
 export const configureSocket = (server: HttpServer) => {
   const io = new Server(server, {
     cors: {
-      origin: process.env.FRONTEND_URL,
+      origin: '*',  // Asegúrate de configurar correctamente tu CORS
       methods: ['GET', 'POST'],
     },
   });
@@ -12,11 +17,24 @@ export const configureSocket = (server: HttpServer) => {
   io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado', socket.id);
 
-    socket.emit('welcome', '¡Bienvenido al servidor Socket.IO!');
-    
-    socket.on('message', (msg) => {
-      console.log('Mensaje recibido: ', msg);
-      socket.emit('response', 'Mensaje recibido en el servidor');
+    // Emitir mensaje de bienvenida cuando el cliente se conecta
+    socket.emit('welcome', '¡Bienvenido a Pro Manage!');
+
+    // Manejar mensajes entrantes del cliente
+    socket.on('message', async (msg) => {
+      console.log('Mensaje recibido del cliente:', msg);
+
+      // Llamar a tu servicio de chatbot con Cohere
+      try {
+        const aiResponse = await chatbotService.handleMessage(msg);  // Aquí llamas a tu bot con Cohere
+        console.log('Respuesta del bot:', aiResponse);
+
+        // Enviar la respuesta del chatbot al cliente
+        socket.emit('response', aiResponse);
+      } catch (error) {
+        console.error('Error generando la respuesta del bot:', error);
+        socket.emit('response', 'Lo siento, ha ocurrido un error procesando tu mensaje.');
+      }
     });
 
     socket.on('disconnect', () => {

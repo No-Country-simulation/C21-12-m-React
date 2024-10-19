@@ -12,13 +12,13 @@ import projectRoutes from './interfaces/routes/project.routes';
 import activitieRoutes from './interfaces/routes/activitie.routes';
 import chatbotRoutes from './interfaces/routes/chatbot.routes';
 
-
 dotenv.config();
 
 const app = express();
 const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
+// Configurar Socket.IO en el servidor HTTP
 configureSocket(server);
 
 // Middlewares
@@ -55,7 +55,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
