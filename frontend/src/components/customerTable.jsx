@@ -196,7 +196,7 @@ function PriorityChips(props) {
 	const formattedLabel =
 		priority.charAt(0).toUpperCase() + priority.slice(1).toLowerCase();
 
-	const colorPalette = {ALTA:"error" , MEDIA:"warning" , BAJA:"info" }
+	const colorPalette = { ALTA: "error", MEDIA: "warning", BAJA: "info" };
 
 	return (
 		<Box>
@@ -220,7 +220,12 @@ function StateChips(props) {
 	const formattedLabel =
 		state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
 
-	const colorPalette = { CONTACTO: 1, REUNION: 2, PROPUESTA: 3, NEGOCIACION: 4 };
+	const colorPalette = {
+		CONTACTO: 1,
+		REUNION: 2,
+		PROPUESTA: 3,
+		NEGOCIACION: 4,
+	};
 
 	return (
 		<Box>
@@ -352,17 +357,11 @@ export function CustomerTable() {
 								return (
 									<TableRow
 										hover
-										onClick={(event) =>
-											handleClick(event, row.id)
-										}
 										role="checkbox"
 										aria-checked={isItemSelected}
 										tabIndex={-1}
 										key={row.id}
 										selected={isItemSelected}
-										sx={{
-											cursor: "pointer",
-										}}
 									>
 										<TableCell padding="checkbox">
 											<Checkbox
@@ -370,6 +369,12 @@ export function CustomerTable() {
 												checked={isItemSelected}
 												inputProps={{
 													"aria-labelledby": labelId,
+												}}
+												onClick={(event) =>
+													handleClick(event, row.id)
+												}
+												sx={{
+													cursor: "pointer",
 												}}
 											/>
 										</TableCell>
