@@ -64,6 +64,7 @@ const Sidebar = () => {
 		{
 			text: "Dashboard",
 			icon: <DashboardOutlinedIcon sx={{ color: "#664ddf" }} />,
+			link: "/",
 		},
 		{
 			text: "Tareas",
