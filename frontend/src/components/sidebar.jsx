@@ -33,15 +33,33 @@ import {
 import logo from "../assets/logo.png";
 import avatarSideBar from "../assets/AvatarSidebar.png";
 
+const listStyles = {
+	justifyContent: "flex-start",
+	backgroundColor: "transparent",
+	color: "#664ddf",
+	"&:hover": {
+		backgroundColor: "#e8eaf6",
+		transform: "scale(1.02)",
+	},
+	borderRadius: 2,
+	padding: 1,
+};
+
 const Sidebar = () => {
 	const drawerWidth = 290;
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const [open, setOpen] = useState(false);
+	const [selectedItem, setSelectedItem] = useState(null); // Initialize as null or -1
 
 	const handleDrawerToggle = () => {
 		setOpen(!open);
 	};
+
+	const handleItemClick = (indexItem) => {
+		setSelectedItem(indexItem);
+	};
+
 	const menuItems = [
 		{
 			text: "Dashboard",
@@ -69,6 +87,7 @@ const Sidebar = () => {
 			icon: <SavingsOutlinedIcon sx={{ color: "#664ddf" }} />,
 		},
 	];
+
 	const optionsItems = [
 		{
 			text: "Soporte",
@@ -79,6 +98,7 @@ const Sidebar = () => {
 			icon: <SettingsOutlinedIcon sx={{ color: "#664ddf" }} />,
 		},
 	];
+
 	return (
 		<>
 			{isMobile && (
@@ -99,7 +119,7 @@ const Sidebar = () => {
 						width: drawerWidth,
 						boxSizing: "border-box",
 						backgroundColor: "#f1eefe",
-						border: 0
+						border: 0,
 					},
 				}}
 				variant={isMobile ? "temporary" : "permanent"}
@@ -162,65 +182,83 @@ const Sidebar = () => {
 							}}
 						/>
 					</Box>
+
 					<List>
-						{menuItems.map((item, index) => (
-							<ListItem key={index} disablePadding>
-								<ListItemButton
-									component={Link}
-									to={item.link}
-									sx={{
-										justifyContent: "flex-start",
-										backgroundColor: "transparent",
-										color: "#664ddf",
-										"&:hover": {
-											backgroundColor: "#e8eaf6",
-											transform: "scale(1.02)",
-										},
-										borderRadius: 2,
-										padding: 1,
-									}}
-								>
-									<ListItemIcon>{item.icon} </ListItemIcon>
-									<ListItemText
-										primary={
-											<Typography variant="subtitle2">
-												{item.text}
-											</Typography>
-										}
-									/>
-								</ListItemButton>
-							</ListItem>
-						))}
+						{menuItems.map((item, index) => {
+							// Aplicar diferentes estilos si el artículo está seleccionado.
+							const isSelected = selectedItem === index;
+							const itemStyles = {
+								...listStyles,
+								backgroundColor: isSelected
+									? "#d3cafc"
+									: "transparent",
+								"&:hover": {
+									backgroundColor: "#d3cafc",
+									transform: "scale(1.02)",
+								},
+							};
+
+							return (
+								<ListItem key={index} disablePadding>
+									<ListItemButton
+										component={Link}
+										to={item.link}
+										sx={itemStyles}
+										onClick={() => handleItemClick(index)}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText
+											primary={
+												<Typography variant="subtitle2">
+													{item.text}
+												</Typography>
+											}
+										/>
+									</ListItemButton>
+								</ListItem>
+							);
+						})}
 					</List>
+
 					<Divider />
 					<List>
-						{optionsItems.map((item, index) => (
-							<ListItem key={index} disablePadding>
-								<ListItemButton
-									sx={{
-										justifyContent: "flex-start",
-										backgroundColor: "transparent",
-										color: "#664ddf",
-										"&:hover": {
-											backgroundColor: "#e8eaf6",
-											transform: "scale(1.02)",
-										},
-										borderRadius: 2,
-										padding: 1,
-									}}
-								>
-									<ListItemIcon>{item.icon} </ListItemIcon>
-									<ListItemText
-										primary={
-											<Typography variant="subtitle2">
-												{item.text}
-											</Typography>
+						{optionsItems.map((item, index) => {
+							// Ajuste el desplazamiento del índice para los elementos de opciones para evitar conflictos con los elementos del menú
+							const adjustedIndex = menuItems.length + index;
+							const isSelected = selectedItem === adjustedIndex;
+							const itemStyles = {
+								...listStyles,
+								backgroundColor: isSelected
+									? "#d3cafc"
+									: "transparent",
+								"&:hover": {
+									backgroundColor: "#d3cafc",
+									transform: "scale(1.02)",
+								},
+							};
+
+							return (
+								<ListItem key={index} disablePadding>
+									<ListItemButton
+										sx={itemStyles}
+										onClick={() =>
+											handleItemClick(adjustedIndex)
 										}
-									/>
-								</ListItemButton>
-							</ListItem>
-						))}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText
+											primary={
+												<Typography variant="subtitle2">
+													{item.text}
+												</Typography>
+											}
+										/>
+									</ListItemButton>
+								</ListItem>
+							);
+						})}
 					</List>
+
 					<Divider />
 					<Box
 						sx={{

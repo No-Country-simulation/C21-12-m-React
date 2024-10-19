@@ -57,7 +57,7 @@ const headCells = [
 		label: "Prioridad",
 	},
 	{
-		id: "encargado",
+		id: "managerNombre",
 		label: "Encargado",
 	},
 	{
@@ -429,7 +429,6 @@ export function CustomerTable() {
 										</TableCell>
 
 										<TableCell align="center">
-											{/* Trabajo */}
 											<Tooltip title="Ver" arrow>
 												<IconButton
 													onClick={() => {
