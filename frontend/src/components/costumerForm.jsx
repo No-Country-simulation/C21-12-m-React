@@ -29,26 +29,41 @@ const CostumerForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleSave = async (data) => {
     try {
       console.log("Guardando nuevo cliente:", data);
+
+      // Validation (if necessary)
+      if (!data.nombre || !data.email) {
+        console.error("Missing required fields: name or email.");
+        setErrorAlert(true);
+        return;
+      }
+
       await createClient(data);
+
       setAlertVisible(true);
       handleClose();
 
+      // Hide success alert after 3 seconds
       setTimeout(() => {
         setAlertVisible(false);
       }, 3000);
     } catch (error) {
-      console.error("Error al crear cliente:", error);
+      console.error("Error al crear cliente:", error.response ? error.response.data : error.message);
+
+      // Display error alert
       setErrorAlert(true);
       handleClose();
 
+      // Hide error alert after 3 seconds
       setTimeout(() => {
         setErrorAlert(false);
       }, 3000);
     }
   };
+
   return (
     <Box sx={{ m: 2 }}>
       <Box
@@ -135,24 +150,24 @@ const CostumerForm = () => {
           </Button>
         </Box>
       </Box>
+      
       {alertVisible && (
         <Alert severity="success">
-        <AlertTitle sx={{fontWeight:'600'}}>Cliente guardado exitosamente.</AlertTitle>          
-        El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
+          <AlertTitle sx={{ fontWeight: "600" }}>
+            Cliente guardado exitosamente.
+          </AlertTitle>
+          El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
         </Alert>
       )}
+
       {errorAlert && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          <AlertTitle sx={{fontWeight:'600'}}>          Error al guardar cliente.
-          </AlertTitle>          
+          <AlertTitle sx={{ fontWeight: "600" }}>Error al guardar cliente.</AlertTitle>
           Hubo un problema al guardar el nuevo cliente. Por favor, revisa los datos ingresados y vuelve a intentarlo. Si el problema persiste, contacta al soporte técnico.
         </Alert>
       )}
-      <CustomerModal
-        open={open}
-        handleClose={handleClose}
-        onSave={handleSave}
-      />
+
+      <CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
     </Box>
   );
 };

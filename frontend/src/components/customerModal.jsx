@@ -16,8 +16,12 @@ import CustomerDetailsForm from "./customerDetailsForm";
 const CustomerModal = ({ open, handleClose,onSave  }) => {
 
   const handleSubmitForm = (data) => {
-    console.log("Formulario enviado", data); // Aquí deberías ver los datos
-    onSave(data); // Esto debe pasar correctamente los datos al componente padre
+    // Convertir las fechas a formato ISO o dejarlas como null si no están definidas
+    data.ultimo_contacto = data.ultimo_contacto ? data.ultimo_contacto.toISOString() : null;
+    data.expected_close = data.expected_close ? data.expected_close.toISOString() : null;
+  
+    console.log("Formulario enviado", data); // Verifica los datos en la consola
+    onSave(data); // Pasa los datos transformados al componente padre
     handleClose(); // Cierra el modal después de guardar
   };
   
