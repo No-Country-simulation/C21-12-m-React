@@ -1,4 +1,4 @@
-export class Manager {
+export class Encargado {
     constructor(
       private _id: string,
       private _name: string,

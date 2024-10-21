@@ -9,14 +9,14 @@ const prisma = new PrismaClient();
 
 class ClientService {
   static async createClient(data: any): Promise<Client> {
-    const { nombre, estado, prioridad, valor_estimado, managerId, origen, email, telefono, ultimo_contacto, expected_close } = data;
+    const { nombre, estado, prioridad, valor_estimado, encargadoId, origen, email, telefono, ultimo_contacto, expected_close } = data;
 
-    const managerExists = await prisma.manager.findUnique({
-      where: { id: managerId },
+    const encargadoExists = await prisma.encargado.findUnique({
+      where: { id: encargadoId },
     });
   
-    if (!managerExists) {
-      throw new Error('El ID del manager no es válido.');
+    if (!encargadoExists) {
+      throw new Error('El ID del encargado no es válido.');
     }
   
     const estadoFormatted = estado.toUpperCase().replace(' ', '_');
@@ -28,7 +28,7 @@ class ClientService {
       estadoFormatted,
       prioridadFormatted,
       valor_estimado,
-      managerId,
+      encargadoId,
       origen,
       email,
       telefono,
@@ -59,7 +59,7 @@ export const createClient = async (req: Request, res: Response) => {
     res.status(201).json(response);
   } catch (error) {
    
-    if (error.message === 'El ID del manager no es válido.') {
+    if (error.message === 'El ID del encargado no es válido.') {
       return res.status(400).json({ error: error.message });
     }
     

@@ -16,15 +16,11 @@ export const validateClientData = (data: any) => {
       'any.only': 'La prioridad debe ser Alta, Media o Baja.',
       'any.required': 'La prioridad es obligatoria.'
     }),
-    valor_estimado: Joi.number().positive().required().messages({
-      'number.base': 'El valor estimado debe ser un número.',
-      'number.positive': 'El valor estimado debe ser un número positivo.',
-      'any.required': 'El valor estimado es obligatorio.'
-    }),
-    managerId: Joi.string().min(3).max(100).allow(null).messages({
-      'string.base': 'El ID del manager debe ser un texto.',
-      'string.min': 'El ID del manager debe tener al menos 3 caracteres.',
-      'string.max': 'El ID del manager no puede tener más de 100 caracteres.'
+    valor_estimado: Joi.number().allow(null), 
+    encargadoId: Joi.string().min(3).max(100).allow(null).messages({
+      'string.base': 'El ID del encargado debe ser un texto.',
+      'string.min': 'El ID del encargado debe tener al menos 3 caracteres.',
+      'string.max': 'El ID del encargado no puede tener más de 100 caracteres.'
     }),
     origen: Joi.string().valid('contacto directo', 'referencia', 'campaña marketing', 'otro').required().messages({
       'any.only': 'El origen debe ser uno de los siguientes: contacto directo, referencia, campaña marketing, otro.',

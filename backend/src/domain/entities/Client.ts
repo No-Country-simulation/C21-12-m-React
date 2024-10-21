@@ -9,7 +9,7 @@ export class Client {
     public estado: 'CONTACTO' | 'REUNION' | 'PROPUESTA' |'NEGOCIACION',
     public prioridad: Prioridad,
     public valor_estimado: number | null,
-    public managerId: string | null, 
+    public encargadoId: string | null, 
     public origen: string,
     public email: string,
     public telefono: string,

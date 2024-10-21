@@ -14,7 +14,7 @@ export class PrismaClientRepository implements ClientRepository {
         estado: client.estado,
         prioridad: client.prioridad,
         valorEstimado: client.valor_estimado, 
-        managerId: client.managerId,
+        encargadoId: client.encargadoId,
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
@@ -22,7 +22,7 @@ export class PrismaClientRepository implements ClientRepository {
         fechaCierreEstimada: client.expected_close, 
       },
       include: {
-        manager: true, 
+        encargado: true, 
       },
     });
 
@@ -33,14 +33,14 @@ export class PrismaClientRepository implements ClientRepository {
       createdClient.estado,
       createdClient.prioridad,
       createdClient.valorEstimado,
-      createdClient.managerId,
+      createdClient.encargadoId,
       createdClient.origen,
       createdClient.email,
       createdClient.telefono,
       createdClient.ultimoContacto,
       createdClient.fechaCierreEstimada,
-      createdClient.manager?.nombre, 
-      createdClient.manager?.avatar
+      createdClient.encargado?.nombre, 
+      createdClient.encargado?.avatar
     );
   }
 
@@ -48,25 +48,25 @@ export class PrismaClientRepository implements ClientRepository {
   async findAll(): Promise<Client[]> {
     const clients = await prisma.cliente.findMany({
       include: {
-        manager: true, // Incluir la relación con el manager
+        encargado: true, 
       },
     });
   
-    // Mapear todos los clientes obtenidos a Client entity e incluir los datos del manager
+    // Mapear todos los clientes obtenidos a Client entity e incluir los datos del encargado
     return clients.map(client => new Client(
       client.id,
       client.nombre,
       client.estado,
       client.prioridad,
       client.valorEstimado,
-      client.managerId,
+      client.encargadoId,
       client.origen,
       client.email,
       client.telefono,
       client.ultimoContacto,
       client.fechaCierreEstimada,
-      client.manager?.nombre, 
-      client.manager?.avatar
+      client.encargado?.nombre, 
+      client.encargado?.avatar
     ));
   }
   
@@ -76,7 +76,7 @@ export class PrismaClientRepository implements ClientRepository {
     const client = await prisma.cliente.findUnique({
       where: { id },
       include: {
-        manager: true, 
+        encargado: true, 
       },
     });
 
@@ -89,7 +89,7 @@ export class PrismaClientRepository implements ClientRepository {
       client.estado,
       client.prioridad,
       client.valorEstimado,
-      client.managerId,
+      client.encargadoId,
       client.origen,
       client.email,
       client.telefono,
@@ -107,7 +107,7 @@ export class PrismaClientRepository implements ClientRepository {
         estado: client.estado,
         prioridad: client.prioridad,
         valorEstimado: client.valor_estimado, 
-        managerId: client.managerId, 
+        encargadoId: client.encargadoId, 
         origen: client.origen,
         email: client.email,
         telefono: client.telefono,
@@ -115,7 +115,7 @@ export class PrismaClientRepository implements ClientRepository {
         fechaCierreEstimada: client.expected_close,
       },
       include: {
-        manager: true, 
+        encargado: true, 
       },
     });
 
@@ -126,7 +126,7 @@ export class PrismaClientRepository implements ClientRepository {
       updatedClient.estado,
       updatedClient.prioridad,
       updatedClient.valorEstimado,
-      updatedClient.managerId,
+      updatedClient.encargadoId,
       updatedClient.origen,
       updatedClient.email,
       updatedClient.telefono,

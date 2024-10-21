@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://c21-12-m-react.onrender.com/api";
+const API_BASE_URL = "http://localhost:3000/api";
 const withCredentialsConfig = { withCredentials: false };
 
 //* Función para manejar errores uniformemente
@@ -73,4 +73,4 @@ export async function getListOfManagers() {
     } catch (error) {
         handleApiError(error);
     }
-}
+} 

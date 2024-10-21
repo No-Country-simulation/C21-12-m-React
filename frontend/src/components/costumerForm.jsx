@@ -6,18 +6,21 @@ import { createClient } from "../api/route";
 
 const CostumerForm = () => {
   const currencies = [
-    { label: "Contacto", value: "contacto" },
-    { label: "Reunion", value: "reunion" },
-    { label: "Propuesta", value: "propuesta" },
-    { label: "Negociacion", value: "negociacion" },
+    { label: "Contacto", value: "Contacto" },
+    { label: "Reunion", value: "Reunion" },
+    { label: "Propuesta", value: "Propuesta" },
+    { label: "Negociacion", value: "Negociacion" },
   ];
 
   const currenciesStatus = [
-    { label: "Alta", value: "alta" },
-    { label: "Media", value: "media" },
-    { label: "Baja", value: "baja" },
+    { label: "Alta", value: "Alta" },
+    { label: "Media", value: "Media" },
+    { label: "Baja", value: "Baja" },
   ];
 
+  // Estado para almacenar los valores del formulario
+  const [state, setState] = useState("Contacto");
+  const [priority, setPriority] = useState("Alta");
   const [open, setOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
@@ -29,13 +32,16 @@ const CostumerForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleSave = async (data) => {
     try {
-      console.log("Guardando nuevo cliente:", data);
-      await createClient(data);
+      // Cambiar 'state' por 'estado' y 'priority' por 'prioridad'
+      const clientData = { ...data, estado: state, prioridad: priority };
+      console.log("Guardando nuevo cliente:", clientData);
+      await createClient(clientData);
       setAlertVisible(true);
       handleClose();
-
+  
       setTimeout(() => {
         setAlertVisible(false);
       }, 3000);
@@ -43,12 +49,14 @@ const CostumerForm = () => {
       console.error("Error al crear cliente:", error);
       setErrorAlert(true);
       handleClose();
-
+  
       setTimeout(() => {
         setErrorAlert(false);
       }, 3000);
     }
   };
+  
+
   return (
     <Box sx={{ m: 2 }}>
       <Box
@@ -79,7 +87,8 @@ const CostumerForm = () => {
           <TextField
             label="Estado"
             id="outlined-size-small"
-            defaultValue="contacto"
+            value={state} // Usar el valor del estado local
+            onChange={(e) => setState(e.target.value)} // Actualizar el valor del estado
             size="small"
             select
             sx={{
@@ -98,7 +107,8 @@ const CostumerForm = () => {
           <TextField
             label="Prioridad"
             id="outlined-size-small"
-            defaultValue="alta"
+            value={priority} // Usar el valor del estado local
+            onChange={(e) => setPriority(e.target.value)} // Actualizar el valor de la prioridad
             size="small"
             select
             sx={{
@@ -137,22 +147,17 @@ const CostumerForm = () => {
       </Box>
       {alertVisible && (
         <Alert severity="success">
-        <AlertTitle sx={{fontWeight:'600'}}>Cliente guardado exitosamente.</AlertTitle>          
-        El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
+          <AlertTitle sx={{ fontWeight: "600" }}>Cliente guardado exitosamente.</AlertTitle>
+          El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
         </Alert>
       )}
       {errorAlert && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          <AlertTitle sx={{fontWeight:'600'}}>          Error al guardar cliente.
-          </AlertTitle>          
+          <AlertTitle sx={{ fontWeight: "600" }}>Error al guardar cliente.</AlertTitle>
           Hubo un problema al guardar el nuevo cliente. Por favor, revisa los datos ingresados y vuelve a intentarlo. Si el problema persiste, contacta al soporte técnico.
         </Alert>
       )}
-      <CustomerModal
-        open={open}
-        handleClose={handleClose}
-        onSave={handleSave}
-      />
+      <CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
     </Box>
   );
 };

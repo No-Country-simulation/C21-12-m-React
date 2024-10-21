@@ -16,19 +16,35 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useForm, Controller } from "react-hook-form";
 import { DatePicker } from '@mui/x-date-pickers';
-import { useState } from "react";
+import EncargadoSelect from "./ManagerSelect";
+import { getAllManagers } from '../api/manager.service' // Ajusta la ruta según sea necesario
+
+import { useState, useEffect } from "react";
 
 const CustomerDetailsForm = ({ onSubmit }) => {
-const [lastContact, setLastContact]= useState();
-const [expectedClose, setExpectedClose]= useState();
-
+  const [lastContact, setLastContact] = useState();
+  /* const [expectedClose, setExpectedClose]= useState(); */
+  const [encargados, setEncargados] = useState([]);
   const { control, handleSubmit } = useForm();
 
+  useEffect(() => {
+    const fetchEncargados = async () => {
+      try {
+        const response = await getAllManagers();
+        console.log('Encargados:', response.data); // Verifica que se está accediendo correctamente a los datos
+        setEncargados(response.data); // Asegúrate de acceder a response.data
+      } catch (error) {
+        console.error("Error al obtener los encargados:", error);
+      }
+    };
+  
+    fetchEncargados();
+  }, []);
   return (
 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <form id="customer-form" onSubmit={handleSubmit(onSubmit)}>
-    <Box>
+      <form id="customer-form" onSubmit={handleSubmit(onSubmit)}>
+        <Box>
           <Box
             sx={{
               border: "1px solid #E0E0E0",
@@ -43,23 +59,23 @@ const [expectedClose, setExpectedClose]= useState();
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={3}>
-              <Controller
-  name="nombre"
-  control={control}
-  defaultValue=""
-  rules={{ required: "El nombre es requerido" }}
-  render={({ field, fieldState: { error } }) => (
-    <TextField
-      {...field}
-      label="Nombre"
-      error={!!error}
-      helperText={error ? error.message : "Nombre del cliente o empresa"}
-      required
-      fullWidth
-      InputLabelProps={{ shrink: true }}
-    />
-  )}
-/>
+                <Controller
+                  name="nombre"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "El nombre es requerido" }}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      label="Nombre"
+                      error={!!error}
+                      helperText={error ? error.message : "Nombre del cliente o empresa"}
+                      required
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  )}
+                />
 
               </Grid>
 
@@ -116,35 +132,35 @@ const [expectedClose, setExpectedClose]= useState();
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-              <Controller
-                name="origen"
-                control={control}
-                defaultValue=""
-                rules={{ required: "El origen es requerido" }} // Agrega validación si es necesario
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth error={!!error}>
-                    <InputLabel id="origen-label">Origen</InputLabel>
-                    <Select
-                      labelId="origen-label"
-                      {...field}
-                      label="Origen"
+                <Controller
+                  name="origen" // Nombre del campo "origen"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "El origen es requerido" }} // Validación requerida
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth error={!!error}>
+                      <InputLabel id="origen-label">Origen</InputLabel>
+                      <Select
+                        labelId="origen-label"
+                        {...field}
+                        label="Origen"
+                      >
+                        <MenuItem value="contacto_directo">Contacto directo</MenuItem>
+                        <MenuItem value="campana_marketing">Campaña de marketing</MenuItem>
+                        <MenuItem value="recomendacion">Recomendación</MenuItem>
+                        <MenuItem value="redes_sociales">Redes sociales</MenuItem>
+                        <MenuItem value="otro">Otro</MenuItem>
+                      </Select>
+                      {error && <FormHelperText>{error.message}</FormHelperText>} {/* Muestra mensaje de error */}
+                    </FormControl>
+                  )}
+                />
+              </Grid>
 
-                    >
-                      <MenuItem value="contacto_directo">Contacto directo</MenuItem>
-                      <MenuItem value="campana_marketing">Campaña de marketing</MenuItem>
-                      <MenuItem value="recomendacion">Recomendación</MenuItem>
-                      <MenuItem value="redes_sociales">Redes sociales</MenuItem>
-                      <MenuItem value="otro">Otro</MenuItem>
-                    </Select>
-                    {error && <FormHelperText>{error.message}</FormHelperText>} {/* Mensaje de error */}
-                  </FormControl>
-                )}
-              />
-            </Grid>
             </Grid>
           </Box>
 
-           <Box
+          <Box
             sx={{
               border: "1px solid #E0E0E0",
               p: 2,
@@ -158,35 +174,66 @@ const [expectedClose, setExpectedClose]= useState();
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  label="Estado"
-                  InputLabelProps={{ shrink: true }}
-                  id="outlined-size-small"
-                  fullWidth
-                  helperText="Situacion actual del cliente"
-                  sx={{ mt: 2 }}
+                <Controller
+                  name="estado"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "El estado es obligatorio" }}  // Agrega la validación requerida
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      label="Estado"
+                      error={!!error}
+                      helperText={error ? error.message : "Situación actual del cliente"}
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      sx={{ mt: 2 }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={4}>
+                <Controller
+                  name="prioridad" // Asegúrate de usar este nombre de campo de forma consistente
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "La prioridad es obligatoria" }}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      label="Prioridad"
+                      error={!!error}
+                      helperText={error ? error.message : "Nivel de urgencia."}
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      sx={{ mt: 2 }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  label="Prioridad"
-                  InputLabelProps={{ shrink: true }}
-                  id="outlined-size-small"
-                  fullWidth
-                  helperText="Nivel de urgencia."
-                  sx={{ mt: 2 }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  label="Encargado"
-                  InputLabelProps={{ shrink: true }}
-                  id="outlined-size-small"
-                  fullWidth
-                  helperText="Persona responsable del cliente."
-                  sx={{ mt: 2 }}
-                />
-              </Grid>
+  <Controller
+    name="Encargado"
+    control={control}
+    defaultValue=""
+    rules={{ required: "El encargado es requerido" }}
+    render={({ field, fieldState: { error } }) => {
+       // Verifica si la lista de encargados está llegando correctamente
+      return (
+        <EncargadoSelect
+          value={field.value} // Valor actual del campo
+          onChange={field.onChange} // Función para actualizar el valor
+          encargados={encargados} // Lista de encargados
+          error={!!error} // Si hay un error
+          helperText={error ? error.message : "Persona responsable del cliente."} // Texto de ayuda
+        />
+      );
+    }}
+  />
+</Grid>
+
+
               <Grid item xs={12} sm={6} md={4}>
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <DatePicker
@@ -205,22 +252,35 @@ const [expectedClose, setExpectedClose]= useState();
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
-                <FormControl fullWidth sx={{ mt: 2 }}>
-                  <DatePicker
-                    label="Expectativa cierre"
-                    value={expectedClose}
-                    onChange={(newValue) => setExpectedClose(newValue)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
+                <Controller
+                  name="expected_close" // Nombre del campo esperado
+                  control={control} // Control de react-hook-form
+                  defaultValue={null} // Valor por defecto como null
+
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ mt: 2 }} error={!!error}>
+                      <DatePicker
+                        label="Expectativa cierre"
+                        value={value ? value : null} // Usa null si no hay valor
+                        onChange={(newValue) => {
+                          onChange(newValue); // Actualiza el valor en el formulario
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            InputLabelProps={{ shrink: true }}
+                            error={!!error} // Muestra error si existe
+                            helperText={error ? error.message : "Fecha estimada para cerrar."} // Mensaje de ayuda
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  <FormHelperText>Fecha estimada para cerrar.</FormHelperText>
-                </FormControl>
+                    </FormControl>
+                  )}
+                />
               </Grid>
+
+
             </Grid>
           </Box>
 
@@ -264,7 +324,7 @@ const [expectedClose, setExpectedClose]= useState();
                 }}
               />
             </Grid>
-          </Box> 
+          </Box>
         </Box>
       </form>
     </LocalizationProvider>
