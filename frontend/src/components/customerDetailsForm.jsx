@@ -214,7 +214,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
   <Controller
-    name="Encargado"
+    name="encargadoId"
     control={control}
     defaultValue=""
     rules={{ required: "El encargado es requerido" }}
