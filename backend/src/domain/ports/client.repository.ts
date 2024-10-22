@@ -8,4 +8,5 @@ export interface ClientRepository {
   findById(id: number): Promise<Client | null>;
   update(client: Client): Promise<Client>;
   delete(id: number): Promise<void>;
+  deleteMany(ids: number[]): Promise<void>;
 }

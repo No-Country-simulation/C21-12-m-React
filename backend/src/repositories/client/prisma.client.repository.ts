@@ -142,4 +142,16 @@ export class PrismaClientRepository implements ClientRepository {
       where: { id },
     });
   }
+  // Método para eliminar múltiples clientes
+async deleteMany(ids: number[]): Promise<void> {
+  await prisma.cliente.deleteMany({
+    where: {
+      id: {
+        in: ids, 
+      },
+    },
+  });
 }
+
+}
+

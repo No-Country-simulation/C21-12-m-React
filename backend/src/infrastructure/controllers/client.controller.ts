@@ -146,3 +146,20 @@ export const deleteClient = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+export const deleteMultiClient = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body; // Extraer los IDs del cuerpo de la petición
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'Se requiere un array de IDs' });
+    }
+
+    // Llamar al repositorio para eliminar los clientes
+    await clientRepository.deleteMany(ids);
+
+    return res.status(200).json({ message: 'Clientes eliminados exitosamente' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error eliminando los clientes' });
+  }
+};
