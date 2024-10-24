@@ -4,9 +4,9 @@ export class ClientDTO {
   estado: 'CONTACTO' | 'REUNION' | 'PROPUESTA' | 'NEGOCIACION';
   prioridad: 'ALTA'|'MEDIA' |'BAJA';
   valor_estimado: number | null;
-  managerId: string | null;
-  managerNombre: string | null;
-  managerAvatar: string | null;
+  encargadoId: string | null;
+  encargadoNombre: string | null;
+  encargadoAvatar: string | null;
   origen: string;
   email: string;
   telefono: string;
@@ -19,9 +19,9 @@ export class ClientDTO {
     this.estado = data.estado as 'CONTACTO' | 'REUNION' | 'PROPUESTA'| 'NEGOCIACION'; // Ensure type casting
     this.prioridad = data.prioridad as 'ALTA' | 'MEDIA' | 'BAJA';
     this.valor_estimado = data.valor_estimado;
-    this.managerId = data.managerId; // ID del Manager
-    this.managerNombre = data.manager?.nombre || null; // Nombre del Manager
-    this.managerAvatar = data.manager?.avatar || null; // Avatar del Manager
+    this.encargadoId = data.encargadoId; 
+    this.encargadoNombre = data.encargado?.nombre || null;
+    this.encargadoAvatar = data.encargado?.avatar || null; 
     this.origen = data.origen;
     this.email = data.email;
     this.telefono = data.telefono;

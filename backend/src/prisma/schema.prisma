@@ -40,8 +40,8 @@ model Cliente {
   estado            EstadoCliente
   prioridad         Prioridad
   valorEstimado     Float?
-  managerId         String?    
-  manager           Manager?   @relation(fields: [managerId], references: [id])
+  encargadoId       String?    
+  encargado         Encargado? @relation(fields: [encargadoId], references: [id])
   origen            String
   email             String     @unique
   telefono          String     
@@ -49,12 +49,10 @@ model Cliente {
   fechaCierreEstimada DateTime?
   proyectos         Proyecto[] @relation("ClienteProyectos")
   actividades       Actividad[]
-  createdAt         DateTime   @default(now())   // Fecha de creación
-  updatedAt         DateTime   @updatedAt        //echa de última actualización F
-
+  createdAt         DateTime   @default(now())   
+  updatedAt         DateTime   @updatedAt        
   @@map("clientes")
 }
-
 
 model Proyecto {
   id              Int        @id @default(autoincrement())
@@ -66,13 +64,22 @@ model Proyecto {
   estado          EstadoProyecto
   fechaInicio     DateTime
   fechaCierreEstimada DateTime
-  responsableId   String
-  responsable     Manager    @relation(fields: [responsableId], references: [id])
+  responsableId     String 
+  responsable       Encargado @relation(fields: [responsableId], references: [id])
   actividades     Actividad[]
   etapas          Etapa[]  
   @@map("proyectos")
 }
 
+model Encargado { 
+  id        String   @id @default(uuid()) 
+  nombre    String
+  avatar    String   
+  clientes  Cliente[] 
+  proyectos Proyecto[]
+  actividades Actividad[]
+  @@map("encargados")
+}
 
 model Actividad {
   id             Int      @id @default(autoincrement())
@@ -83,21 +90,9 @@ model Actividad {
   fecha          DateTime
   tipo           TipoActividad
   descripcion    String
-  responsableId  String
-  responsable    Manager   @relation(fields: [responsableId], references: [id])
-
+  responsableId    String  // Cambiado de responsableId a encargadoId
+  responsable      Encargado @relation(fields: [responsableId], references: [id])
   @@map("actividades")
-}
-
-model Manager {
-  id       String   @id @default(uuid()) 
-  nombre   String
-  avatar   String   
-  clientes Cliente[] 
-
-  @@map("managers")
-  Proyecto Proyecto[]
-  Actividad Actividad[]
 }
 
 model Etapa {

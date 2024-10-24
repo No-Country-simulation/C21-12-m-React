@@ -73,4 +73,4 @@ export async function getListOfManagers() {
     } catch (error) {
         handleApiError(error);
     }
-}
+} 

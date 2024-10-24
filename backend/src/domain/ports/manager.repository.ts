@@ -1,6 +1,6 @@
-import { Manager } from '../../domain/entities/Manager';
+import { Encargado } from '../../domain/entities/Manager';
 
 
 export interface ManagerRepository {
-  getEncargados(): Promise<Manager[]>;  
+  getEncargados(): Promise<Encargado[]>;  
 }

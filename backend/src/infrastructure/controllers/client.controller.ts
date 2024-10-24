@@ -9,14 +9,14 @@ const prisma = new PrismaClient();
 
 class ClientService {
   static async createClient(data: any): Promise<Client> {
-    const { nombre, estado, prioridad, valor_estimado, managerId, origen, email, telefono, ultimo_contacto, expected_close } = data;
+    const { nombre, estado, prioridad, valor_estimado, encargadoId, origen, email, telefono, ultimo_contacto, expected_close } = data;
 
-    const managerExists = await prisma.manager.findUnique({
-      where: { id: managerId },
+    const encargadoExists = await prisma.encargado.findUnique({
+      where: { id: encargadoId },
     });
   
-    if (!managerExists) {
-      throw new Error('El ID del manager no es válido.');
+    if (!encargadoExists) {
+      throw new Error('El ID del encargado no es válido.');
     }
   
     const estadoFormatted = estado.toUpperCase().replace(' ', '_');
@@ -28,7 +28,7 @@ class ClientService {
       estadoFormatted,
       prioridadFormatted,
       valor_estimado,
-      managerId,
+      encargadoId,
       origen,
       email,
       telefono,
@@ -59,7 +59,7 @@ export const createClient = async (req: Request, res: Response) => {
     res.status(201).json(response);
   } catch (error) {
    
-    if (error.message === 'El ID del manager no es válido.') {
+    if (error.message === 'El ID del encargado no es válido.') {
       return res.status(400).json({ error: error.message });
     }
     
@@ -144,5 +144,22 @@ export const deleteClient = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error deleting client:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+};
+export const deleteMultiClient = async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body; // Extraer los IDs del cuerpo de la petición
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'Se requiere un array de IDs' });
+    }
+
+    // Llamar al repositorio para eliminar los clientes
+    await clientRepository.deleteMany(ids);
+
+    return res.status(200).json({ message: 'Clientes eliminados exitosamente' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error eliminando los clientes' });
   }
 };
