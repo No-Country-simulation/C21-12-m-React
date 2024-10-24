@@ -37,6 +37,7 @@ export async function getClientById(id, data) {
 
 //* Crear un Ciente:
 export async function createClient(data) {
+    console.log(data)
     try {
         const response = await axios.post(`${API_BASE_URL}/v1/clients`, data, withCredentialsConfig);
         return response.data;

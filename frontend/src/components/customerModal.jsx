@@ -20,7 +20,6 @@ const CustomerModal = ({ open, handleClose,onSave  }) => {
     data.ultimo_contacto = data.ultimo_contacto ? data.ultimo_contacto.toISOString() : null;
     data.expected_close = data.expected_close ? data.expected_close.toISOString() : null;
   
-    console.log("Formulario enviado", data); // Verifica los datos en la consola
     onSave(data); // Pasa los datos transformados al componente padre
     handleClose(); // Cierra el modal después de guardar
   };
@@ -59,9 +58,11 @@ const CustomerModal = ({ open, handleClose,onSave  }) => {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
+
         <DialogContent dividers>
           <CustomerDetailsForm onSubmit={handleSubmitForm} />
         </DialogContent>
+
         <DialogActions>
           <Button
             onClick={handleClose}
@@ -79,9 +80,8 @@ const CustomerModal = ({ open, handleClose,onSave  }) => {
             Guardar Cliente
           </Button>
         </DialogActions>
-      </Dialog>
 
-     
+      </Dialog>
     </>
   );
 };
