@@ -16,9 +16,24 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useForm, Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers";
+import { getListOfManagers } from "../api/route";
+import { useEffect, useState } from "react";
+import EncargadoSelect from "./encargadoSelect";
 
 const CustomerDetailsForm = ({ onSubmit }) => {
   const { control, handleSubmit } = useForm();
+  const [encargados, setEncargados] = useState([]);
+  useEffect(() => {
+    const fetchManagers = async () => {
+      try {
+        const managers = await getListOfManagers();
+        setEncargados(managers);
+      } catch (error) {
+        console.log("Error al traer los encargados:", error);
+      }
+    };
+    fetchManagers();
+  }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -91,14 +106,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                   name="telefono"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: "El teléfono es requerido",
-                    pattern: {
-                      value: /^\+\d{9,15}$/,
-                      message:
-                        "El teléfono debe estar en formato internacional, comenzando con un '+' y seguido de entre 9 y 15 dígitos.",
-                    },
-                  }}
+                  rules={{ required: "El teléfono es requerido" }}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
                       {...field}
@@ -111,7 +119,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                       }
                       required
                       fullWidth
-                      InputLabelProps={{ shrink: true }}
+                      InputLabelProps={{ shrink: true }} // Asegúrate de que esto esté aquí
                     />
                   )}
                 />
@@ -202,39 +210,52 @@ const CustomerDetailsForm = ({ onSubmit }) => {
 
               <Grid item xs={12} sm={6} md={4}>
                 <Controller
-                  name="encargado"
+                  name="encargadoId"
                   control={control}
                   defaultValue=""
                   rules={{
                     required: "El encargado es obligatorio.",
-                    minLength: {
-                      value: 3,
-                      message: "Debe tener al menos 3 caracteres.",
-                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      {...field}
-                      label="Encargado"
-                      error={!!error}
+                    <EncargadoSelect
+                      {...field} // Pasar las propiedades de field al componente
+                      value={field.value} // Usar el valor actual del campo
+                      onChange={field.onChange} // Usar la función onChange del campo
+                      encargados={encargados} // Pasar la lista de encargados
+                      error={!!error} // Pasar el estado de error
                       helperText={
-                        error
-                          ? error.message
-                          : "Persona responsable del cliente."
+                        error ? error.message : "Selecciona un encargado."
                       }
-                      required
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
                     />
                   )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+             {/*  <Grid item xs={12} sm={6} md={4}>
+                <FormControl fullWidth sx={{ mt: 2 }}>
+                  <DatePicker
+                    label="Último contacto"
+                    value={lastContact}
+                    onChange={(newValue) => setLastContact(newValue)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    )}
+                  />
+                  <FormHelperText>Fecha del último contacto.</FormHelperText>
+                </FormControl>
+              </Grid> */}
+                  <Grid item xs={12} sm={6} md={4}>
                 <Controller
-                  name="ultimo_contacto"
+                  name="ultimo_contacto" // Nombre correcto según el backend
                   control={control}
-                  defaultValue={null} // inicializar en null como en el backend
+                  defaultValue={null}
+                  rules={{
+                    required: "Fecha de ultimo contacto",
+                  }}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth sx={{ mt: 2 }}>
                       <DatePicker
@@ -249,7 +270,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                             helperText={
                               error
                                 ? error.message
-                                : "Fecha del último contacto."
+                                : "Fecha de último contacto."
                             }
                             InputLabelProps={{ shrink: true }}
                           />
@@ -315,32 +336,37 @@ const CustomerDetailsForm = ({ onSubmit }) => {
               variant="outlined"
               helperText="Descripción breve del proyecto."
             />
+<Grid item xs={12} sm={6} md={4}>
+  <Controller
+    name="valor_estimado"
+    control={control}
+    defaultValue=""
+    rules={{
+      required: "El valor estimado es obligatorio.",
+      validate: value => !isNaN(parseFloat(value)) || "Debe ser un número válido",
+    }}
+    render={({ field, fieldState: { error } }) => (
+      <TextField
+        {...field}
+        label="Valor estimado del proyecto"
+        id="outlined-start-adornment"
+        sx={{ my: 2, width: "25ch" }}
+        error={!!error}
+        helperText={error ? error.message : "Valor estimado para el proyecto."}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start" sx={{ fontWeight: "600px" }}>
+              $
+            </InputAdornment>
+          ),
+        }}
+        // Aquí convertimos el valor a número en el evento onChange
+        onChange={(e) => field.onChange(parseFloat(e.target.value))}
+      />
+    )}
+  />
+</Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
-              <Controller
-                name="valor_estimado" // Asegúrate de usar el nombre correcto
-                control={control}
-                defaultValue=""
-                rules={{ required: "El valor estimado es obligatorio." }} // Validación
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    label="Valor estimado del proyecto"
-                    id="outlined-start-adornment"
-                    sx={{ my: 2, width: "100%" }} // Ajusta el ancho según lo necesites
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
-                    }}
-                    error={!!error} // Muestra error si existe
-                    helperText={
-                      error ? error.message : "Ingrese el valor estimado."
-                    } // Mensaje de ayuda
-                  />
-                )}
-              />
-            </Grid>
           </Box>
         </Box>
       </form>

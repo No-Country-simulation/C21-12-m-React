@@ -6,17 +6,19 @@ import { createClient } from "../api/route";
 
 const CostumerForm = () => {
   const currencies = [
-    { label: "Contacto", value: "contacto" },
-    { label: "Reunion", value: "reunion" },
-    { label: "Propuesta", value: "propuesta" },
-    { label: "Negociacion", value: "negociacion" },
+    { label: "Contacto", value: "Contacto" },
+    { label: "Reunion", value: "Reunion" },
+    { label: "Propuesta", value: "Propuesta" },
+    { label: "Negociacion", value: "Negociacion" },
   ];
 
   const currenciesStatus = [
-    { label: "Alta", value: "alta" },
-    { label: "Media", value: "media" },
-    { label: "Baja", value: "baja" },
+    { label: "Alta", value: "Alta" },
+    { label: "Media", value: "Media" },
+    { label: "Baja", value: "Baja" },
   ];
+  const [state, setState] = useState("Contacto");
+  const [priority, setPriority] = useState("Alta");
 
   const [open, setOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -29,35 +31,23 @@ const CostumerForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleSave = async (data) => {
     try {
-      console.log("Guardando nuevo cliente:", data);
-
-      // Validation (if necessary)
-      if (!data.nombre || !data.email) {
-        console.error("Missing required fields: name or email.");
-        setErrorAlert(true);
-        return;
-      }
-
-      await createClient(data);
-
+      // Cambiar 'state' por 'estado' y 'priority' por 'prioridad'
+      const clientData = { ...data, estado: state, prioridad: priority };
+      console.log("Guardando nuevo cliente:", clientData);
+      await createClient(clientData);
       setAlertVisible(true);
       handleClose();
-
-      // Hide success alert after 3 seconds
+  
       setTimeout(() => {
         setAlertVisible(false);
       }, 3000);
     } catch (error) {
-      console.error("Error al crear cliente:", error.response ? error.response.data : error.message);
-
-      // Display error alert
+      console.error("Error al crear cliente:", error);
       setErrorAlert(true);
       handleClose();
-
-      // Hide error alert after 3 seconds
+  
       setTimeout(() => {
         setErrorAlert(false);
       }, 3000);
@@ -94,7 +84,8 @@ const CostumerForm = () => {
           <TextField
             label="Estado"
             id="outlined-size-small"
-            defaultValue="contacto"
+            value={state} // Usar el valor del estado local
+            onChange={(e) => setState(e.target.value)} // Actualizar el valor del estado
             size="small"
             select
             sx={{
@@ -113,7 +104,8 @@ const CostumerForm = () => {
           <TextField
             label="Prioridad"
             id="outlined-size-small"
-            defaultValue="alta"
+            value={priority} // Usar el valor del estado local
+            onChange={(e) => setPriority(e.target.value)} // Actualizar el valor de la prioridad
             size="small"
             select
             sx={{
@@ -128,7 +120,6 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
-
           <Button
             variant="contained"
             sx={{
