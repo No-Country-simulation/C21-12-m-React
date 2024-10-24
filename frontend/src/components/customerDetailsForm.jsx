@@ -15,7 +15,12 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useForm, Controller } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers";
+import { getListOfManagers } from "../api/route";
+import { useEffect, useState } from "react";
+import EncargadoSelect from "./encargadoSelect";
 
+const CustomerDetailsForm = ({ onSubmit }) => {
   const { control, handleSubmit } = useForm();
   const [encargados, setEncargados] = useState([]);
   useEffect(() => {
@@ -30,19 +35,6 @@ import { useForm, Controller } from "react-hook-form";
     fetchManagers();
   }, []);
 
-  useEffect(() => {
-    const fetchEncargados = async () => {
-      try {
-        const response = await getAllManagers();
-        console.log('Encargados:', response.data); // Verifica que se está accediendo correctamente a los datos
-        setEncargados(response.data); // Asegúrate de acceder a response.data
-      } catch (error) {
-        console.error("Error al obtener los encargados:", error);
-      }
-    };
-  
-    fetchEncargados();
-  }, []);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form id="customer-form" onSubmit={handleSubmit(onSubmit)}>
@@ -71,14 +63,15 @@ import { useForm, Controller } from "react-hook-form";
                       {...field}
                       label="Nombre"
                       error={!!error}
-
+                      helperText={
+                        error ? error.message : "Nombre del cliente o empresa"
+                      }
                       required
                       fullWidth
                       InputLabelProps={{ shrink: true }}
                     />
                   )}
                 />
-
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
@@ -133,12 +126,35 @@ import { useForm, Controller } from "react-hook-form";
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
-
+                  name="origen"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "El origen es requerido" }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth error={!!error}>
+                      <InputLabel id="origen-label">Origen</InputLabel>
+                      <Select labelId="origen-label" {...field} label="Origen">
+                        <MenuItem value="contacto directo">
+                          Contacto directo
+                        </MenuItem>{" "}
+                        {/* Corrige este valor */}
+                        <MenuItem value="campaña marketing">
+                          Campaña de marketing
+                        </MenuItem>{" "}
+                        {/* Corrige este valor */}
+                        <MenuItem value="referencia">Referencia</MenuItem>{" "}
+                        {/* Cambiado a un valor válido */}
+                        <MenuItem value="otro">Otro</MenuItem>
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error.message}</FormHelperText>
+                      )}
                     </FormControl>
                   )}
                 />
               </Grid>
-
+            </Grid>
+          </Box>
           <Box
             sx={{
               border: "1px solid #E0E0E0",
@@ -157,13 +173,15 @@ import { useForm, Controller } from "react-hook-form";
                   name="estado"
                   control={control}
                   defaultValue=""
-
                   render={({ field, fieldState: { error } }) => (
                     <TextField
                       {...field}
                       label="Estado"
                       error={!!error}
-
+                      InputLabelProps={{ shrink: true }}
+                      id="outlined-size-small"
+                      fullWidth
+                      helperText="Situación actual del cliente"
                       sx={{ mt: 2 }}
                     />
                   )}
@@ -172,13 +190,18 @@ import { useForm, Controller } from "react-hook-form";
 
               <Grid item xs={12} sm={6} md={4}>
                 <Controller
-
+                  name="prioridad"
+                  control={control}
+                  defaultValue=""
                   render={({ field, fieldState: { error } }) => (
                     <TextField
                       {...field}
                       label="Prioridad"
                       error={!!error}
-
+                      InputLabelProps={{ shrink: true }}
+                      id="outlined-size-small"
+                      fullWidth
+                      helperText="Nivel de urgencia."
                       sx={{ mt: 2 }}
                     />
                   )}
@@ -186,6 +209,29 @@ import { useForm, Controller } from "react-hook-form";
               </Grid>
 
               <Grid item xs={12} sm={6} md={4}>
+                <Controller
+                  name="encargadoId"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: "El encargado es obligatorio.",
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <EncargadoSelect
+                      {...field} // Pasar las propiedades de field al componente
+                      value={field.value} // Usar el valor actual del campo
+                      onChange={field.onChange} // Usar la función onChange del campo
+                      encargados={encargados} // Pasar la lista de encargados
+                      error={!!error} // Pasar el estado de error
+                      helperText={
+                        error ? error.message : "Selecciona un encargado."
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+
+             {/*  <Grid item xs={12} sm={6} md={4}>
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <DatePicker
                     label="Último contacto"
@@ -236,12 +282,29 @@ import { useForm, Controller } from "react-hook-form";
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Controller
-
+                  name="expected_close" // Nombre correcto según el backend
+                  control={control}
+                  defaultValue={null}
+                  rules={{
+                    required: "La fecha de cierre estimada es obligatoria.",
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ mt: 2 }}>
+                      <DatePicker
+                        label="Expectativa cierre"
+                        value={field.value}
+                        onChange={(newValue) => field.onChange(newValue)}
                         renderInput={(params) => (
                           <TextField
                             {...params}
                             fullWidth
-
+                            error={!!error}
+                            helperText={
+                              error
+                                ? error.message
+                                : "Fecha estimada para cerrar."
+                            }
+                            InputLabelProps={{ shrink: true }}
                           />
                         )}
                       />
@@ -249,8 +312,6 @@ import { useForm, Controller } from "react-hook-form";
                   )}
                 />
               </Grid>
-
-
             </Grid>
           </Box>
 
@@ -274,6 +335,37 @@ import { useForm, Controller } from "react-hook-form";
               fullWidth
               variant="outlined"
               helperText="Descripción breve del proyecto."
+            />
+<Grid item xs={12} sm={6} md={4}>
+  <Controller
+    name="valor_estimado"
+    control={control}
+    defaultValue=""
+    rules={{
+      required: "El valor estimado es obligatorio.",
+      validate: value => !isNaN(parseFloat(value)) || "Debe ser un número válido",
+    }}
+    render={({ field, fieldState: { error } }) => (
+      <TextField
+        {...field}
+        label="Valor estimado del proyecto"
+        id="outlined-start-adornment"
+        sx={{ my: 2, width: "25ch" }}
+        error={!!error}
+        helperText={error ? error.message : "Valor estimado para el proyecto."}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start" sx={{ fontWeight: "600px" }}>
+              $
+            </InputAdornment>
+          ),
+        }}
+        // Aquí convertimos el valor a número en el evento onChange
+        onChange={(e) => field.onChange(parseFloat(e.target.value))}
+      />
+    )}
+  />
+</Grid>
 
           </Box>
         </Box>
