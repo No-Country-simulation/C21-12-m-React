@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
-
+import { Link } from "react-router-dom";
 import {
 	Box,
 	Drawer,
@@ -17,35 +17,54 @@ import {
 } from "@mui/material";
 
 import {
-	Menu 					as MenuIcon,
-	Search 					as SearchIcon,
-	DashboardOutlined 		as DashboardOutlinedIcon,
-	CreateOutlined 			as CreateOutlinedIcon,
-	PeopleAltOutlined 		as PeopleAltOutlinedIcon,
-	HandymanOutlined 		as HandymanOutlinedIcon,
-	SavingsOutlined 		as SavingsOutlinedIcon,
-	DataSaverOffOutlined 	as DataSaverOffOutlinedIcon,
-	CardTravelOutlined 		as CardTravelOutlinedIcon,
-	SettingsOutlined 		as SettingsOutlinedIcon,
-	LogoutOutlined 			as LogoutOutlinedIcon,
+	Menu as MenuIcon,
+	Search as SearchIcon,
+	DashboardOutlined as DashboardOutlinedIcon,
+	CreateOutlined as CreateOutlinedIcon,
+	PeopleAltOutlined as PeopleAltOutlinedIcon,
+	HandymanOutlined as HandymanOutlinedIcon,
+	SavingsOutlined as SavingsOutlinedIcon,
+	DataSaverOffOutlined as DataSaverOffOutlinedIcon,
+	CardTravelOutlined as CardTravelOutlinedIcon,
+	SettingsOutlined as SettingsOutlinedIcon,
+	LogoutOutlined as LogoutOutlinedIcon,
 } from "@mui/icons-material";
 
 import logo from "../assets/logo.png";
 import avatarSideBar from "../assets/AvatarSidebar.png";
+
+const listStyles = {
+	justifyContent: "flex-start",
+	backgroundColor: "transparent",
+	color: "#664ddf",
+	"&:hover": {
+		backgroundColor: "#e8eaf6",
+		transform: "scale(1.02)",
+	},
+	borderRadius: 2,
+	padding: 1,
+};
 
 const Sidebar = () => {
 	const drawerWidth = 290;
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const [open, setOpen] = useState(false);
+	const [selectedItem, setSelectedItem] = useState(null); // Initialize as null or -1
 
 	const handleDrawerToggle = () => {
 		setOpen(!open);
 	};
+
+	const handleItemClick = (indexItem) => {
+		setSelectedItem(indexItem);
+	};
+
 	const menuItems = [
 		{
 			text: "Dashboard",
 			icon: <DashboardOutlinedIcon sx={{ color: "#664ddf" }} />,
+			link: "/",
 		},
 		{
 			text: "Tareas",
@@ -54,6 +73,7 @@ const Sidebar = () => {
 		{
 			text: "Clientes",
 			icon: <PeopleAltOutlinedIcon sx={{ color: "#664ddf" }} />,
+			link: "/clientes",
 		},
 		{
 			text: "Proyectos",
@@ -68,6 +88,7 @@ const Sidebar = () => {
 			icon: <SavingsOutlinedIcon sx={{ color: "#664ddf" }} />,
 		},
 	];
+
 	const optionsItems = [
 		{
 			text: "Soporte",
@@ -78,6 +99,7 @@ const Sidebar = () => {
 			icon: <SettingsOutlinedIcon sx={{ color: "#664ddf" }} />,
 		},
 	];
+
 	return (
 		<>
 			{isMobile && (
@@ -98,6 +120,7 @@ const Sidebar = () => {
 						width: drawerWidth,
 						boxSizing: "border-box",
 						backgroundColor: "#f1eefe",
+						border: 0,
 					},
 				}}
 				variant={isMobile ? "temporary" : "permanent"}
@@ -114,11 +137,15 @@ const Sidebar = () => {
 					}}
 				>
 					<Box
-						component="img"
-						src={logo}
-						alt="Logo"
-						sx={{ width: "60%", height: "auto" }}
-					/>
+						component={Link}
+						to="/"
+						sx={{
+							display: "flex",
+							width: "100%",
+						}}
+					>
+						<Box component="img" src={logo} alt="Logo" />
+					</Box>
 					<Box sx={{ my: 4 }}>
 						<TextField
 							label="Buscar"
@@ -156,69 +183,83 @@ const Sidebar = () => {
 							}}
 						/>
 					</Box>
-					<List sx={{ my: 2 }}>
-						{menuItems.map((item, index) => (
-							<ListItem key={index} disablePadding>
-								<ListItemButton
-									sx={{
-										justifyContent: "flex-start",
-										backgroundColor: "transparent", // Color de fondo inicial
-										color: "#664ddf", // Color del texto
-										"&:hover": {
-											backgroundColor: "#e8eaf6", // Color de fondo al pasar el ratón
-											transform: "scale(1.02)", // Escala de aumento al hover
-										},
-										borderRadius: 2, // Bordes redondeados
-										padding: 1, // Espaciado interno
-									}}
-								>
-									<ListItemIcon>
-										{item.icon}{" "}
-										{/* Renderiza el ícono específico */}
-									</ListItemIcon>
-									<ListItemText
-										primary={
-											<Typography variant="subtitle2">
-												{item.text}
-											</Typography>
-										}
-									/>
-								</ListItemButton>
-							</ListItem>
-						))}
+
+					<List>
+						{menuItems.map((item, index) => {
+							// Aplicar diferentes estilos si el artículo está seleccionado.
+							const isSelected = selectedItem === index;
+							const itemStyles = {
+								...listStyles,
+								backgroundColor: isSelected
+									? "#d3cafc"
+									: "transparent",
+								"&:hover": {
+									backgroundColor: "#d3cafc",
+									transform: "scale(1.02)",
+								},
+							};
+
+							return (
+								<ListItem key={index} disablePadding>
+									<ListItemButton
+										component={Link}
+										to={item.link}
+										sx={itemStyles}
+										onClick={() => handleItemClick(index)}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText
+											primary={
+												<Typography variant="subtitle2">
+													{item.text}
+												</Typography>
+											}
+										/>
+									</ListItemButton>
+								</ListItem>
+							);
+						})}
 					</List>
+
 					<Divider />
-					<List sx={{ my: 2 }}>
-						{optionsItems.map((item, index) => (
-							<ListItem key={index} disablePadding>
-								<ListItemButton
-									sx={{
-										justifyContent: "flex-start",
-										backgroundColor: "transparent", // Color de fondo inicial
-										color: "#664ddf", // Color del texto
-										"&:hover": {
-											backgroundColor: "#e8eaf6", // Color de fondo al pasar el ratón
-											transform: "scale(1.02)", // Escala de aumento al hover
-										},
-										borderRadius: 2, // Bordes redondeados
-										padding: 1, // Espaciado interno
-									}}
-								>
-									<ListItemIcon>
-										{item.icon}{" "}
-										{/* Renderiza el ícono específico */}
-									</ListItemIcon>
-									<ListItemText
-										primary={
-											<Typography variant="subtitle2">
-												{item.text}
-											</Typography>
+					<List>
+						{optionsItems.map((item, index) => {
+							// Ajuste el desplazamiento del índice para los elementos de opciones para evitar conflictos con los elementos del menú
+							const adjustedIndex = menuItems.length + index;
+							const isSelected = selectedItem === adjustedIndex;
+							const itemStyles = {
+								...listStyles,
+								backgroundColor: isSelected
+									? "#d3cafc"
+									: "transparent",
+								"&:hover": {
+									backgroundColor: "#d3cafc",
+									transform: "scale(1.02)",
+								},
+							};
+
+							return (
+								<ListItem key={index} disablePadding>
+									<ListItemButton
+										sx={itemStyles}
+										onClick={() =>
+											handleItemClick(adjustedIndex)
 										}
-									/>
-								</ListItemButton>
-							</ListItem>
-						))}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText
+											primary={
+												<Typography variant="subtitle2">
+													{item.text}
+												</Typography>
+											}
+										/>
+									</ListItemButton>
+								</ListItem>
+							);
+						})}
 					</List>
+
 					<Divider />
 					<Box
 						sx={{
@@ -257,7 +298,7 @@ const Sidebar = () => {
 							<LogoutOutlinedIcon />
 						</IconButton>
 					</Box>
-					<Box sx={{ mt: 5, color: "#2F2467", fontSize: "12px" }}>
+					<Box sx={{ color: "#2F2467", fontSize: "12px" }}>
 						© {new Date().getFullYear()} ProManage.
 					</Box>
 				</Box>
