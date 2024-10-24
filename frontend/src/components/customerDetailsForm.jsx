@@ -38,7 +38,9 @@ const CustomerDetailsForm = ({ onSubmit }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form id="customer-form" onSubmit={handleSubmit(onSubmit)}>
+
         <Box>
+
           <Box
             sx={{
               border: "1px solid #E0E0E0",
@@ -50,8 +52,11 @@ const CustomerDetailsForm = ({ onSubmit }) => {
             <Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
               Datos personales
             </Typography>
+
             <Divider sx={{ my: 2 }} />
+
             <Grid container spacing={2}>
+
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="nombre"
@@ -101,6 +106,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                   )}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="telefono"
@@ -124,6 +130,7 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                   )}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="origen"
@@ -153,8 +160,10 @@ const CustomerDetailsForm = ({ onSubmit }) => {
                   )}
                 />
               </Grid>
+
             </Grid>
           </Box>
+
           <Box
             sx={{
               border: "1px solid #E0E0E0",
@@ -368,7 +377,9 @@ const CustomerDetailsForm = ({ onSubmit }) => {
 </Grid>
 
           </Box>
+
         </Box>
+
       </form>
     </LocalizationProvider>
   );
