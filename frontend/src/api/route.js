@@ -56,13 +56,26 @@ export async function updateClient(id, data) {
     }
 }
 
-//* Eliminar un cliente:
-export async function deleteClient(id) {
-    try {
-        const response = await axios.delete(`${API_BASE_URL}/v1/clients/${id}`);
-        return response.data;
-    } catch (error) {
-        handleApiError(error);
+export async function deleteClient(customersId) {
+    if (Array.isArray(customersId)) {
+        // Eliminación de múltiples clientes
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/v1/clients/multi/delete`, {
+                ...withCredentialsConfig,
+                data: { ids: customersId }
+            });
+            return response.data;
+        } catch (error) {
+            handleApiError(error);
+        }
+    } else {
+        // Eliminación de un solo cliente
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/v1/clients/${customersId}`, withCredentialsConfig);
+            return response.data;
+        } catch (error) {
+            handleApiError(error);
+        }
     }
 }
 
