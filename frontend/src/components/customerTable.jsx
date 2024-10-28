@@ -26,6 +26,8 @@ import { EyeIcon, EditIcon, TrashIcon } from "../icon/custonIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import { getAllClients } from "../api/route";
+import { deleteClient } from "../api/route";
+
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -132,8 +134,7 @@ EnhancedTableHead.propTypes = {
 	rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-	const { selected } = props;
+function EnhancedTableToolbar({ selected, handleClientDelete }) {
 	const numSelected = selected.length;
 	return (
 		<Toolbar
@@ -175,7 +176,7 @@ function EnhancedTableToolbar(props) {
 				<Tooltip title="Delete">
 					<IconButton
 						onClick={() => {
-							console.log("Eliminar Clientes", selected);
+							handleClientDelete(selected); // Trabajando
 						}}
 					>
 						<DeleteIcon />
@@ -188,8 +189,8 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
 	selected: PropTypes.array.isRequired,
+	handleClientDelete: PropTypes.func.isRequired,
 };
-
 function PriorityChips(props) {
 	const { priority } = props;
 
@@ -271,6 +272,31 @@ export function CustomerTable() {
 		fetchData();
 	}, []);
 
+	// Trabajando
+	const deleteClientFromTable = (customersId) => {
+		// Si customersId es un array, eliminamos todos los IDs que estén en ese array
+		if (Array.isArray(customersId)) {
+			setRows((prevRows) =>
+				prevRows.filter((row) => !customersId.includes(row.id))
+			);
+		} else {
+			// Si customersId es un número, eliminamos solo ese ID
+			setRows((prevRows) =>
+				prevRows.filter((row) => row.id !== customersId)
+			);
+		}
+	};
+
+	//Trabajando
+	const handleClientDelete = async (customersId) => {
+		try {
+			await deleteClient(customersId);
+			deleteClientFromTable(customersId); // Revisa aquí que esté usando la prop correctamente
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
 		setOrder(isAsc ? "desc" : "asc");
@@ -328,7 +354,10 @@ export function CustomerTable() {
 
 	return (
 		<Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
-			<EnhancedTableToolbar selected={selected} />
+			<EnhancedTableToolbar
+				selected={selected}
+				handleClientDelete={handleClientDelete}
+			/>
 			{loadedData && (
 				<TableContainer sx={{ maxHeight: 440 }}>
 					<Table
@@ -458,8 +487,7 @@ export function CustomerTable() {
 											<Tooltip title="Eliminar" arrow>
 												<IconButton
 													onClick={() => {
-														console.log(
-															"Eliminar Cliente",
+														handleClientDelete(
 															row.id
 														);
 													}}
