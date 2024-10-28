@@ -1,6 +1,7 @@
 import {
   Card,
   Box,
+  Button,
   Typography,
   Table,
   TableBody,
@@ -47,9 +48,9 @@ StateChips.propTypes = {
 
 const PriorityChip = ({ priority }) => {
   const colorPalette = {
-    Alta: '#ff6347', // Rojo tomate
-    Media: '#ffa500', // Naranja
-    Baja: '#87ceeb',  // Azul claro
+    Alta: '#ff6347', 
+    Media: '#ffa500', 
+    Baja: '#87ceeb', 
   };
 
   return (
@@ -83,18 +84,14 @@ function ClientsCard() {
         flexDirection: 'column',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+       <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
         <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Clientes
         </Typography>
-        <Typography
-          variant="body2"
-          sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}
-        >
-          VER TODO
-        </Typography>
+        <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
+          Ver Todo
+        </Button>
       </Box>
-
       <Table sx={{ marginTop: '16px' }}>
         <TableHead>
           <TableRow>
@@ -127,7 +124,7 @@ function ClientsCard() {
           width: '100%',
         }}
       >
-        Última actualización: 16/10/2024
+        Última actualización: 28/10/2024
       </Typography>
     </Card>
   );

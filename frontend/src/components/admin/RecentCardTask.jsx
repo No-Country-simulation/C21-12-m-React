@@ -18,10 +18,10 @@ const RecentTasksCard = () => {
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 500 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Tareas Recientes
         </Typography>
-        <Button variant="text" color="primary" size="medium">
+        <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
           Ver Todo
         </Button>
       </Box>
@@ -42,8 +42,8 @@ const RecentTasksCard = () => {
               alignItems: 'center',
               padding: 1,
               gap: 1,
-              width: '100%', // Ajuste al ancho disponible
-              maxWidth: 100, // Limita el ancho de cada tarjeta
+              width: '100%',
+              maxWidth: 100, 
               height: 144,
               backgroundColor: task.bgColor,
               borderRadius: 1,
@@ -62,7 +62,7 @@ const RecentTasksCard = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
         <Typography variant="caption" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
-          Última actualización: 16/10/2024
+          Última actualización: 28/10/2024
         </Typography>
       </Box>
     </Paper>
