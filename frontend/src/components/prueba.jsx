@@ -1,11 +1,4 @@
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Alert, AlertTitle, Box, Button, MenuItem, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import CustomerModal from "./customerModal";
@@ -13,16 +6,16 @@ import { createClient } from "../api/route";
 
 const CostumerForm = () => {
   const currencies = [
-    { label: "Contacto", value: "Contacto" },
-    { label: "Reunion", value: "Reunion" },
-    { label: "Propuesta", value: "Propuesta" },
-    { label: "Negociacion", value: "Negociacion" },
+    { label: "Contacto", value: "contacto" },
+    { label: "Reunion", value: "reunion" },
+    { label: "Propuesta", value: "propuesta" },
+    { label: "Negociacion", value: "negociacion" },
   ];
 
   const currenciesStatus = [
-    { label: "Alta", value: "Alta" },
-    { label: "Media", value: "Media" },
-    { label: "Baja", value: "Baja" },
+    { label: "Alta", value: "alta" },
+    { label: "Media", value: "media" },
+    { label: "Baja", value: "baja" },
   ];
 
   const [open, setOpen] = useState(false);
@@ -56,7 +49,6 @@ const CostumerForm = () => {
       }, 3000);
     }
   };
-
   return (
     <Box sx={{ m: 2 }}>
       <Box
@@ -102,6 +94,7 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
+
           <TextField
             label="Prioridad"
             id="outlined-size-small"
@@ -120,50 +113,41 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
-        </Box>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#6f52ed",
-            borderRadius: "8px",
-            fontSize: "14px",
-            paddingY: 1,
-            marginRight: 4,
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            "&:hover": {
-              backgroundColor: "#5a3fd1",
-            },
-          }}
-          onClick={handleClickOpen}
-        >
-          Nuevo Cliente
-          <AddIcon />
-        </Button>
-      </Box>
 
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#6f52ed",
+              borderRadius: "8px",
+              fontSize: "14px",
+              ml: "auto",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              "&:hover": {
+                backgroundColor: "#5a3fd1",
+              },
+            }}
+            onClick={handleClickOpen}
+          >
+            Nuevo Cliente
+            <AddIcon />
+          </Button>
+        </Box>
+      </Box>
       {alertVisible && (
         <Alert severity="success">
-          <AlertTitle sx={{ fontWeight: "600" }}>
-            Cliente guardado exitosamente.
-          </AlertTitle>
-          El nuevo cliente ha sido agregado correctamente. Puedes comenzar a
-          gestionarlo desde la lista de clientes.
+        <AlertTitle sx={{fontWeight:'600'}}>Cliente guardado exitosamente.</AlertTitle>          
+        El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo desde la lista de clientes.
         </Alert>
       )}
-
       {errorAlert && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          <AlertTitle sx={{ fontWeight: "600" }}>
-            Error al guardar cliente.
-          </AlertTitle>
-          Hubo un problema al guardar el nuevo cliente. Por favor, revisa los
-          datos ingresados y vuelve a intentarlo. Si el problema persiste,
-          contacta al soporte técnico.
+          <AlertTitle sx={{fontWeight:'600'}}>          Error al guardar cliente.
+          </AlertTitle>          
+          Hubo un problema al guardar el nuevo cliente. Por favor, revisa los datos ingresados y vuelve a intentarlo. Si el problema persiste, contacta al soporte técnico.
         </Alert>
       )}
-
       <CustomerModal
         open={open}
         handleClose={handleClose}
