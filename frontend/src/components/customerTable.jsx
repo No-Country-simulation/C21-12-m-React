@@ -343,30 +343,35 @@ export function CustomerTable({ filteredClients }) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      [...rows]
-        .sort(getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, rows]
-  );
-
+	const visibleRows = React.useMemo(
+		() =>
+		  [...rows]
+			.sort(getComparator(order, orderBy))
+			.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+			.map(row => ({
+			  ...row,
+			  managerNombre: row.encargado ? row.encargado.nombre : "Sin encargado", // Maneja el caso de undefined
+			  managerAvatar: row.encargado ? row.encargado.avatar : "ruta/a/avatar/default.png", // Avatar por defecto si es undefined
+			})),
+		[order, orderBy, page, rowsPerPage, rows]
+	  );
+	  
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
       <EnhancedTableToolbar
         selected={selected}
         handleClientDelete={handleClientDelete}
       />
-       {loadedData && rows.length === 0 ? (
-    <Typography
-      align="center"
-      sx={{
-        color: "red",
-      }}
-    >
-      No se encuentran resultados
-    </Typography>
-  ) : (
+      {loadedData && rows.length === 0 ? (
+        <Typography
+          align="center"
+          sx={{
+            color: "red",
+          }}
+        >
+          No se encuentran resultados
+        </Typography>
+      ) : (
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table
             stickyHeader
