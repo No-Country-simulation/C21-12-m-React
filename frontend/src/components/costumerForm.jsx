@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
@@ -13,12 +14,12 @@ import { useEffect, useState } from "react";
 import CustomerModal from "./customerModal";
 import { createClient, searchClients } from "../api/route";
 import axios from "axios";
+import { CustomerTable } from "./customerTable";
 
 const CostumerForm = () => {
   const [nombre, setNombre] = useState("");
   const [estado, setEstado] = useState("");
   const [prioridad, setPrioridad] = useState("");
-  const [filteredClients, setFilteredClients] = useState([]);
 
   const currencies = [
     { label: "Contacto", value: "Contacto" },
@@ -32,6 +33,7 @@ const CostumerForm = () => {
     { label: "Media", value: "Media" },
     { label: "Baja", value: "Baja" },
   ];
+  const [filteredClients, setFilteredClients] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -65,30 +67,23 @@ const CostumerForm = () => {
     }
   };
   const handleSearch = async () => {
-    console.log("Buscando clientes con:", { nombre, estado, prioridad });
     try {
       const result = await searchClients({ nombre, estado, prioridad });
-      setFilteredClients(result); 
+      setFilteredClients(result);
     } catch (error) {
       console.error("Error al buscar clientes", error);
     }
   };
 
-
   useEffect(() => {
-    const source = axios.CancelToken.source(); 
     const fetchFilteredClients = debounce(async () => {
-      console.log("Parámetros de búsqueda:", { nombre, estado, prioridad });
       await handleSearch();
     }, 500);
 
     fetchFilteredClients();
-
-    return () => {
-      source.cancel("Operación cancelada por el usuario."); 
-    };
   }, [nombre, estado, prioridad]);
   return (
+    <div>
     <Box sx={{ m: 2 }}>
       <Box
         display="flex"
@@ -157,20 +152,7 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
-          <Box>
-            {filteredClients.length > 0 ? (
-              filteredClients.map((client) => (
-                <div key={client.id}>
-                  {client.nombre} - {client.estado} - {client.prioridad}
-                </div>
-              ))
-            ) : (
-              <p>
-                No se encontraron clientes que coincidan con los criterios de
-                búsqueda.
-              </p>
-            )}
-          </Box>
+        
         </Box>
         <Button
           variant="contained"
@@ -221,6 +203,8 @@ const CostumerForm = () => {
         onSave={handleSave}
       />
     </Box>
+    <CustomerTable filteredClients={filteredClients} />
+    </div>
   );
 };
 

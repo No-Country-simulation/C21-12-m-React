@@ -1,7 +1,6 @@
 import { PeopleAltOutlined as PeopleAltOutlinedIcon } from "@mui/icons-material";
 import { Alert, Box, Typography } from "@mui/material";
 import CustomerForm from "../components/costumerForm";
-import { CustomerTable } from "./customerTable";
 import { useState } from "react";
 const ClientPage = () => {
 	const [alertVisible, setAlertVisible] = useState(false);
@@ -39,7 +38,6 @@ const ClientPage = () => {
 				</Alert>
 			)}
 
-			<CustomerTable />
 		</Box>
 	);
 };
