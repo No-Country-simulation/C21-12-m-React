@@ -1,17 +1,26 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
   AlertTitle,
   Box,
   Button,
+  debounce,
   MenuItem,
   TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomerModal from "./customerModal";
-import { createClient } from "../api/route";
+import { createClient, searchClients } from "../api/route";
+import axios from "axios";
+import { CustomerTable } from "./customerTable";
 
 const CostumerForm = () => {
+  const [nombre, setNombre] = useState("");
+  const [estado, setEstado] = useState("");
+  const [prioridad, setPrioridad] = useState("");
+
   const currencies = [
     { label: "Contacto", value: "Contacto" },
     { label: "Reunion", value: "Reunion" },
@@ -24,6 +33,7 @@ const CostumerForm = () => {
     { label: "Media", value: "Media" },
     { label: "Baja", value: "Baja" },
   ];
+  const [filteredClients, setFilteredClients] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -56,8 +66,24 @@ const CostumerForm = () => {
       }, 3000);
     }
   };
+  const handleSearch = async () => {
+    try {
+      const result = await searchClients({ nombre, estado, prioridad });
+      setFilteredClients(result);
+    } catch (error) {
+      console.error("Error al buscar clientes", error);
+    }
+  };
 
+  useEffect(() => {
+    const fetchFilteredClients = debounce(async () => {
+      await handleSearch();
+    }, 500);
+
+    fetchFilteredClients();
+  }, [nombre, estado, prioridad]);
   return (
+    <div>
     <Box sx={{ m: 2 }}>
       <Box
         display="flex"
@@ -78,6 +104,8 @@ const CostumerForm = () => {
             InputLabelProps={{ shrink: true }}
             id="outlined-size-small"
             size="small"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
             sx={{
               flex: 1,
               minWidth: "200px",
@@ -89,6 +117,8 @@ const CostumerForm = () => {
             id="outlined-size-small"
             defaultValue="contacto"
             size="small"
+            value={estado}
+            onChange={(e) => setEstado(e.target.value)}
             select
             sx={{
               flex: 1,
@@ -107,6 +137,8 @@ const CostumerForm = () => {
             id="outlined-size-small"
             defaultValue="alta"
             size="small"
+            value={prioridad}
+            onChange={(e) => setPrioridad(e.target.value)}
             select
             sx={{
               flex: 1,
@@ -120,6 +152,7 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
+        
         </Box>
         <Button
           variant="contained"
@@ -170,6 +203,8 @@ const CostumerForm = () => {
         onSave={handleSave}
       />
     </Box>
+    <CustomerTable filteredClients={filteredClients} />
+    </div>
   );
 };
 

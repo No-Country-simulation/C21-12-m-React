@@ -16,12 +16,12 @@ import CustomerDetailsForm from "./customerDetailsForm";
 const CustomerModal = ({ open, handleClose,onSave  }) => {
 
   const handleSubmitForm = (data) => {
-    // Convertir las fechas a formato ISO o dejarlas como null si no están definidas
+
     data.ultimo_contacto = data.ultimo_contacto ? data.ultimo_contacto.toISOString() : null;
     data.expected_close = data.expected_close ? data.expected_close.toISOString() : null;
   
-    onSave(data); // Pasa los datos transformados al componente padre
-    handleClose(); // Cierra el modal después de guardar
+    onSave(data);
+    handleClose(); 
   };
   
   const handleSaveClick = () => {

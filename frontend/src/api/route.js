@@ -79,7 +79,6 @@ export async function deleteClient(customersId) {
     }
 }
 
-//* Octener Todos los clientes:
 export async function getListOfManagers() {
     try {
         const response = await axios.get(`${API_BASE_URL}/v1/managers`, withCredentialsConfig);
@@ -88,3 +87,15 @@ export async function getListOfManagers() {
         handleApiError(error);
     }
 } 
+
+
+export const searchClients = async ({ nombre, estado, prioridad }) => {
+    const params = new URLSearchParams({
+      nombre: nombre.trim(),
+      estado,
+      prioridad,
+    }).toString();
+  
+    const response = await axios.get(`${API_BASE_URL}/v1/clients/search?${params}`);
+    return response.data; 
+  };
