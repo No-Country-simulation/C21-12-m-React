@@ -1,17 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
   AlertTitle,
   Box,
   Button,
+  debounce,
   MenuItem,
   TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomerModal from "./customerModal";
-import { createClient } from "../api/route";
+import { createClient, searchClients } from "../api/route";
+import axios from "axios";
 
 const CostumerForm = () => {
+  const [nombre, setNombre] = useState("");
+  const [estado, setEstado] = useState("");
+  const [prioridad, setPrioridad] = useState("");
+  const [filteredClients, setFilteredClients] = useState([]);
+
   const currencies = [
     { label: "Contacto", value: "Contacto" },
     { label: "Reunion", value: "Reunion" },
@@ -56,7 +64,30 @@ const CostumerForm = () => {
       }, 3000);
     }
   };
+  const handleSearch = async () => {
+    console.log("Buscando clientes con:", { nombre, estado, prioridad });
+    try {
+      const result = await searchClients({ nombre, estado, prioridad });
+      setFilteredClients(result); 
+    } catch (error) {
+      console.error("Error al buscar clientes", error);
+    }
+  };
 
+
+  useEffect(() => {
+    const source = axios.CancelToken.source(); 
+    const fetchFilteredClients = debounce(async () => {
+      console.log("Parámetros de búsqueda:", { nombre, estado, prioridad });
+      await handleSearch();
+    }, 500);
+
+    fetchFilteredClients();
+
+    return () => {
+      source.cancel("Operación cancelada por el usuario."); 
+    };
+  }, [nombre, estado, prioridad]);
   return (
     <Box sx={{ m: 2 }}>
       <Box
@@ -78,6 +109,8 @@ const CostumerForm = () => {
             InputLabelProps={{ shrink: true }}
             id="outlined-size-small"
             size="small"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
             sx={{
               flex: 1,
               minWidth: "200px",
@@ -89,6 +122,8 @@ const CostumerForm = () => {
             id="outlined-size-small"
             defaultValue="contacto"
             size="small"
+            value={estado}
+            onChange={(e) => setEstado(e.target.value)}
             select
             sx={{
               flex: 1,
@@ -107,6 +142,8 @@ const CostumerForm = () => {
             id="outlined-size-small"
             defaultValue="alta"
             size="small"
+            value={prioridad}
+            onChange={(e) => setPrioridad(e.target.value)}
             select
             sx={{
               flex: 1,
@@ -120,6 +157,20 @@ const CostumerForm = () => {
               </MenuItem>
             ))}
           </TextField>
+          <Box>
+            {filteredClients.length > 0 ? (
+              filteredClients.map((client) => (
+                <div key={client.id}>
+                  {client.nombre} - {client.estado} - {client.prioridad}
+                </div>
+              ))
+            ) : (
+              <p>
+                No se encontraron clientes que coincidan con los criterios de
+                búsqueda.
+              </p>
+            )}
+          </Box>
         </Box>
         <Button
           variant="contained"
