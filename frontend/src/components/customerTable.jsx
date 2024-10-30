@@ -339,97 +339,95 @@ export function CustomerTable({ filteredClients }) {
 		setPage(0);
 	};
 
-  // Evite un salto de diseño al llegar a la última página con filas vacías.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+	// Evite un salto de diseño al llegar a la última página con filas vacías.
+	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	const visibleRows = React.useMemo(
 		() =>
-		  [...rows]
-			.sort(getComparator(order, orderBy))
-			.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-			.map(row => ({
-			  ...row,
-			  managerNombre: row.encargado ? row.encargado.nombre : "Sin encargado", // Maneja el caso de undefined
-			  managerAvatar: row.encargado ? row.encargado.avatar : "ruta/a/avatar/default.png", // Avatar por defecto si es undefined
-			})),
+			[...rows]
+				.sort(getComparator(order, orderBy))
+				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+				.map((row) => ({
+					...row,
+					managerNombre: row.encargado ? row.encargado.nombre : "Sin encargado", // Maneja el caso de undefined
+					managerAvatar: row.encargado
+						? row.encargado.avatar
+						: "ruta/a/avatar/default.png", // Avatar por defecto si es undefined
+				})),
 		[order, orderBy, page, rowsPerPage, rows]
-	  );
-	  
-  return (
-    <Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
-      <EnhancedTableToolbar
-        selected={selected}
-        handleClientDelete={handleClientDelete}
-      />
-      {loadedData && rows.length === 0 ? (
-        <Typography
-          align="center"
-          sx={{
-            color: "red",
-          }}
-        >
-          No se encuentran resultados
-        </Typography>
-      ) : (
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table
-            stickyHeader
-            aria-label="sticky table"
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="small"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
+	);
 
-            <TableBody>
-              {rows.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      color: "red",
-                      fontWeight: "bold",
-                      fontSize: "1.25rem",
-                    }}
-                  >
-                    No se encuentran resultados
-                  </TableCell>
-                </TableRow>
-              ) : (
-                visibleRows.map((row, index) => {
-                  const isItemSelected = selected.includes(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+	return (
+		<Paper sx={{ width: "100%", overflow: "hidden", mb: 2 }}>
+			<EnhancedTableToolbar selected={selected} handleClientDelete={handleClientDelete} />
+			{loadedData && rows.length === 0 ? (
+				<Typography
+					align="center"
+					sx={{
+						color: "red",
+					}}
+				>
+					No se encuentran resultados
+				</Typography>
+			) : (
+				<TableContainer sx={{ maxHeight: 440 }}>
+					<Table
+						stickyHeader
+						aria-label="sticky table"
+						sx={{ minWidth: 750 }}
+						aria-labelledby="tableTitle"
+						size="small"
+					>
+						<EnhancedTableHead
+							numSelected={selected.length}
+							order={order}
+							orderBy={orderBy}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={rows.length}
+						/>
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                          onClick={(event) => handleClick(event, row.id)}
-                          sx={{
-                            cursor: "pointer",
-                          }}
-                        />
-                      </TableCell>
+						<TableBody>
+							{rows.length === 0 ? (
+								<TableRow>
+									<TableCell
+										align="center"
+										sx={{
+											color: "red",
+											fontWeight: "bold",
+											fontSize: "1.25rem",
+										}}
+									>
+										No se encuentran resultados
+									</TableCell>
+								</TableRow>
+							) : (
+								visibleRows.map((row, index) => {
+									const isItemSelected = selected.includes(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
+
+									return (
+										<TableRow
+											hover
+											role="checkbox"
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={row.id}
+											selected={isItemSelected}
+										>
+											<TableCell padding="checkbox">
+												<Checkbox
+													color="primary"
+													checked={isItemSelected}
+													inputProps={{
+														"aria-labelledby": labelId,
+													}}
+													onClick={(event) => handleClick(event, row.id)}
+													sx={{
+														cursor: "pointer",
+													}}
+												/>
+											</TableCell>
 
 											<TableCell
 												component="th"
@@ -440,13 +438,13 @@ export function CustomerTable({ filteredClients }) {
 												{row.nombre}
 											</TableCell>
 
-                      <TableCell align="left">
-                        <StateChips state={row.estado} />
-                      </TableCell>
+											<TableCell align="left">
+												<StateChips state={row.estado} />
+											</TableCell>
 
-                      <TableCell align="left">
-                        <PriorityChips priority={row.prioridad} />
-                      </TableCell>
+											<TableCell align="left">
+												<PriorityChips priority={row.prioridad} />
+											</TableCell>
 
 											<TableCell align="left">
 												<Box
@@ -478,41 +476,41 @@ export function CustomerTable({ filteredClients }) {
 												</Box>
 											</TableCell>
 
-                      <TableCell align="center">
-                        <Tooltip title="Ver" arrow>
-                          <IconButton
-                            onClick={() => {
-                              console.log("Ver Cliente", row.id);
-                            }}
-                          >
-                            <EyeIcon />
-                          </IconButton>
-                        </Tooltip>
+											<TableCell align="center">
+												<Tooltip title="Ver" arrow>
+													<IconButton
+														onClick={() => {
+															console.log("Ver Cliente", row.id);
+														}}
+													>
+														<EyeIcon />
+													</IconButton>
+												</Tooltip>
 
-                        <Tooltip title="Editar" arrow>
-                          <IconButton
-                            onClick={() => {
-                              console.log("Editar Cliente", row.id);
-                            }}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
+												<Tooltip title="Editar" arrow>
+													<IconButton
+														onClick={() => {
+															console.log("Editar Cliente", row.id);
+														}}
+													>
+														<EditIcon />
+													</IconButton>
+												</Tooltip>
 
-                        <Tooltip title="Eliminar" arrow>
-                          <IconButton
-                            onClick={() => {
-                              handleClientDelete(row.id);
-                            }}
-                          >
-                            <TrashIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
+												<Tooltip title="Eliminar" arrow>
+													<IconButton
+														onClick={() => {
+															handleClientDelete(row.id);
+														}}
+													>
+														<TrashIcon />
+													</IconButton>
+												</Tooltip>
+											</TableCell>
+										</TableRow>
+									);
+								})
+							)}
 
 							{emptyRows > 0 && (
 								<TableRow
