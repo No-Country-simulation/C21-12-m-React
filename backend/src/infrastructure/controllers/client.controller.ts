@@ -80,8 +80,7 @@ export const searchClients = async (req: Request, res: Response) => {
     const clients = await prisma.cliente.findMany({
       where: filters,
       include: {
-        encargado: true, // Incluir datos del manager relacionado
-        // Puedes agregar más relaciones si es necesario, por ejemplo, proyectos
+        encargado: true, 
       }
     });
 

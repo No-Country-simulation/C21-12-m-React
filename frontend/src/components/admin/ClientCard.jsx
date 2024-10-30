@@ -33,7 +33,7 @@ const StateChips = ({ state }) => {
       avatar={<Avatar>{state[0]}</Avatar>}
       sx={{
         backgroundColor: colorPalette[state],
-        color: '#000',
+        color: '#424242',
         fontWeight: 500,
         fontSize: '12px',
         marginRight: '8px',
@@ -48,9 +48,9 @@ StateChips.propTypes = {
 
 const PriorityChip = ({ priority }) => {
   const colorPalette = {
-    Alta: '#ff6347', 
-    Media: '#ffa500', 
-    Baja: '#87ceeb', 
+    Alta: '#ff6347',
+    Media: '#ffa500',
+    Baja: '#87ceeb',
   };
 
   return (
@@ -78,36 +78,45 @@ function ClientsCard() {
     <Card
       sx={{
         width: 452,
-        height: 296,
+        height: 290,
         padding: '16px',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-       <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            maxWidth: '80%',
+          }}
+        >
           Clientes
         </Typography>
         <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
-          Ver Todo
+          VER TODO
         </Button>
       </Box>
-      <Table sx={{ marginTop: '16px' }}>
+      <Table sx={{ marginTop: '8px', marginBottom: '8px' }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 500, color: '#616161' }}>Cliente</TableCell>
-            <TableCell sx={{ fontWeight: 500, color: '#616161' }}>Estado</TableCell>
-            <TableCell sx={{ fontWeight: 500, color: '#616161' }}>Prioridad</TableCell>
+            <TableCell sx={{ fontWeight: 500, color: '#616161', padding: '6px' }}>Cliente</TableCell>
+            <TableCell sx={{ fontWeight: 500, color: '#616161', padding: '6px' }}>Estado</TableCell>
+            <TableCell sx={{ fontWeight: 500, color: '#616161', padding: '6px' }}>Prioridad</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {clients.map((client, index) => (
-            <TableRow key={index}>
-              <TableCell>{client.name}</TableCell>
-              <TableCell>
+            <TableRow key={index} sx={{ borderBottom: '1px solid #E0E0E0' }}>
+              <TableCell sx={{ padding: '6px' }}>{client.name}</TableCell>
+              <TableCell sx={{ padding: '6px' }}>
                 <StateChips state={client.state} />
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ padding: '6px' }}>
                 <PriorityChip priority={client.priority} />
               </TableCell>
             </TableRow>
@@ -122,9 +131,12 @@ function ClientsCard() {
           marginTop: 'auto',
           textAlign: 'right',
           width: '100%',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
       >
-        Última actualización: 28/10/2024
+        Última actualización: 16/10/2024
       </Typography>
     </Card>
   );

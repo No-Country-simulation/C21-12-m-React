@@ -5,7 +5,7 @@ export function MainContent({ children }) {
 		<main
 			style={{
 				background: "#f1eefe",
-				width: "100%",
+				/* width: "100%", */
 			}}
 		>
 			<div

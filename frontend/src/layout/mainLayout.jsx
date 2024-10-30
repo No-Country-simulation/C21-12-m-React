@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export const MainLayout = ({ children }) => {
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <Box sx={{ display: "flex", height: "120vh", overflow: "hidden" }}>
       <CssBaseline />
       <Sidebar />
       

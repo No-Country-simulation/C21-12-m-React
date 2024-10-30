@@ -1,12 +1,14 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import RecentTasksCard from './RecentCardTask';
 import ClientsCard from './ClientCard';
+import ProjectsCard from './ProyectCard';
+import FinanceCard from './FinnanceCard';
 
 function Dashboard() {
   const isSmallScreen = useMediaQuery('(max-width:600px)'); // Verifica si la pantalla es pequeña
 
   return (
-    <Box sx={{ m: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ m: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',maxHeight: '600px',overflowY: 'auto' }}>
       {/* Saludo de bienvenida */}
       <Box sx={{ mb: 3, textAlign: 'center' }}>
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
@@ -17,14 +19,14 @@ function Dashboard() {
         </Typography>
       </Box>
 
-      {/* Secciones de tarjetas */}
+      {/* Primera fila de tarjetas */}
       <Box
         sx={{
           display: 'flex',
           gap: 2,
           width: '100%',
-          justifyContent: 'center',
-          flexDirection: isSmallScreen ? 'column' : 'row', // Cambia a columna en pantallas pequeñas
+          justifyContent: 'flex-start',
+          flexDirection: isSmallScreen ? 'column' : 'row',
           alignItems: 'center',
         }}
       >
@@ -32,41 +34,19 @@ function Dashboard() {
         <ClientsCard />
       </Box>
 
-      {/* Secciones adicionales abajo */}
+      {/* Segunda fila de tarjetas */}
       <Box
         sx={{
           display: 'flex',
-          flexDirection: isSmallScreen ? 'column' : 'row',
           gap: 2,
-          width: '100%',
+          justifyContent: 'center',
           mt: 3,
-          alignItems: 'center',
+          flexDirection: isSmallScreen ? 'column' : 'row',
+          alignItems: 'center'
         }}
       >
-        <Box
-          sx={{
-            backgroundColor: '#f0f0f0',
-            height: '200px',
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6">Sección Adicional 1</Typography>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: '#e0e0e0',
-            height: '200px',
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6">Sección Adicional 2</Typography>
-        </Box>
+        <ProjectsCard />
+        <FinanceCard />
       </Box>
     </Box>
   );

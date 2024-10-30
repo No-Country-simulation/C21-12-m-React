@@ -11,7 +11,7 @@ const RecentTasksCard = () => {
         gap: 3,
         maxWidth: 500, // Cambiado para acortar el ancho
         width: '100%',
-        height: 296,
+        height: 290,
         backgroundColor: '#FFFFFF',
         boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.2)',
         borderRadius: 1,
@@ -44,7 +44,7 @@ const RecentTasksCard = () => {
               gap: 1,
               width: '100%',
               maxWidth: 100, 
-              height: 144,
+              height: 122,
               backgroundColor: task.bgColor,
               borderRadius: 1,
             }}
@@ -60,11 +60,22 @@ const RecentTasksCard = () => {
         ))}
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        <Typography variant="caption" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
-          Última actualización: 28/10/2024
-        </Typography>
-      </Box>
+      
+      <Typography
+        variant="caption"
+        sx={{
+          color: '#9E9E9E',
+          marginTop: 'auto',
+          textAlign: 'right',
+          width: '100%',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Última actualización: 16/10/2024
+      </Typography>
+      
     </Paper>
   );
 };
