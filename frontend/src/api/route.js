@@ -86,16 +86,15 @@ export async function getListOfManagers() {
     } catch (error) {
         handleApiError(error);
     }
-} 
-
+}
 
 export const searchClients = async ({ nombre, estado, prioridad }) => {
     const params = new URLSearchParams({
-      nombre: nombre.trim(),
-      estado,
-      prioridad,
+        nombre: nombre.trim(),
+        estado,
+        prioridad,
     }).toString();
-  
+
     const response = await axios.get(`${API_BASE_URL}/v1/clients/search?${params}`);
-    return response.data; 
-  };
+    return response.data;
+};

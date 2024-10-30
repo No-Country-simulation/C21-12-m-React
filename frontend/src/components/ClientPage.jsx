@@ -24,6 +24,7 @@ const ClientPage = () => {
 					Clientes
 				</Typography>
 			</Box>
+
 			<CustomerForm onSave={handleSave} />
 			{alertVisible && (
 				<Alert
