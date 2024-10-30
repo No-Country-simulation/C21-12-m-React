@@ -10,6 +10,7 @@ import {
   TableRow,
   Chip,
   Avatar,
+  useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -74,17 +75,33 @@ PriorityChip.propTypes = {
 };
 
 function ClientsCard() {
+  const theme = useTheme();
   return (
     <Card
       sx={{
-        width: 452,
-        height: 290,
-        padding: '16px',
+        p: 2,
         display: 'flex',
         flexDirection: 'column',
+        height: 292, // Ajuste de altura para alinear con otras secciones
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+        },
+        [theme.breakpoints.up('md')]: {
+          width: '80%',
+          borderRadius: '5px',
+        },
+        [theme.breakpoints.up('lg')]: {
+          width: 452,
+        },
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: { xs: 'column', sm: 'row' },
+        }}
+      >
         <Typography
           variant="h6"
           sx={{
@@ -93,15 +110,25 @@ function ClientsCard() {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             maxWidth: '80%',
+            mb: { xs: 1, sm: 0 },
           }}
         >
           Clientes
         </Typography>
-        <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
+        <Button
+          variant="text"
+          sx={{
+            color: '#7C4DFF',
+            cursor: 'pointer',
+            fontWeight: 500,
+            textAlign: { xs: 'center', sm: 'right' },
+          }}
+        >
           VER TODO
         </Button>
       </Box>
-      <Table sx={{ marginTop: '8px', marginBottom: '8px' }}>
+
+      <Table sx={{ my: 2 }}>
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 500, color: '#616161', padding: '6px' }}>Cliente</TableCell>

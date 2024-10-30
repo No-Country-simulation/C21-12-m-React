@@ -24,15 +24,16 @@ const FinanceCard = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px',
-        width: '520px',
+        gap: 2,
+        width: { xs: '100%', sm: '520px' },  // Ajuste responsive para ancho
+        padding: 2,
         backgroundColor: '#FFFFFF',
         boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
       }}
     >
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" paddingLeft="18px">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography
           variant="h6"
           sx={{
@@ -40,27 +41,27 @@ const FinanceCard = () => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            maxWidth: '80%',
+            maxWidth: '70%',
           }}
         >
           Finanzas
         </Typography>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Fecha</InputLabel>
           <Select value={value} onChange={handleChange} label="Fecha">
             <MenuItem value="últimos 6 meses">Últimos 6 meses</MenuItem>
             <MenuItem value="último año">Último año</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
+        <Button variant="text" sx={{ color: '#7C4DFF', fontWeight: 500 }}>
           VER TODO
         </Button>
       </Box>
 
       {/* Chart */}
-      <Box sx={{ padding: '16px' }}>
+      <Box sx={{ paddingX: 1 }}>
         <ResponsiveContainer width="100%" height={320}>
-          <BarChart data={data} margin={{ width:'90%',top: 5, right: 30, left: 20, bottom: 5 }}>
+          <BarChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -77,7 +78,7 @@ const FinanceCard = () => {
         variant="caption"
         sx={{
           color: '#9E9E9E',
-          marginTop: 'auto',
+          mt: 'auto',
           textAlign: 'right',
           width: '100%',
           overflow: 'hidden',

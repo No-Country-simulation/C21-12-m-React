@@ -17,15 +17,17 @@ const RecentTasksCard = () => {
         borderRadius: 1,
       }}
     >
+      {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
         <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Tareas Recientes
         </Typography>
-        <Button variant="text" sx={{ color: '#7C4DFF', cursor: 'pointer', fontWeight: 500 }}>
+        <Button variant="text" sx={{ color: '#7C4DFF', fontWeight: 500 }}>
           Ver Todo
         </Button>
       </Box>
 
+      {/* Task Statuses */}
       <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
         {[
           { count: 12, label: 'Sin empezar', bgColor: '#E7E7E7', color: '#121212' },
@@ -42,8 +44,7 @@ const RecentTasksCard = () => {
               alignItems: 'center',
               padding: 1,
               gap: 1,
-              width: '100%',
-              maxWidth: 100, 
+              width: '24%', // Ajuste responsive
               height: 122,
               backgroundColor: task.bgColor,
               borderRadius: 1,
@@ -60,12 +61,12 @@ const RecentTasksCard = () => {
         ))}
       </Box>
 
-      
+      {/* Footer */}
       <Typography
         variant="caption"
         sx={{
           color: '#9E9E9E',
-          marginTop: 'auto',
+          mt: 'auto',
           textAlign: 'right',
           width: '100%',
           overflow: 'hidden',
@@ -75,7 +76,6 @@ const RecentTasksCard = () => {
       >
         Última actualización: 16/10/2024
       </Typography>
-      
     </Paper>
   );
 };
