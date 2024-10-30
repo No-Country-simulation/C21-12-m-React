@@ -25,7 +25,7 @@ const FinanceCard = () => {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
-        width: { xs: '100%', sm: '520px' },  // Ajuste responsive para ancho
+        width: { xs: '100%', sm: '520px' }, 
         padding: 2,
         backgroundColor: '#FFFFFF',
         boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.2)',

@@ -6,8 +6,8 @@ import FinanceCard from './FinnanceCard';
 
 function Dashboard() {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // para celulares
-  const isTabletScreen = useMediaQuery(theme.breakpoints.down('md')); // para tabletas
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); 
+  const isTabletScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box

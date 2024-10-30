@@ -82,7 +82,7 @@ function ClientsCard() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 292, // Ajuste de altura para alinear con otras secciones
+        height: 292, 
         [theme.breakpoints.down('sm')]: {
           width: '100%',
         },
