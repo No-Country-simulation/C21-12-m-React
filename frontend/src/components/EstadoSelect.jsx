@@ -13,10 +13,10 @@ const EstadoSelect = ({ value, onChange, error, helperText }) => (
 		fullWidth
 		sx={{ mt: 2 }}
 	>
-		<MenuItem value="nuevo">Nuevo</MenuItem>
-		<MenuItem value="en_proceso">En proceso</MenuItem>
-		<MenuItem value="completado">Completado</MenuItem>
-		<MenuItem value="cancelado">Cancelado</MenuItem>
+		<MenuItem value="Contacto">Contacto</MenuItem>
+		<MenuItem value="Reunion">Reunion</MenuItem>
+		<MenuItem value="Propuesta">Propuesta</MenuItem>
+		<MenuItem value="Negociacion">Negociacion</MenuItem>
 	</TextField>
 );
 

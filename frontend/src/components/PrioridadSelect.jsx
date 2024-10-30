@@ -13,9 +13,9 @@ const PrioridadSelect = ({ value, onChange, error, helperText }) => (
 		fullWidth
 		sx={{ mt: 2 }}
 	>
-		<MenuItem value="alta">Alta</MenuItem>
-		<MenuItem value="media">Media</MenuItem>
-		<MenuItem value="baja">Baja</MenuItem>
+		<MenuItem value="Alta">Alta</MenuItem>
+		<MenuItem value="Media">Media</MenuItem>
+		<MenuItem value="Baja">Baja</MenuItem>
 	</TextField>
 );
 
