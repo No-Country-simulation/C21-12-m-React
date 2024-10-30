@@ -10,14 +10,15 @@ function Dashboard() {
   return (
     <Box sx={{ m: 2, display: 'flex', flexDirection: 'column', alignItems: 'center',maxHeight: '600px',overflowY: 'auto' }}>
       {/* Saludo de bienvenida */}
-      <Box sx={{ mb: 3, textAlign: 'center' }}>
-        <Typography variant="h4" sx={{ fontWeight: 600 }}>
-          Bienvenida, Olivia
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#475467' }}>
-          Siga, gestione y prevea sus clientes, pedidos y tareas.
-        </Typography>
-      </Box>
+      <Box sx={{ mb: 3, textAlign: 'left' }}>
+  <Typography variant="h4" sx={{ fontWeight: 600 }}>
+    Bienvenida, Olivia
+  </Typography>
+  <Typography variant="body2" sx={{ color: '#475467' }}>
+    Siga, gestione y prevea sus clientes, pedidos y tareas.
+  </Typography>
+</Box>
+
 
       {/* Primera fila de tarjetas */}
       <Box
