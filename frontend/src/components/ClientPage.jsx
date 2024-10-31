@@ -14,11 +14,7 @@ const ClientPage = () => {
 	};
 	return (
 		<Box sx={{ m: 2 }}>
-			<Box
-				display="flex"
-				alignItems="left"
-				sx={{ color: "#2f2467", my: 4 }}
-			>
+			<Box display="flex" alignItems="left" sx={{ color: "#2f2467", my: 4 }}>
 				<PeopleAltOutlinedIcon sx={{ mr: 2, fontSize: 40 }} />
 				<Typography variant="h4" sx={{ fontWeight: 600 }}>
 					Clientes
@@ -27,18 +23,13 @@ const ClientPage = () => {
 
 			<CustomerForm onSave={handleSave} />
 			{alertVisible && (
-				<Alert
-					severity="success"
-					onClose={handleCloseAlert}
-					sx={{ mb: 2 }}
-				>
+				<Alert severity="success" onClose={handleCloseAlert} sx={{ mb: 2 }}>
 					¡Cliente creado con éxito!
 					<br />
-					El nuevo cliente ha sido agregado correctamente. Puedes
-					comenzar a gestionarlo desde la lista de clientes.
+					El nuevo cliente ha sido agregado correctamente. Puedes comenzar a gestionarlo
+					desde la lista de clientes.
 				</Alert>
 			)}
-
 		</Box>
 	);
 };
