@@ -257,9 +257,9 @@ export function CustomerTable({ filteredClients, openDetailClient }) {
 	}, []);
 
 	const handleSendingDataToSeeDetails = (customerId) => {
-		const customerData = rows.find((client) => client.id === customerId) ;
+		const customerData = rows.find((client) => client.id === customerId);
 		openDetailClient(customerData);
-	}
+	};
 
 	const deleteClientFromTable = (customersId) => {
 		// Si customersId es un array, eliminamos todos los IDs que estén en ese array

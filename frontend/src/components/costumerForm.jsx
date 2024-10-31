@@ -29,7 +29,7 @@ const CostumerForm = () => {
 	const [open, setOpen] = useState(false);
 
 	const [openDetailClient, setOpenDetailClient] = useState(false);
-	const [handleSelectedCustomerData, setHandleSelectedCustomerData] = useState({})
+	const [handleSelectedCustomerData, setHandleSelectedCustomerData] = useState({});
 
 	const [alertVisible, setAlertVisible] = useState(false);
 	const [errorAlert, setErrorAlert] = useState(false);
@@ -204,6 +204,7 @@ const CostumerForm = () => {
 				)}
 
 				<CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
+
 				<ModalCustomerDetails
 					open={openDetailClient}
 					customerDetails={handleSelectedCustomerData}

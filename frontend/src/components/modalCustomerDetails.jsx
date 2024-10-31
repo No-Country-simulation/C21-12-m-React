@@ -21,7 +21,7 @@ import { useEffect } from "react";
 
 const labelChipFormatter = (label) => {
 	return label.charAt(0).toUpperCase() + label.slice(1).toLowerCase();
-}
+};
 
 function PriorityChips(props) {
 	const { prioridad } = props;
@@ -32,11 +32,7 @@ function PriorityChips(props) {
 
 	return (
 		<Box>
-			<Chip
-				label={formattedLabel}
-				color={colorPalette[prioridad]}
-				size="small"
-			/>
+			<Chip label={formattedLabel} color={colorPalette[prioridad]} size="small" />
 		</Box>
 	);
 }
@@ -139,254 +135,258 @@ export const ModalCustomerDetails = ({ open, customerDetails, handleClose }) => 
 
 	return (
 		<>
-			<Dialog
-				onClose={handleClose}
-				aria-labelledby="customized-dialog-title"
-				open={open}
-				maxWidth="md"
-				fullWidth
-			>
-				<DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-					<Box display="flex" alignItems="center" gap={3}>
-						<img src={customerIcon} alt="Nuevo cliente" width="24" height="24" />
+			{open && (
+				<Dialog
+					onClose={handleClose}
+					aria-labelledby="customized-dialog-title"
+					open={open}
+					maxWidth="md"
+					fullWidth
+				>
+					<DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+						<Box display="flex" alignItems="center" gap={3}>
+							<img src={customerIcon} alt="Nuevo cliente" width="24" height="24" />
 
-						<Typography variant="h6">Detalles cliente</Typography>
+							<Typography variant="h6">Detalles cliente</Typography>
 
-						<Typography variant="h6">
-							<Chip
-								label={customerDetails.nombre}
-								color="default"
-								size="small"
-								variant="filled"
-							/>
-						</Typography>
-					</Box>
+							<Typography variant="h6">
+								<Chip
+									label={customerDetails.nombre}
+									color="default"
+									size="small"
+									variant="filled"
+								/>
+							</Typography>
+						</Box>
 
-					<IconButton
-						aria-label="close"
-						onClick={handleClose}
-						sx={(theme) => ({
-							position: "absolute",
-							right: 8,
-							top: 8,
-							color: theme.palette.grey[500],
-						})}
-					>
-						<CloseIcon />
-					</IconButton>
-				</DialogTitle>
+						<IconButton
+							aria-label="close"
+							onClick={handleClose}
+							sx={(theme) => ({
+								position: "absolute",
+								right: 8,
+								top: 8,
+								color: theme.palette.grey[500],
+							})}
+						>
+							<CloseIcon />
+						</IconButton>
+					</DialogTitle>
 
-				<DialogContent dividers>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<Box>
-							<Box
-								sx={{
-									border: "1px solid #E0E0E0",
-									p: 2,
-									borderRadius: "8px",
-									mb: 2,
-								}}
-							>
-								<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
-									Datos personales
-								</Typography>
-
-								<Divider sx={{ my: 2 }} />
-
-								<Grid container spacing={2}>
-									<Grid item xs={12} sm={6} md={3}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Nombre:
-										</Typography>
-										<Typography>{customerDetails.nombre}</Typography>
-									</Grid>
-
-									<Grid item xs={12} sm={6} md={3}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Email:
-										</Typography>
-										<Typography>{customerDetails.email}</Typography>
-									</Grid>
-
-									<Grid item xs={12} sm={6} md={3}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Teléfono:
-										</Typography>
-										<Typography>{customerDetails.telefono}</Typography>
-									</Grid>
-
-									<Grid item xs={12} sm={6} md={3}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Origen:
-										</Typography>
-										<Typography>{customerDetails.origen}</Typography>
-									</Grid>
-								</Grid>
-							</Box>
-
-							<Box
-								sx={{
-									border: "1px solid #E0E0E0",
-									p: 2,
-									borderRadius: "8px",
-									mb: 2,
-								}}
-							>
-								<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
-									Seguimiento
-								</Typography>
-
-								<Divider sx={{ my: 2 }} />
-
-								<Grid item xs={12} sm={6} md={4}>
-									<Typography variant="body2" sx={{ color: "#757575" }}>
-										Estado
+					<DialogContent dividers>
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<Box>
+								<Box
+									sx={{
+										border: "1px solid #E0E0E0",
+										p: 2,
+										borderRadius: "8px",
+										mb: 2,
+									}}
+								>
+									<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
+										Datos personales
 									</Typography>
 
-									<Box
-										sx={{
-											display: "flex",
-											flexDirection: "column",
-											gap: "2rem",
-										}}
-									>
-										<Grid container spacing={2}>
-											<Grid item>{StateChips(customerDetails)}</Grid>
+									<Divider sx={{ my: 2 }} />
+
+									<Grid container spacing={2}>
+										<Grid item xs={12} sm={6} md={3}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Nombre:
+											</Typography>
+											<Typography>{customerDetails.nombre}</Typography>
 										</Grid>
 
-										<Grid container spacing={2}>
-											<Grid item xs={12} sm={6} md={3}>
-												<Typography
-													variant="body2"
-													sx={{ color: "#757575" }}
-												>
-													Prioridad:
-												</Typography>
+										<Grid item xs={12} sm={6} md={3}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Email:
+											</Typography>
+											<Typography>{customerDetails.email}</Typography>
+										</Grid>
 
-												{PriorityChips(customerDetails)}
+										<Grid item xs={12} sm={6} md={3}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Teléfono:
+											</Typography>
+											<Typography>{customerDetails.telefono}</Typography>
+										</Grid>
+
+										<Grid item xs={12} sm={6} md={3}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Origen:
+											</Typography>
+											<Typography>{customerDetails.origen}</Typography>
+										</Grid>
+									</Grid>
+								</Box>
+
+								<Box
+									sx={{
+										border: "1px solid #E0E0E0",
+										p: 2,
+										borderRadius: "8px",
+										mb: 2,
+									}}
+								>
+									<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
+										Seguimiento
+									</Typography>
+
+									<Divider sx={{ my: 2 }} />
+
+									<Grid item xs={12} sm={6} md={4}>
+										<Typography variant="body2" sx={{ color: "#757575" }}>
+											Estado
+										</Typography>
+
+										<Box
+											sx={{
+												display: "flex",
+												flexDirection: "column",
+												gap: "2rem",
+											}}
+										>
+											<Grid container spacing={2}>
+												<Grid item>{StateChips(customerDetails)}</Grid>
 											</Grid>
 
-											<Grid item xs={12} sm={6} md={3}>
-												<Typography
-													variant="body2"
-													sx={{ color: "#757575" }}
-												>
-													Encargado:
-												</Typography>
-
-												<Box
-													sx={{
-														display: "flex",
-														gap: "16px",
-														alignItems: "center",
-													}}
-												>
-													<Avatar
-														sx={{
-															width: "24px",
-															height: "24px",
-															borderRadius: "50%",
-														}}
-														alt="Remy Sharp"
-														src={customerDetails.encargado.avatar}
-													/>
+											<Grid container spacing={2}>
+												<Grid item xs={12} sm={6} md={3}>
 													<Typography
 														variant="body2"
-														gutterBottom
+														sx={{ color: "#757575" }}
+													>
+														Prioridad:
+													</Typography>
+
+													{PriorityChips(customerDetails)}
+												</Grid>
+
+												<Grid item xs={12} sm={6} md={3}>
+													<Typography
+														variant="body2"
+														sx={{ color: "#757575" }}
+													>
+														Encargado:
+													</Typography>
+
+													<Box
 														sx={{
-															marginBottom: 0,
-															lineHeight: "24px",
+															display: "flex",
+															gap: "16px",
+															alignItems: "center",
 														}}
 													>
-														{customerDetails.encargado.nombre}
+														<Avatar
+															sx={{
+																width: "24px",
+																height: "24px",
+																borderRadius: "50%",
+															}}
+															alt="Remy Sharp"
+															src={customerDetails.encargado.avatar}
+														/>
+														<Typography
+															variant="body2"
+															gutterBottom
+															sx={{
+																marginBottom: 0,
+																lineHeight: "24px",
+															}}
+														>
+															{customerDetails.encargado.nombre}
+														</Typography>
+													</Box>
+												</Grid>
+
+												<Grid item xs={12} sm={6} md={3}>
+													<Typography
+														variant="body2"
+														sx={{ color: "#757575" }}
+													>
+														Último contacto:
 													</Typography>
-												</Box>
-											</Grid>
+													<Typography>
+														{formatDateTime(
+															customerDetails.ultimoContacto
+														)}
+													</Typography>
+												</Grid>
 
-											<Grid item xs={12} sm={6} md={3}>
-												<Typography
-													variant="body2"
-													sx={{ color: "#757575" }}
-												>
-													Último contacto:
-												</Typography>
-												<Typography>
-													{formatDateTime(customerDetails.ultimoContacto)}
-												</Typography>
+												<Grid item xs={12} sm={6} md={3}>
+													<Typography
+														variant="body2"
+														sx={{ color: "#757575" }}
+													>
+														Expectativa de cierre:
+													</Typography>
+													<Typography>
+														{formatDateTime(
+															customerDetails.fechaCierreEstimada
+														)}
+													</Typography>
+												</Grid>
 											</Grid>
+										</Box>
+									</Grid>
+								</Box>
 
-											<Grid item xs={12} sm={6} md={3}>
-												<Typography
-													variant="body2"
-													sx={{ color: "#757575" }}
-												>
-													Expectativa de cierre:
-												</Typography>
-												<Typography>
-													{formatDateTime(
-														customerDetails.fechaCierreEstimada
-													)}
-												</Typography>
-											</Grid>
+								<Box
+									sx={{
+										border: "1px solid #E0E0E0",
+										p: 2,
+										borderRadius: "8px",
+										mb: 2,
+									}}
+								>
+									<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
+										Información adicional
+									</Typography>
+
+									<Divider sx={{ my: 2 }} />
+
+									<Grid container sx={{ flexDirection: "column", gap: "1rem" }}>
+										<Grid item xs={12} sm={6} md={4}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Proyecto:
+											</Typography>
+											<Typography>{customerDetails.descripcion}</Typography>
 										</Grid>
-									</Box>
-								</Grid>
-							</Box>
 
-							<Box
-								sx={{
-									border: "1px solid #E0E0E0",
-									p: 2,
-									borderRadius: "8px",
-									mb: 2,
-								}}
-							>
-								<Typography sx={{ fontWeight: 600, color: "#7055F5", m: "2" }}>
-									Información adicional
-								</Typography>
-
-								<Divider sx={{ my: 2 }} />
-
-								<Grid container sx={{ flexDirection: "column", gap: "1rem" }}>
-									<Grid item xs={12} sm={6} md={4}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Proyecto:
-										</Typography>
-										<Typography>{customerDetails.descripcion}</Typography>
+										<Grid item xs={12} sm={6} md={4}>
+											<Typography variant="body2" sx={{ color: "#757575" }}>
+												Valor estimado del proyectos:
+											</Typography>
+											<Typography>
+												{currencyFormatter(customerDetails.valorEstimado)}
+											</Typography>
+										</Grid>
 									</Grid>
-
-									<Grid item xs={12} sm={6} md={4}>
-										<Typography variant="body2" sx={{ color: "#757575" }}>
-											Valor estimado del proyectos:
-										</Typography>
-										<Typography>
-											{currencyFormatter(customerDetails.valorEstimado)}
-										</Typography>
-									</Grid>
-								</Grid>
+								</Box>
 							</Box>
-						</Box>
-					</LocalizationProvider>
-				</DialogContent>
+						</LocalizationProvider>
+					</DialogContent>
 
-				<DialogActions>
-					<Button
-						onClick={handleClose}
-						color="inherit"
-						sx={{ fontWeight: "600" }}
-						variant="text"
-					>
-						Cerrar
-					</Button>
-					<Button
-						variant="contained"
-						sx={{ backgroundColor: "#5a3fd1", color: "white" }}
-						onClick={handleSaveClick}
-					>
-						Editar
-					</Button>
-				</DialogActions>
-			</Dialog>
+					<DialogActions>
+						<Button
+							onClick={handleClose}
+							color="inherit"
+							sx={{ fontWeight: "600" }}
+							variant="text"
+						>
+							Cerrar
+						</Button>
+						<Button
+							variant="contained"
+							sx={{ backgroundColor: "#5a3fd1", color: "white" }}
+							onClick={handleSaveClick}
+						>
+							Editar
+						</Button>
+					</DialogActions>
+				</Dialog>
+			)}
 		</>
 	);
 };
@@ -395,4 +395,5 @@ ModalCustomerDetails.propTypes = {
 	open: PropTypes.bool.isRequired,
 	customerDetails: PropTypes.object.isRequired,
 	handleClose: PropTypes.func.isRequired,
+	loadedData: PropTypes.bool.isRequired,
 };
