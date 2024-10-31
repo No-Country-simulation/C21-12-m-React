@@ -460,7 +460,6 @@ export function CustomerTable({ filteredClients, openDetailClient }) {
 												</Box>
 											</TableCell>
 
-											{/*//@ Trabajando */}
 											<TableCell align="center">
 												<Tooltip title="Ver" arrow>
 													<IconButton
