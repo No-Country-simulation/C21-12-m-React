@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Paper, Typography, FormControl, InputLabel, Select, MenuItem, Button, Box } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -53,7 +54,7 @@ const FinanceCard = () => {
             <MenuItem value="último año">Último año</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="text" sx={{ color: '#7C4DFF', fontWeight: 500 }}>
+        <Button  component={Link} to="/finanzas" variant="text" sx={{ color: '#7C4DFF', fontWeight: 500 }}>
           VER TODO
         </Button>
       </Box>

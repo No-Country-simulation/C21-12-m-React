@@ -13,6 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const clients = [
   { name: 'Tech Innovators', state: 'Contacto', priority: 'Alta' },
@@ -116,6 +117,8 @@ function ClientsCard() {
           Clientes
         </Typography>
         <Button
+        component={Link}
+  to="/clientes"
           variant="text"
           sx={{
             color: '#7C4DFF',
