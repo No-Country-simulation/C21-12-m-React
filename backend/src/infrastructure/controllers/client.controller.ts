@@ -119,15 +119,17 @@ export const getClientById = async (req: Request, res: Response) => {
   }
 };
 
+
 export const updateClient = async (req: Request, res: Response) => {
   try {
-    const { error } = validateClientData(req.body);
+    // Valida solo los campos presentes en `req.body`
+    const { error } = validateClientData(req.body, true);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const { id } = req.params;
-    const clientToUpdate = await ClientService.createClient({ ...req.body, id: Number(id) });
 
-    const updatedClient = await clientRepository.update(clientToUpdate);
+    // Actualiza solo los campos proporcionados en `req.body`
+    const updatedClient = await clientRepository.update({ ...req.body, id: Number(id) });
 
     if (!updatedClient) {
       return res.status(404).json({ error: 'Client not found' });
@@ -139,6 +141,9 @@ export const updateClient = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
 
 export const deleteClient = async (req: Request, res: Response) => {
   try {

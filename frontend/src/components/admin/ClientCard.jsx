@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 const clients = [
   { name: 'Tech Innovators', state: 'Contacto', priority: 'Alta' },
   { name: 'Global Solutions', state: 'Reunion', priority: 'Media' },
-  { name: 'Creative Studio', state: 'Propuesta', priority: 'Alta' },
+  { name: 'Creative Studio', state: 'Propuesta', priority: 'Baja' },
 ];
 
 const StateChips = ({ state }) => {

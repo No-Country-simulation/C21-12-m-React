@@ -98,42 +98,49 @@ export class PrismaClientRepository implements ClientRepository {
     );
   }
 
-  // Método para actualizar un cliente
-  async update(client: Client): Promise<Client> {
-    const updatedClient = await prisma.cliente.update({
-      where: { id: client.id },
-      data: {
-        nombre: client.nombre,
-        estado: client.estado,
-        prioridad: client.prioridad,
-        valorEstimado: client.valor_estimado, 
-        encargadoId: client.encargadoId, 
-        origen: client.origen,
-        email: client.email,
-        telefono: client.telefono,
-        ultimoContacto: client.ultimo_contacto,
-        fechaCierreEstimada: client.expected_close,
-      },
-      include: {
-        encargado: true, 
-      },
-    });
 
-    // Crear una instancia de Client actualizada
-    return new Client(
-      updatedClient.id,
-      updatedClient.nombre,
-      updatedClient.estado,
-      updatedClient.prioridad,
-      updatedClient.valorEstimado,
-      updatedClient.encargadoId,
-      updatedClient.origen,
-      updatedClient.email,
-      updatedClient.telefono,
-      updatedClient.ultimoContacto,
-      updatedClient.fechaCierreEstimada
-    );
-  }
+async update(client: Partial<Client>): Promise<Client> {
+  const dataToUpdate = Object.fromEntries(
+    Object.entries({
+      nombre: client.nombre,
+      estado: client.estado,
+      prioridad: client.prioridad ? client.prioridad.toUpperCase() : undefined,
+      valor_estimado: client.valor_estimado,
+      encargadoId: client.encargadoId,
+      origen: client.origen,
+      email: client.email,
+      telefono: client.telefono,
+      ultimo_contacto: client.ultimo_contacto,
+      fechaCierreEstimada: client.expected_close,
+    }).filter(([_, value]) => value !== undefined)
+  );
+
+  // Realizar la actualización en la base de datos
+  const updatedClient = await prisma.cliente.update({
+    where: { id: client.id },
+    data: dataToUpdate,
+    include: { encargado: true },
+  });
+  
+  // Mapear el resultado al tipo Client
+  return {
+    id: updatedClient.id,
+    nombre: updatedClient.nombre,
+    estado: updatedClient.estado,
+    prioridad: updatedClient.prioridad,
+    valor_estimado: updatedClient.valorEstimado,
+    encargadoId: updatedClient.encargadoId,
+    origen: updatedClient.origen,
+    email: updatedClient.email,
+    telefono: updatedClient.telefono,
+    ultimo_contacto: updatedClient.ultimoContacto,
+    expected_close: updatedClient.fechaCierreEstimada
+    
+  };
+}
+
+
+
 
   // Método para eliminar un cliente
   async delete(id: number): Promise<void> {
