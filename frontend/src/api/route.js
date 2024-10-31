@@ -56,17 +56,29 @@ export async function updateClient(id, data) {
     }
 }
 
-//* Eliminar un cliente:
-export async function deleteClient(id) {
-    try {
-        const response = await axios.delete(`${API_BASE_URL}/v1/clients/${id}`);
-        return response.data;
-    } catch (error) {
-        handleApiError(error);
+export async function deleteClient(customersId) {
+    if (Array.isArray(customersId)) {
+        // Eliminación de múltiples clientes
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/v1/clients/multi/delete`, {
+                ...withCredentialsConfig,
+                data: { ids: customersId }
+            });
+            return response.data;
+        } catch (error) {
+            handleApiError(error);
+        }
+    } else {
+        // Eliminación de un solo cliente
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/v1/clients/${customersId}`, withCredentialsConfig);
+            return response.data;
+        } catch (error) {
+            handleApiError(error);
+        }
     }
 }
 
-//* Octener Todos los clientes:
 export async function getListOfManagers() {
     try {
         const response = await axios.get(`${API_BASE_URL}/v1/managers`, withCredentialsConfig);
@@ -74,4 +86,15 @@ export async function getListOfManagers() {
     } catch (error) {
         handleApiError(error);
     }
-} 
+}
+
+export const searchClients = async ({ nombre, estado, prioridad }) => {
+    const params = new URLSearchParams({
+        nombre: nombre.trim(),
+        estado,
+        prioridad,
+    }).toString();
+
+    const response = await axios.get(`${API_BASE_URL}/v1/clients/search?${params}`);
+    return response.data;
+};
