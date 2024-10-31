@@ -339,7 +339,6 @@ export function CustomerTable({ filteredClients }) {
     setPage(0);
   };
 
-  // Evite un salto de diseño al llegar a la última página con filas vacías.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -350,8 +349,8 @@ export function CustomerTable({ filteredClients }) {
 			.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 			.map(row => ({
 			  ...row,
-			  managerNombre: row.encargado ? row.encargado.nombre : "Sin encargado", // Maneja el caso de undefined
-			  managerAvatar: row.encargado ? row.encargado.avatar : "ruta/a/avatar/default.png", // Avatar por defecto si es undefined
+			  managerNombre: row.encargado ? row.encargado.nombre : "Sin encargado", 
+			  managerAvatar: row.encargado ? row.encargado.avatar : "ruta/a/avatar/default.png", 
 			})),
 		[order, orderBy, page, rowsPerPage, rows]
 	  );
