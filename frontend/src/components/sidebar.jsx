@@ -64,7 +64,7 @@ const Sidebar = () => {
 		{
 			text: "Dashboard",
 			icon: <DashboardOutlinedIcon sx={{ color: "#664ddf" }} />,
-			link: "/",
+			link: "/dashboard",
 		},
 		{
 			text: "Tareas",
@@ -86,6 +86,7 @@ const Sidebar = () => {
 		{
 			text: "Finanzas",
 			icon: <SavingsOutlinedIcon sx={{ color: "#664ddf" }} />,
+			link: "/finanzas",
 		},
 	];
 

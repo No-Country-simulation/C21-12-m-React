@@ -78,7 +78,10 @@ export const searchClients = async (req: Request, res: Response) => {
     if (prioridad) filters.prioridad = { equals: String(prioridad).toUpperCase().replace(' ', '_') };
 
     const clients = await prisma.cliente.findMany({
-      where: filters
+      where: filters,
+      include: {
+        encargado: true, 
+      }
     });
 
     res.status(200).json(clients);
@@ -87,6 +90,7 @@ export const searchClients = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 export const getAllClients = async (req: Request, res: Response) => {

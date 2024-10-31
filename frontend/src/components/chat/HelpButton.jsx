@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import BotIcon from '../../assets/icon-chat/icon-bot.svg'; 
-import CloseIcon from '../../assets/icon-chat/icon-arrow-down.svg';
+import BotIcon from '../../assets/icon-chat/icon-bot.png'; 
+import CloseIcon from '../../assets/icon-chat/icon-arrow-down.png';
 import BubbleChatIcon from '../../assets/icon-chat/bubble-chat.svg';
 import { Box } from '@mui/material';
 import ChatBox from './ChatBox';
