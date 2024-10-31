@@ -47,6 +47,7 @@ model Cliente {
   telefono          String     
   ultimoContacto    DateTime?
   fechaCierreEstimada DateTime?
+  descripcion        String?
   proyectos         Proyecto[] @relation("ClienteProyectos")
   actividades       Actividad[]
   createdAt         DateTime   @default(now())   

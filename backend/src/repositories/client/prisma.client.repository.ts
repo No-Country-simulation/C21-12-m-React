@@ -19,7 +19,8 @@ export class PrismaClientRepository implements ClientRepository {
         email: client.email,
         telefono: client.telefono,
         ultimoContacto: client.ultimo_contacto,
-        fechaCierreEstimada: client.expected_close, 
+        fechaCierreEstimada: client.expected_close,
+        descripcion: client.descripcion,
       },
       include: {
         encargado: true, 
@@ -39,6 +40,7 @@ export class PrismaClientRepository implements ClientRepository {
       createdClient.telefono,
       createdClient.ultimoContacto,
       createdClient.fechaCierreEstimada,
+      createdClient.descripcion,
       createdClient.encargado?.nombre, 
       createdClient.encargado?.avatar
     );
@@ -65,6 +67,7 @@ export class PrismaClientRepository implements ClientRepository {
       client.telefono,
       client.ultimoContacto,
       client.fechaCierreEstimada,
+      client.descripcion,
       client.encargado?.nombre, 
       client.encargado?.avatar
     ));
@@ -94,50 +97,55 @@ export class PrismaClientRepository implements ClientRepository {
       client.email,
       client.telefono,
       client.ultimoContacto,
-      client.fechaCierreEstimada
+      client.fechaCierreEstimada,
+      client.descripcion
     );
   }
 
 
-async update(client: Partial<Client>): Promise<Client> {
-  const dataToUpdate = Object.fromEntries(
-    Object.entries({
-      nombre: client.nombre,
-      estado: client.estado,
-      prioridad: client.prioridad ? client.prioridad.toUpperCase() : undefined,
-      valor_estimado: client.valor_estimado,
-      encargadoId: client.encargadoId,
-      origen: client.origen,
-      email: client.email,
-      telefono: client.telefono,
-      ultimo_contacto: client.ultimo_contacto,
-      fechaCierreEstimada: client.expected_close,
-    }).filter(([_, value]) => value !== undefined)
-  );
-
-  // Realizar la actualización en la base de datos
-  const updatedClient = await prisma.cliente.update({
-    where: { id: client.id },
-    data: dataToUpdate,
-    include: { encargado: true },
-  });
+  async update(client: Partial<Client>): Promise<Client> {
+    const dataToUpdate = Object.fromEntries(
+      Object.entries({
+        nombre: client.nombre,
+        estado: client.estado,
+        prioridad: client.prioridad ? client.prioridad.toUpperCase() : undefined,
+        valor_estimado: client.valor_estimado,
+        encargadoId: client.encargadoId,
+        origen: client.origen,
+        email: client.email,
+        telefono: client.telefono,
+        ultimo_contacto: client.ultimo_contacto,
+        fechaCierreEstimada: client.expected_close,
+        descripcion: client.descripcion,  // Añadido campo descripcion
+      }).filter(([_, value]) => value !== undefined)
+    );
   
-  // Mapear el resultado al tipo Client
-  return {
-    id: updatedClient.id,
-    nombre: updatedClient.nombre,
-    estado: updatedClient.estado,
-    prioridad: updatedClient.prioridad,
-    valor_estimado: updatedClient.valorEstimado,
-    encargadoId: updatedClient.encargadoId,
-    origen: updatedClient.origen,
-    email: updatedClient.email,
-    telefono: updatedClient.telefono,
-    ultimo_contacto: updatedClient.ultimoContacto,
-    expected_close: updatedClient.fechaCierreEstimada
-    
-  };
-}
+    // Realizar la actualización en la base de datos
+    const updatedClient = await prisma.cliente.update({
+      where: { id: client.id },
+      data: dataToUpdate,
+      include: { encargado: true },
+    });
+  
+    // Mapear el resultado al tipo Client
+    return new Client(
+      updatedClient.id,
+      updatedClient.nombre,
+      updatedClient.estado,
+      updatedClient.prioridad,
+      updatedClient.valorEstimado,
+      updatedClient.encargadoId,
+      updatedClient.origen,
+      updatedClient.email,
+      updatedClient.telefono,
+      updatedClient.ultimoContacto,
+      updatedClient.fechaCierreEstimada,
+      updatedClient.descripcion,  // Incluir descripcion en la instancia
+      updatedClient.encargado?.nombre, 
+      updatedClient.encargado?.avatar
+    );
+  }
+  
 
 
 

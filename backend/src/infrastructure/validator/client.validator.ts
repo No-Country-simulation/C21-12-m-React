@@ -43,7 +43,8 @@ export const validateClientData = (data: any, isPartial: boolean = false) => {
       'date.format': 'La fecha de cierre estimada debe estar en formato ISO.',
       'date.greater': 'La fecha de cierre estimada debe ser posterior a la fecha actual.',
       'any.required': 'La fecha de cierre estimada es obligatoria.'
-    })
+    }),
+    descripcion: Joi.string().allow('').optional(),
   });
 
   return schema.validate(data);

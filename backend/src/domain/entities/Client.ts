@@ -3,6 +3,7 @@
 import { Prioridad } from "@prisma/client";
 
 export class Client {
+  static descripcion: any;
   constructor(
     public id: number,
     public nombre: string,
@@ -15,6 +16,7 @@ export class Client {
     public telefono: string,
     public ultimo_contacto: Date | null,
     public expected_close: Date | null,
+    public descripcion?: string,
     public managerNombre?: string,
     public managerAvatar?: string
   ) {}

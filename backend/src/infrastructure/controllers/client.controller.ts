@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 class ClientService {
   static async createClient(data: any): Promise<Client> {
-    const { nombre, estado, prioridad, valor_estimado, encargadoId, origen, email, telefono, ultimo_contacto, expected_close } = data;
+    const { nombre, estado, prioridad, valor_estimado, encargadoId, origen, email, telefono, ultimo_contacto, expected_close,descripcion } = data;
 
     const encargadoExists = await prisma.encargado.findUnique({
       where: { id: encargadoId },
@@ -33,7 +33,8 @@ class ClientService {
       email,
       telefono,
       ultimo_contacto ? new Date(ultimo_contacto) : null,
-      expected_close ? new Date(expected_close) : null
+      expected_close ? new Date(expected_close) : null,
+      descripcion
     );
   }
 }
