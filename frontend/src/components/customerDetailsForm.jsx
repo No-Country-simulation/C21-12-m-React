@@ -23,8 +23,6 @@ import EncargadoSelect from "./encargadoSelect";
 import PrioridadSelect from "./PrioridadSelect";
 import EstadoSelect from "./EstadoSelect";
 
-
-
 const CustomerDetailsForm = ({ onSubmit }) => {
 	const { control, handleSubmit } = useForm();
 	const [encargados, setEncargados] = useState([]);
@@ -195,7 +193,6 @@ const CustomerDetailsForm = ({ onSubmit }) => {
 						<Divider sx={{ my: 2 }} />
 
 						<Grid container spacing={2}>
-							{/*//() Trabajando */}
 
 							<Grid item xs={12} sm={6} md={4}>
 								<Controller
@@ -235,7 +232,6 @@ const CustomerDetailsForm = ({ onSubmit }) => {
 								/>
 							</Grid>
 
-							{/*//() Trabajando */}
 
 							<Grid item xs={12} sm={6} md={4}>
 								<Controller

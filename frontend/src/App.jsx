@@ -14,9 +14,9 @@ function App() {
 				<MainContent>
 					<Routes>
 						<Route path="/" element={<WelcomePage />} />
-						 <Route path="/clientes" element={<ClientPage />} />
-						<Route path="/dashboard" element={<Dashboard/>} />
-					<Route path="/finanzas"element={<FinancePage/>}/>
+						<Route path="/clientes" element={<ClientPage />} />
+						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/finanzas" element={<FinancePage />} />
 					</Routes>
 				</MainContent>
 			</MainLayout>
