@@ -223,7 +223,7 @@ StateChips.propTypes = {
 	state: PropTypes.string,
 };
 
-export function CustomerTable({ filteredClients, openDetailClient }) {
+export function CustomerTable({ filteredClients, openDetailClient, openEditClient }) {
 	const [rows, setRows] = React.useState([]);
 	const [loadedData, setLoadedData] = React.useState(false);
 
@@ -259,6 +259,11 @@ export function CustomerTable({ filteredClients, openDetailClient }) {
 	const handleSendingDataToSeeDetails = (customerId) => {
 		const customerData = rows.find((client) => client.id === customerId);
 		openDetailClient(customerData);
+	};
+
+	const handleSendingDataToEdit = (customerId) => {
+		const customerData = rows.find((client) => client.id === customerId);
+		openEditClient(customerData);
 	};
 
 	const deleteClientFromTable = (customersId) => {
@@ -474,7 +479,7 @@ export function CustomerTable({ filteredClients, openDetailClient }) {
 												<Tooltip title="Editar" arrow>
 													<IconButton
 														onClick={() => {
-															console.log("Editar Cliente", row.id);
+															handleSendingDataToEdit(row.id);
 														}}
 													>
 														<EditIcon />

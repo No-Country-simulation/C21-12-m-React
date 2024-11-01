@@ -48,12 +48,15 @@ export async function createClient(data) {
 
 //* Actualizar un cliente:
 export async function updateClient(id, data) {
-    try {
-        const response = await axios.put(`${API_BASE_URL}/v1/clients/${id}`, data, withCredentialsConfig);
-        return response.data;
-    } catch (error) {
-        handleApiError(error);
-    }
+
+    console.log(data);
+
+    // try {
+    //     const response = await axios.put(`${API_BASE_URL}/v1/clients/${id}`, data, withCredentialsConfig);
+    //     return response.data;
+    // } catch (error) {
+    //     handleApiError(error);
+    // }
 }
 
 export async function deleteClient(customersId) {

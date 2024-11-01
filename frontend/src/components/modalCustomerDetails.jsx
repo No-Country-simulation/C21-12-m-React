@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import customerIcon from "../assets/icon-new-client.svg";
-import { useEffect } from "react";
 
 const labelChipFormatter = (label) => {
 	return label.charAt(0).toUpperCase() + label.slice(1).toLowerCase();
@@ -119,10 +118,6 @@ export const ModalCustomerDetails = ({ open, customerDetails, handleClose }) => 
 			form.requestSubmit();
 		}
 	};
-
-	useEffect(() => {
-		console.log(customerDetails);
-	}, [customerDetails]);
 
 	const currencyFormatter = (value) => {
 		const formatter = new Intl.NumberFormat("en-US", {
@@ -395,5 +390,4 @@ ModalCustomerDetails.propTypes = {
 	open: PropTypes.bool.isRequired,
 	customerDetails: PropTypes.object.isRequired,
 	handleClose: PropTypes.func.isRequired,
-	loadedData: PropTypes.bool.isRequired,
 };
