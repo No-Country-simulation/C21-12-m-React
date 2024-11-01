@@ -69,56 +69,49 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+	const createSortHandler = (property) => (event) => {
+		onRequestSort(event, property);
+	};
 
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.id === "opciones" ? "center" : "left"}
-            sx={{ padding: "1rem" }}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
+	return (
+		<TableHead>
+			<TableRow>
+				<TableCell padding="checkbox">
+					<Checkbox
+						color="primary"
+						indeterminate={numSelected > 0 && numSelected < rowCount}
+						checked={rowCount > 0 && numSelected === rowCount}
+						onChange={onSelectAllClick}
+						inputProps={{
+							"aria-label": "select all desserts",
+						}}
+					/>
+				</TableCell>
+				{headCells.map((headCell) => (
+					<TableCell
+						key={headCell.id}
+						align={headCell.id === "opciones" ? "center" : "left"}
+						sx={{ padding: "1rem" }}
+						sortDirection={orderBy === headCell.id ? order : false}
+					>
+						<TableSortLabel
+							active={orderBy === headCell.id}
+							direction={orderBy === headCell.id ? order : "asc"}
+							onClick={createSortHandler(headCell.id)}
+						>
+							{headCell.label}
+							{orderBy === headCell.id ? (
+								<Box component="span" sx={visuallyHidden}>
+									{order === "desc" ? "sorted descending" : "sorted ascending"}
+								</Box>
+							) : null}
+						</TableSortLabel>
+					</TableCell>
+				))}
+			</TableRow>
+		</TableHead>
+	);
 }
 
 EnhancedTableHead.propTypes = {
@@ -131,55 +124,47 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar({ selected, handleClientDelete }) {
-  const numSelected = selected.length;
-  return (
-    <Toolbar
-      sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        },
-      ]}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} {numSelected > 1 ? "Seleccionados" : "Seleccionado"}
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Tabla de Clientes
-        </Typography>
-      )}
-      {numSelected > 0 && (
-        <Tooltip title="Delete">
-          <IconButton
-            onClick={() => {
-              handleClientDelete(selected); // Trabajando
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
+	const numSelected = selected.length;
+	return (
+		<Toolbar
+			sx={[
+				{
+					pl: { sm: 2 },
+					pr: { xs: 1, sm: 1 },
+				},
+				numSelected > 0 && {
+					bgcolor: (theme) =>
+						alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+				},
+			]}
+		>
+			{numSelected > 0 ? (
+				<Typography
+					sx={{ flex: "1 1 100%" }}
+					color="inherit"
+					variant="subtitle1"
+					component="div"
+				>
+					{numSelected} {numSelected > 1 ? "Seleccionados" : "Seleccionado"}
+				</Typography>
+			) : (
+				<Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
+					Tabla de Clientes
+				</Typography>
+			)}
+			{numSelected > 0 && (
+				<Tooltip title="Delete">
+					<IconButton
+						onClick={() => {
+							handleClientDelete(selected); // Trabajando
+						}}
+					>
+						<DeleteIcon />
+					</IconButton>
+				</Tooltip>
+			)}
+		</Toolbar>
+	);
 }
 
 EnhancedTableToolbar.propTypes = {
@@ -189,8 +174,7 @@ EnhancedTableToolbar.propTypes = {
 function PriorityChips(props) {
 	const { priority } = props;
 
-  const formattedLabel =
-    priority.charAt(0).toUpperCase() + priority.slice(1).toLowerCase();
+	const formattedLabel = priority.charAt(0).toUpperCase() + priority.slice(1).toLowerCase();
 
 	const colorPalette = { ALTA: "error", MEDIA: "warning", BAJA: "info" };
 
@@ -213,8 +197,7 @@ PriorityChips.propTypes = {
 function StateChips(props) {
 	const { state } = props;
 
-  const formattedLabel =
-    state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
+	const formattedLabel = state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
 
 	const colorPalette = {
 		CONTACTO: 1,
@@ -240,7 +223,7 @@ StateChips.propTypes = {
 	state: PropTypes.string,
 };
 
-export function CustomerTable({ filteredClients }) {
+export function CustomerTable({ filteredClients, openDetailClient }) {
 	const [rows, setRows] = React.useState([]);
 	const [loadedData, setLoadedData] = React.useState(false);
 
@@ -273,20 +256,21 @@ export function CustomerTable({ filteredClients }) {
 		fetchData();
 	}, []);
 
-  // Trabajando
-  const deleteClientFromTable = (customersId) => {
-    // Si customersId es un array, eliminamos todos los IDs que estén en ese array
-    if (Array.isArray(customersId)) {
-      setRows((prevRows) =>
-        prevRows.filter((row) => !customersId.includes(row.id))
-      );
-    } else {
-      // Si customersId es un número, eliminamos solo ese ID
-      setRows((prevRows) => prevRows.filter((row) => row.id !== customersId));
-    }
-  };
+	const handleSendingDataToSeeDetails = (customerId) => {
+		const customerData = rows.find((client) => client.id === customerId);
+		openDetailClient(customerData);
+	};
 
-	//Trabajando
+	const deleteClientFromTable = (customersId) => {
+		// Si customersId es un array, eliminamos todos los IDs que estén en ese array
+		if (Array.isArray(customersId)) {
+			setRows((prevRows) => prevRows.filter((row) => !customersId.includes(row.id)));
+		} else {
+			// Si customersId es un número, eliminamos solo ese ID
+			setRows((prevRows) => prevRows.filter((row) => row.id !== customersId));
+		}
+	};
+
 	const handleClientDelete = async (customersId) => {
 		try {
 			await deleteClient(customersId);
@@ -480,7 +464,7 @@ export function CustomerTable({ filteredClients }) {
 												<Tooltip title="Ver" arrow>
 													<IconButton
 														onClick={() => {
-															console.log("Ver Cliente", row.id);
+															handleSendingDataToSeeDetails(row.id);
 														}}
 													>
 														<EyeIcon />

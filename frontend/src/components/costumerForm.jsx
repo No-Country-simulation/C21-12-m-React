@@ -1,19 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-import {
-	Alert,
-	AlertTitle,
-	Box,
-	Button,
-	debounce,
-	MenuItem,
-	TextField,
-} from "@mui/material";
+import { Alert, AlertTitle, Box, Button, debounce, MenuItem, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CustomerModal from "./customerModal";
+import { ModalCustomerDetails } from "./modalCustomerDetails";
+
 import { createClient, searchClients } from "../api/route";
-import axios from "axios";
 import { CustomerTable } from "./customerTable";
 
 const CostumerForm = () => {
@@ -34,12 +25,12 @@ const CostumerForm = () => {
 		{ label: "Baja", value: "Baja" },
 	];
 
-	{
-		/*//$ Rebision de Error */
-	}
 	const [filteredClients, setFilteredClients] = useState([]);
-
 	const [open, setOpen] = useState(false);
+
+	const [openDetailClient, setOpenDetailClient] = useState(false);
+	const [handleSelectedCustomerData, setHandleSelectedCustomerData] = useState({});
+
 	const [alertVisible, setAlertVisible] = useState(false);
 	const [errorAlert, setErrorAlert] = useState(false);
 
@@ -49,6 +40,15 @@ const CostumerForm = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const handleClickOpenDetailClient = (customerData) => {
+		setHandleSelectedCustomerData(customerData);
+		setOpenDetailClient(true);
+	};
+
+	const handleCloseDetailClient = () => {
+		setOpenDetailClient(false);
 	};
 
 	const handleSave = async (data) => {
@@ -72,17 +72,14 @@ const CostumerForm = () => {
 		}
 	};
 
-	{
-		/*//$ Rebision de Error */
-	}
-	const handleSearch = async () => {
+	const handleSearch = useCallback(async () => {
 		try {
 			const result = await searchClients({ nombre, estado, prioridad });
 			setFilteredClients(result);
 		} catch (error) {
 			console.error("Error al buscar clientes", error);
 		}
-	};
+	}, [nombre, estado, prioridad]);
 
 	useEffect(() => {
 		const fetchFilteredClients = debounce(async () => {
@@ -90,7 +87,7 @@ const CostumerForm = () => {
 		}, 500);
 
 		fetchFilteredClients();
-	}, [nombre, estado, prioridad]);
+	}, [nombre, estado, prioridad, handleSearch]);
 
 	return (
 		<div>
@@ -137,10 +134,7 @@ const CostumerForm = () => {
 							}}
 						>
 							{currencies.map((option) => (
-								<MenuItem
-									key={option.value}
-									value={option.value}
-								>
+								<MenuItem key={option.value} value={option.value}>
 									{option.label}
 								</MenuItem>
 							))}
@@ -160,10 +154,7 @@ const CostumerForm = () => {
 							}}
 						>
 							{currenciesStatus.map((option) => (
-								<MenuItem
-									key={option.value}
-									value={option.value}
-								>
+								<MenuItem key={option.value} value={option.value}>
 									{option.label}
 								</MenuItem>
 							))}
@@ -196,8 +187,8 @@ const CostumerForm = () => {
 						<AlertTitle sx={{ fontWeight: "600" }}>
 							Cliente guardado exitosamente.
 						</AlertTitle>
-						El nuevo cliente ha sido agregado correctamente. Puedes
-						comenzar a gestionarlo desde la lista de clientes.
+						El nuevo cliente ha sido agregado correctamente. Puedes comenzar a
+						gestionarlo desde la lista de clientes.
 					</Alert>
 				)}
 
@@ -206,22 +197,25 @@ const CostumerForm = () => {
 						<AlertTitle sx={{ fontWeight: "600" }}>
 							Error al guardar cliente.
 						</AlertTitle>
-						Hubo un problema al guardar el nuevo cliente. Por favor,
-						revisa los datos ingresados y vuelve a intentarlo. Si el
-						problema persiste, contacta al soporte técnico.
+						Hubo un problema al guardar el nuevo cliente. Por favor, revisa los datos
+						ingresados y vuelve a intentarlo. Si el problema persiste, contacta al
+						soporte técnico.
 					</Alert>
 				)}
 
-				<CustomerModal
-					open={open}
-					handleClose={handleClose}
-					onSave={handleSave}
-				/>
+				<CustomerModal open={open} handleClose={handleClose} onSave={handleSave} />
 
+				<ModalCustomerDetails
+					open={openDetailClient}
+					customerDetails={handleSelectedCustomerData}
+					handleClose={handleCloseDetailClient}
+				/>
 			</Box>
 
-			{/*//$ Rebision de Error */}
-			<CustomerTable filteredClients={filteredClients} />
+			<CustomerTable
+				filteredClients={filteredClients}
+				openDetailClient={handleClickOpenDetailClient}
+			/>
 		</div>
 	);
 };
