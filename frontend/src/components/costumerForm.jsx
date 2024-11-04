@@ -6,6 +6,7 @@ import { ModalCustomerDetails } from "./modalCustomerDetails";
 
 import { createClient, searchClients } from "../api/route";
 import { CustomerTable } from "./customerTable";
+import { CustomerEditModal } from "./customerEditModal";
 
 const CostumerForm = () => {
 	const [nombre, setNombre] = useState("");
@@ -31,6 +32,8 @@ const CostumerForm = () => {
 	const [openDetailClient, setOpenDetailClient] = useState(false);
 	const [handleSelectedCustomerData, setHandleSelectedCustomerData] = useState({});
 
+	const [openEditClient, setOpenEditClient] = useState(false);
+
 	const [alertVisible, setAlertVisible] = useState(false);
 	const [errorAlert, setErrorAlert] = useState(false);
 
@@ -49,6 +52,15 @@ const CostumerForm = () => {
 
 	const handleCloseDetailClient = () => {
 		setOpenDetailClient(false);
+	};
+
+	const handleClickOpenEditClient = (customerData) => {
+		setHandleSelectedCustomerData(customerData);
+		setOpenEditClient(true);
+	};
+
+	const handleCloseEditClient = () => {
+		setOpenEditClient(false);
 	};
 
 	const handleSave = async (data) => {
@@ -210,11 +222,20 @@ const CostumerForm = () => {
 					customerDetails={handleSelectedCustomerData}
 					handleClose={handleCloseDetailClient}
 				/>
+
+				{openEditClient && (
+					<CustomerEditModal
+						open={openEditClient}
+						data={handleSelectedCustomerData}
+						handleClose={handleCloseEditClient}
+					/>
+				)}
 			</Box>
 
 			<CustomerTable
 				filteredClients={filteredClients}
 				openDetailClient={handleClickOpenDetailClient}
+				openEditClient={handleClickOpenEditClient}
 			/>
 		</div>
 	);
